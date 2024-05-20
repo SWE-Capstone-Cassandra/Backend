@@ -3,9 +3,8 @@ from repository.stock_repository import StockRepository
 
 class StockService:
 
-    def get_stock_data_now(self, item_code: str):
-        data = StockRepository().get_stock_data_now(item_code=item_code)
-        return data
+    def get_stock_data_by_date(self, date: int, time: int):
+        return StockRepository().get_stock_data_by_date(date=date, time=time)
 
-    def get_today_stock_data(self, item_code: str):
-        pass
+    def save_stock_data(self, time: int, price: int):
+        return StockRepository().save_stock_data(time=time, price=price)

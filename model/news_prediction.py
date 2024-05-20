@@ -3,7 +3,10 @@ from datetime import datetime
 from sqlalchemy import DateTime, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column
 
-from config import Base, engine
+from sqlalchemy import Integer
+from sqlalchemy.orm import Mapped, mapped_column
+
+from config import Base
 
 
 class NewsPrediction(Base):
@@ -17,6 +20,3 @@ class NewsPrediction(Base):
     min_15: Mapped[int] = mapped_column(Integer)
     min_60: Mapped[int] = mapped_column(Integer)
     day_1: Mapped[int] = mapped_column(Integer)
-
-
-Base.metadata.create_all(bind=engine)

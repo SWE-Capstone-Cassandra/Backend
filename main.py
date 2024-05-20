@@ -1,8 +1,12 @@
 from fastapi import FastAPI
+import uvicorn
+from api.router.stock import stock_router
+from api.router.news import news_router
 
 app = FastAPI()
 
-app.add_
+app.include_router(stock_router, prefix="/stock")
+app.include_router(news_router, prefix="/news")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -10,6 +14,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+if __name__ == "__main__":
+    uvicorn.run(app=app)
 
 
 # 프로그램 요구사항

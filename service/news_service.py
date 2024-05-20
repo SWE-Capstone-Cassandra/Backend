@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
-from repository.news_repository import NewsRepository
+from repository.prediction_repository import PredictionRepository
 from repository.stock_repository import StockRepository
 from schema.news_prediction import NewsPrediction
 from service.cleaner import clean_text
@@ -17,10 +17,6 @@ class NewsService:
 
     def get_news_data(self, news_id: int):
         pass
-
-    def get_prediction(self, news_id: int) -> NewsPrediction:
-        res = NewsRepository().get_news_prediction(news_id=news_id)
-        return NewsPrediction.model_validate(res)
 
     def get_news_list(self, item_name: str, page: int):
 
@@ -61,10 +57,6 @@ class NewsService:
             news_list.append(item)
 
         return news_list
-
-    def save_news_prediction(self, item_code: str, news_id: str):
-        stock = StockRepository().get_stock_data_now(item_code=item_code)
-        news_list = self.get_news_list()
 
     def is_page(self, url, page):
         options = Options()
