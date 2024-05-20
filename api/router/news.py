@@ -7,7 +7,7 @@ news_router = APIRouter()
 
 
 @news_router.get("/{news_id}")
-def get_news_by_news_id(news_id: int):
+def get_news_by_news_id(news_id: str):
     return NewsService().get_news_data(news_id=news_id)
 
 

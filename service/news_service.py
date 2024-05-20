@@ -5,9 +5,6 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
-from repository.prediction_repository import PredictionRepository
-from repository.stock_repository import StockRepository
-from schema.news_prediction import NewsPrediction
 from service.cleaner import clean_text
 
 CAPTCHA = "https://captcha.search.daum.net"
@@ -15,8 +12,14 @@ CAPTCHA = "https://captcha.search.daum.net"
 
 class NewsService:
 
-    def get_news_data(self, news_id: int):
-        pass
+    def get_news_data(self, news_id: str):
+        url = "https://v.daum.net/v/"
+        url = url + str(news_id)
+        response = requests.get(url, headers=self.get_header())
+        soup = BeautifulSoup(response.text, "html.parser")
+        content = soup.find("div", class_="news_view fs_type1") if soup else ""
+        content = clean_text(content.text)
+        return content
 
     def get_news_list(self, item_name: str, page: int):
 
