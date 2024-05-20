@@ -1,4 +1,5 @@
 import time
+from typing import List
 
 import requests
 from bs4 import BeautifulSoup
@@ -12,9 +13,8 @@ CAPTCHA = "https://captcha.search.daum.net"
 
 class NewsService:
 
-    def get_news_data(self, news_id: str):
-        url = "https://v.daum.net/v/"
-        url = url + str(news_id)
+    def get_news_data(self, url: str):
+
         response = requests.get(url, headers=self.get_header())
         soup = BeautifulSoup(response.text, "html.parser")
         content = soup.find("div", class_="news_view fs_type1") if soup else ""
@@ -42,7 +42,8 @@ class NewsService:
 
         return news_list
 
-    def get_news_list_min(self, item_name: str, time_now):
+    def get_news_list_min(self, item_name: str, time_now) -> List:
+        # 주소 리스트를 반환
         min_1 = 100
         base_url = f"https://search.daum.net/search?DA=PGD&cluster=y&cluster_page=1&ed={time_now+min_1}&enc=utf8&nil_search=btn&period=u&q={item_name}&sd={time_now}&w=news&p=1"
 
@@ -54,12 +55,13 @@ class NewsService:
             list_soup = BeautifulSoup(response.text, "html.parser")
 
         news_datas = list_soup.find("ul", class_="c-list-basic")
-        bs_list = news_datas.find_all("li") if news_datas else []
-        news_list = []
-        for item in bs_list:
-            news_list.append(item)
+        div_tags = news_datas.find_all("p", class_="conts-desc clamp-g2") if tag else []
+        url_list = []
+        for tag in div_tags:
+            a_tag = tag.find("a") if tag else None
+            url_list.append(a_tag["href"] if a_tag else "No link found")
 
-        return news_list
+        return url_list
 
     def is_page(self, url, page):
         options = Options()

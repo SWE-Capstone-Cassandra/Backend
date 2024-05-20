@@ -1,7 +1,6 @@
 from fastapi import APIRouter
 
 
-from service.news_service import NewsService
 from service.stock_service import StockService
 
 stock_router = APIRouter()

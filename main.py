@@ -2,11 +2,15 @@ from fastapi import FastAPI
 import uvicorn
 from api.router.stock import stock_router
 from api.router.news import news_router
+from api.router.model import model_router
+from fastapi.middleware.cors import CORSMiddleware
+from config import create_db
 
 app = FastAPI()
 
 app.include_router(stock_router, prefix="/stock")
 app.include_router(news_router, prefix="/news")
+app.include_router(model_router, prefix="/model")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -16,7 +20,9 @@ app.add_middleware(
 )
 
 if __name__ == "__main__":
-    uvicorn.run(app=app)
+    create_db()
+
+    uvicorn.run(app=app, host="0.0.0.0", port=8096, reload=True)
 
 
 # 프로그램 요구사항

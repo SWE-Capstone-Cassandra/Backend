@@ -3,7 +3,7 @@ import datetime
 from datetime import datetime
 
 from sqlalchemy import select
-from stock import Stock
+from model.stock import Stock
 from config import get_session, get_engine, Base
 
 
