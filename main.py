@@ -22,7 +22,7 @@ app.add_middleware(
 if __name__ == "__main__":
     create_db()
 
-    uvicorn.run(app=app, host="0.0.0.0", port=8096, reload=True)
+    uvicorn.run("main:app", host="0.0.0.0", port=8096, workers=3)
 
 
 # 프로그램 요구사항
