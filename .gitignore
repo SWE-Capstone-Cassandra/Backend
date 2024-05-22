@@ -173,4 +173,10 @@ poetry.toml
 # LSP config files
 pyrightconfig.json
 
+# 모델 가중치
+# 가중치들은 비공개, 해당 폴더는 공개
+model_weights/*
+!model_weights/
+
 # End of https://www.toptal.com/developers/gitignore/api/python
+.vscode/PythonImportHelper-v2-Completion.json
