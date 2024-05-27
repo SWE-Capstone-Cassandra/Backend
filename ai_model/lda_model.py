@@ -1,7 +1,16 @@
+from gensim import corpora
+from gensim.models.ldamulticore import LdaMulticore
 from gensim.models import LdaModel
+from gensim.models.coherencemodel import CoherenceModel
+
 import pickle
 import pandas as pd
 from typing import List
+from time import time
+
+import os
+import shutil
+
 from ai_model.text_preprocessor import TextPreprocessor
 from ai_model.korean_lemmatizer_master.soylemma import Lemmatizer
 
@@ -27,6 +36,8 @@ LDA 모델
 5) 가중치 저장
 """
 
+model_weights_path = "/home/tako4/capstone/backend/Model/Backend/ai_model/model_weights"
+
 
 class LDAModel:
 
@@ -43,8 +54,61 @@ class LDAModel:
         """
 
         self.df["documents"] = TextPreprocessor(texts=list(dataset)).preprocess()
+        num_category = self._get_num_of_categories()
 
-    # TODO 최상위 폴더 생성 및 하이퍼파라미터 튜닝 작업
+        self._remake_folder(num_category=num_category)
+
+    # TODO 사전 저장 및 lda 모델 생성, 가중치 저장
+
+    def _get_num_of_categories(self):
+        print("start hyperparameter tuning - get category")
+        dictionary = corpora.Dictionary(self.df["documents"])
+        corpus = [dictionary.doc2bow(text) for text in self.df["documents"]]
+
+        num_topics_list = range(1, 51)
+        best_coherence = 0
+        best_model = None
+        best_params = {}
+
+        for num_topics in num_topics_list:
+            print(f"num_topics: {num_topics} 시작")
+            start_time = time()
+            model = LdaMulticore(
+                corpus=corpus,
+                id2word=dictionary,
+                num_topics=num_topics,
+                random_state=25,
+                passes=100,
+                workers=None,
+            )
+            coherence_model = CoherenceModel(model=model, texts=list(self.df["documents"]), dictionary=dictionary, coherence="c_v")
+            coherence_score = coherence_model.get_coherence()
+            end_time = time()
+            elapsed_time = end_time - start_time
+
+            if coherence_score > best_coherence:
+                print(f"num_topics: {num_topics}, coherence_score: {coherence_score}, time: {elapsed_time:.2f} seconds")
+                best_coherence = coherence_score
+                best_model = model
+                best_params = {"num_topics": num_topics}
+
+        # 최적의 하이퍼파라미터 출력
+        print("Best Coherence Score:", best_coherence)
+        print("Best Params:", best_params)
+
+        return best_params.num_topics
+
+    def _remake_folder(self, num_category):
+        if os.path.exists(model_weights_path):
+            shutil.rmtree(model_weights_path)
+
+            # 폴더 다시 만들기
+            os.makedirs(model_weights_path)
+
+        for i in range(num_category):
+            new_folder_name = f"topic_{i+1}"
+            new_folder_path = os.path.join(model_weights_path, new_folder_name)
+            os.makedirs(new_folder_path)
 
     def get_topic_distribution(self):
         """
