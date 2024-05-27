@@ -1,14 +1,14 @@
 import unittest
-from ai_model.morphs_extractor import MorphsExtractor
+from ai_model.text_preprocessor import TextPreprocessor
 
 
 class TestMorphsExtractor(unittest.TestCase):
 
     def test_basical(self):
-        self.assertEqual(MorphsExtractor("[안녕]").extract(), [("안녕", "NNP")])
+        self.assertEqual(TextPreprocessor("[안녕]").preprocess(), [("안녕", "NNP")])
 
     def test_stopwords(self):
-        self.assertEqual(MorphsExtractor("[1231241231]").extract(), [])
+        self.assertEqual(TextPreprocessor("[1231241231]").preprocess(), [])
 
 
 if __name__ == "__main__":
