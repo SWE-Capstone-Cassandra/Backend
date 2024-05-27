@@ -2,11 +2,11 @@ import re
 from pecab import PeCab
 
 
-class TextPreprocessor:
+class MorphsExtractor:
     def __init__(self, text: str):
         self.text = text
 
-    def preprocess(self):
+    def extract(self):
         self._analyze_morphs()
         self._remove_stopwords()
         self._remove_special_characters()
@@ -17,7 +17,7 @@ class TextPreprocessor:
         self.text = pecab.pos(self.text)
 
     def _remove_stopwords(self):
-        stopwords_path = "/home/tako/Documents/yonghan/Model/stopwords-ko.txt"
+        stopwords_path = "/home/tako4/capstone/backend/Model/Backend/stopwords-ko.txt"
         with open(stopwords_path, "r", encoding="utf-*") as file:
             stopwords = [line.strip() for line in file.readlines()]
 
