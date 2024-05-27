@@ -58,7 +58,7 @@ class LDAModel:
 
         self._remake_folder(num_category=num_category)
 
-    # TODO 사전 저장 및 lda 모델 생성, 가중치 저장
+    # TODO 사전 저장 및 lda 모델 생성, 가중치 저장, git 재연결
 
     def _get_num_of_categories(self):
         print("start hyperparameter tuning - get category")
