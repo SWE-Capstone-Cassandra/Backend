@@ -1,24 +1,20 @@
 from sqlalchemy import select
-from config import get_session, get_engine
+
 from model.news_prediction import NewsPrediction
+from repository.base_repository import BaseRepository
 
 
-class PredictionRepository:
-    def __init__(self) -> None:
-        self.session = get_session()
-        self.engine = get_engine()
+class PredictionRepository(BaseRepository):
 
     def get_news_prediction(self, news_id: int):
-        with self.session() as session:
-            stmt = select(NewsPrediction).where(NewsPrediction.news_id == news_id)
-            res = session.execute(stmt)
-            res = res.scalar()
-            return res
+
+        stmt = select(NewsPrediction).where(NewsPrediction.news_id == news_id)
+        res = self.session.execute(stmt)
+        res = res.scalar()
+        return res
 
     def save_news_prediction(self, news_prediction: NewsPrediction):
 
-        with self.session() as session:
-            session.add(news_prediction)
-            session.commit()
+        self.session.add(news_prediction)
 
         return news_prediction

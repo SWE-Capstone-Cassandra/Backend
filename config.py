@@ -1,10 +1,8 @@
 from sqlalchemy import create_engine, inspect
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker, DeclarativeBase
-
+from sqlalchemy.orm import DeclarativeBase, sessionmaker
 
 user = "cap"
-password = "capstone"
+password = "dusrntlf512"
 sever = "localhost:5432"
 database = "capstone"
 
@@ -24,7 +22,7 @@ def get_engine():
 def get_session():
     engine = get_engine()
     session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-    return session
+    return session()
 
 
 def create_db():
