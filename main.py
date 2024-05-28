@@ -1,9 +1,10 @@
-from fastapi import FastAPI
 import uvicorn
-from api.router.stock import stock_router
-from api.router.news import news_router
-from api.router.model import model_router
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+
+from api.router.model import model_router
+from api.router.news import news_router
+from api.router.stock import stock_router
 from config import create_db
 
 app = FastAPI()

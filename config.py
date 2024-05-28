@@ -1,10 +1,8 @@
 from sqlalchemy import create_engine, inspect
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker, DeclarativeBase
-
+from sqlalchemy.orm import DeclarativeBase, sessionmaker
 
 user = "cap"
-password = "capstone"
+password = "dusrntlf512"
 sever = "localhost:5432"
 database = "capstone"
 
