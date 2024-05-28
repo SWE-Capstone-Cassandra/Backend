@@ -1,0 +1,1317 @@
+[
+    {
+        "label": "APIRouter",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "APIRouter",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "Depends",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "APIRouter",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "Depends",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "FastAPI",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "ModelService",
+        "importPath": "service.model_service",
+        "description": "service.model_service",
+        "isExtraImport": true,
+        "detail": "service.model_service",
+        "documentation": {}
+    },
+    {
+        "label": "Session",
+        "importPath": "sqlalchemy.orm",
+        "description": "sqlalchemy.orm",
+        "isExtraImport": true,
+        "detail": "sqlalchemy.orm",
+        "documentation": {}
+    },
+    {
+        "label": "Session",
+        "importPath": "sqlalchemy.orm",
+        "description": "sqlalchemy.orm",
+        "isExtraImport": true,
+        "detail": "sqlalchemy.orm",
+        "documentation": {}
+    },
+    {
+        "label": "Mapped",
+        "importPath": "sqlalchemy.orm",
+        "description": "sqlalchemy.orm",
+        "isExtraImport": true,
+        "detail": "sqlalchemy.orm",
+        "documentation": {}
+    },
+    {
+        "label": "mapped_column",
+        "importPath": "sqlalchemy.orm",
+        "description": "sqlalchemy.orm",
+        "isExtraImport": true,
+        "detail": "sqlalchemy.orm",
+        "documentation": {}
+    },
+    {
+        "label": "Mapped",
+        "importPath": "sqlalchemy.orm",
+        "description": "sqlalchemy.orm",
+        "isExtraImport": true,
+        "detail": "sqlalchemy.orm",
+        "documentation": {}
+    },
+    {
+        "label": "mapped_column",
+        "importPath": "sqlalchemy.orm",
+        "description": "sqlalchemy.orm",
+        "isExtraImport": true,
+        "detail": "sqlalchemy.orm",
+        "documentation": {}
+    },
+    {
+        "label": "Mapped",
+        "importPath": "sqlalchemy.orm",
+        "description": "sqlalchemy.orm",
+        "isExtraImport": true,
+        "detail": "sqlalchemy.orm",
+        "documentation": {}
+    },
+    {
+        "label": "mapped_column",
+        "importPath": "sqlalchemy.orm",
+        "description": "sqlalchemy.orm",
+        "isExtraImport": true,
+        "detail": "sqlalchemy.orm",
+        "documentation": {}
+    },
+    {
+        "label": "Session",
+        "importPath": "sqlalchemy.orm",
+        "description": "sqlalchemy.orm",
+        "isExtraImport": true,
+        "detail": "sqlalchemy.orm",
+        "documentation": {}
+    },
+    {
+        "label": "Session",
+        "importPath": "sqlalchemy.orm",
+        "description": "sqlalchemy.orm",
+        "isExtraImport": true,
+        "detail": "sqlalchemy.orm",
+        "documentation": {}
+    },
+    {
+        "label": "DeclarativeBase",
+        "importPath": "sqlalchemy.orm",
+        "description": "sqlalchemy.orm",
+        "isExtraImport": true,
+        "detail": "sqlalchemy.orm",
+        "documentation": {}
+    },
+    {
+        "label": "sessionmaker",
+        "importPath": "sqlalchemy.orm",
+        "description": "sqlalchemy.orm",
+        "isExtraImport": true,
+        "detail": "sqlalchemy.orm",
+        "documentation": {}
+    },
+    {
+        "label": "get_session",
+        "importPath": "config",
+        "description": "config",
+        "isExtraImport": true,
+        "detail": "config",
+        "documentation": {}
+    },
+    {
+        "label": "get_session",
+        "importPath": "config",
+        "description": "config",
+        "isExtraImport": true,
+        "detail": "config",
+        "documentation": {}
+    },
+    {
+        "label": "Base",
+        "importPath": "config",
+        "description": "config",
+        "isExtraImport": true,
+        "detail": "config",
+        "documentation": {}
+    },
+    {
+        "label": "Base",
+        "importPath": "config",
+        "description": "config",
+        "isExtraImport": true,
+        "detail": "config",
+        "documentation": {}
+    },
+    {
+        "label": "Base",
+        "importPath": "config",
+        "description": "config",
+        "isExtraImport": true,
+        "detail": "config",
+        "documentation": {}
+    },
+    {
+        "label": "create_db",
+        "importPath": "config",
+        "description": "config",
+        "isExtraImport": true,
+        "detail": "config",
+        "documentation": {}
+    },
+    {
+        "label": "get_session",
+        "importPath": "config",
+        "description": "config",
+        "isExtraImport": true,
+        "detail": "config",
+        "documentation": {}
+    },
+    {
+        "label": "create_db",
+        "importPath": "config",
+        "description": "config",
+        "isExtraImport": true,
+        "detail": "config",
+        "documentation": {}
+    },
+    {
+        "label": "NewsService",
+        "importPath": "service.news_service",
+        "description": "service.news_service",
+        "isExtraImport": true,
+        "detail": "service.news_service",
+        "documentation": {}
+    },
+    {
+        "label": "NewsService",
+        "importPath": "service.news_service",
+        "description": "service.news_service",
+        "isExtraImport": true,
+        "detail": "service.news_service",
+        "documentation": {}
+    },
+    {
+        "label": "NewsService",
+        "importPath": "service.news_service",
+        "description": "service.news_service",
+        "isExtraImport": true,
+        "detail": "service.news_service",
+        "documentation": {}
+    },
+    {
+        "label": "StockService",
+        "importPath": "service.stock_service",
+        "description": "service.stock_service",
+        "isExtraImport": true,
+        "detail": "service.stock_service",
+        "documentation": {}
+    },
+    {
+        "label": "Integer",
+        "importPath": "sqlalchemy",
+        "description": "sqlalchemy",
+        "isExtraImport": true,
+        "detail": "sqlalchemy",
+        "documentation": {}
+    },
+    {
+        "label": "String",
+        "importPath": "sqlalchemy",
+        "description": "sqlalchemy",
+        "isExtraImport": true,
+        "detail": "sqlalchemy",
+        "documentation": {}
+    },
+    {
+        "label": "DateTime",
+        "importPath": "sqlalchemy",
+        "description": "sqlalchemy",
+        "isExtraImport": true,
+        "detail": "sqlalchemy",
+        "documentation": {}
+    },
+    {
+        "label": "ForeignKey",
+        "importPath": "sqlalchemy",
+        "description": "sqlalchemy",
+        "isExtraImport": true,
+        "detail": "sqlalchemy",
+        "documentation": {}
+    },
+    {
+        "label": "Integer",
+        "importPath": "sqlalchemy",
+        "description": "sqlalchemy",
+        "isExtraImport": true,
+        "detail": "sqlalchemy",
+        "documentation": {}
+    },
+    {
+        "label": "String",
+        "importPath": "sqlalchemy",
+        "description": "sqlalchemy",
+        "isExtraImport": true,
+        "detail": "sqlalchemy",
+        "documentation": {}
+    },
+    {
+        "label": "Integer",
+        "importPath": "sqlalchemy",
+        "description": "sqlalchemy",
+        "isExtraImport": true,
+        "detail": "sqlalchemy",
+        "documentation": {}
+    },
+    {
+        "label": "select",
+        "importPath": "sqlalchemy",
+        "description": "sqlalchemy",
+        "isExtraImport": true,
+        "detail": "sqlalchemy",
+        "documentation": {}
+    },
+    {
+        "label": "select",
+        "importPath": "sqlalchemy",
+        "description": "sqlalchemy",
+        "isExtraImport": true,
+        "detail": "sqlalchemy",
+        "documentation": {}
+    },
+    {
+        "label": "select",
+        "importPath": "sqlalchemy",
+        "description": "sqlalchemy",
+        "isExtraImport": true,
+        "detail": "sqlalchemy",
+        "documentation": {}
+    },
+    {
+        "label": "create_engine",
+        "importPath": "sqlalchemy",
+        "description": "sqlalchemy",
+        "isExtraImport": true,
+        "detail": "sqlalchemy",
+        "documentation": {}
+    },
+    {
+        "label": "inspect",
+        "importPath": "sqlalchemy",
+        "description": "sqlalchemy",
+        "isExtraImport": true,
+        "detail": "sqlalchemy",
+        "documentation": {}
+    },
+    {
+        "label": "datetime",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "datetime",
+        "description": "datetime",
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "News",
+        "importPath": "model.news",
+        "description": "model.news",
+        "isExtraImport": true,
+        "detail": "model.news",
+        "documentation": {}
+    },
+    {
+        "label": "News",
+        "importPath": "model.news",
+        "description": "model.news",
+        "isExtraImport": true,
+        "detail": "model.news",
+        "documentation": {}
+    },
+    {
+        "label": "News",
+        "importPath": "model.news",
+        "description": "model.news",
+        "isExtraImport": true,
+        "detail": "model.news",
+        "documentation": {}
+    },
+    {
+        "label": "BaseRepository",
+        "importPath": "repository.base_repository",
+        "description": "repository.base_repository",
+        "isExtraImport": true,
+        "detail": "repository.base_repository",
+        "documentation": {}
+    },
+    {
+        "label": "BaseRepository",
+        "importPath": "repository.base_repository",
+        "description": "repository.base_repository",
+        "isExtraImport": true,
+        "detail": "repository.base_repository",
+        "documentation": {}
+    },
+    {
+        "label": "BaseRepository",
+        "importPath": "repository.base_repository",
+        "description": "repository.base_repository",
+        "isExtraImport": true,
+        "detail": "repository.base_repository",
+        "documentation": {}
+    },
+    {
+        "label": "NewsPrediction",
+        "importPath": "model.news_prediction",
+        "description": "model.news_prediction",
+        "isExtraImport": true,
+        "detail": "model.news_prediction",
+        "documentation": {}
+    },
+    {
+        "label": "NewsPrediction",
+        "importPath": "model.news_prediction",
+        "description": "model.news_prediction",
+        "isExtraImport": true,
+        "detail": "model.news_prediction",
+        "documentation": {}
+    },
+    {
+        "label": "Stock",
+        "importPath": "model.stock",
+        "description": "model.stock",
+        "isExtraImport": true,
+        "detail": "model.stock",
+        "documentation": {}
+    },
+    {
+        "label": "BaseModel",
+        "importPath": "pydantic",
+        "description": "pydantic",
+        "isExtraImport": true,
+        "detail": "pydantic",
+        "documentation": {}
+    },
+    {
+        "label": "re",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "re",
+        "description": "re",
+        "detail": "re",
+        "documentation": {}
+    },
+    {
+        "label": "PredictionRepository",
+        "importPath": "repository.prediction_repository",
+        "description": "repository.prediction_repository",
+        "isExtraImport": true,
+        "detail": "repository.prediction_repository",
+        "documentation": {}
+    },
+    {
+        "label": "StockRepository",
+        "importPath": "repository.stock_repository",
+        "description": "repository.stock_repository",
+        "isExtraImport": true,
+        "detail": "repository.stock_repository",
+        "documentation": {}
+    },
+    {
+        "label": "StockRepository",
+        "importPath": "repository.stock_repository",
+        "description": "repository.stock_repository",
+        "isExtraImport": true,
+        "detail": "repository.stock_repository",
+        "documentation": {}
+    },
+    {
+        "label": "BaseService",
+        "importPath": "service.base_service",
+        "description": "service.base_service",
+        "isExtraImport": true,
+        "detail": "service.base_service",
+        "documentation": {}
+    },
+    {
+        "label": "BaseService",
+        "importPath": "service.base_service",
+        "description": "service.base_service",
+        "isExtraImport": true,
+        "detail": "service.base_service",
+        "documentation": {}
+    },
+    {
+        "label": "BaseService",
+        "importPath": "service.base_service",
+        "description": "service.base_service",
+        "isExtraImport": true,
+        "detail": "service.base_service",
+        "documentation": {}
+    },
+    {
+        "label": "time",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "time",
+        "description": "time",
+        "detail": "time",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "requests",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "requests",
+        "description": "requests",
+        "detail": "requests",
+        "documentation": {}
+    },
+    {
+        "label": "BeautifulSoup",
+        "importPath": "bs4",
+        "description": "bs4",
+        "isExtraImport": true,
+        "detail": "bs4",
+        "documentation": {}
+    },
+    {
+        "label": "BeautifulSoup",
+        "importPath": "bs4",
+        "description": "bs4",
+        "isExtraImport": true,
+        "detail": "bs4",
+        "documentation": {}
+    },
+    {
+        "label": "webdriver",
+        "importPath": "selenium",
+        "description": "selenium",
+        "isExtraImport": true,
+        "detail": "selenium",
+        "documentation": {}
+    },
+    {
+        "label": "Options",
+        "importPath": "selenium.webdriver.chrome.options",
+        "description": "selenium.webdriver.chrome.options",
+        "isExtraImport": true,
+        "detail": "selenium.webdriver.chrome.options",
+        "documentation": {}
+    },
+    {
+        "label": "NewsRepository",
+        "importPath": "repository.news_repository",
+        "description": "repository.news_repository",
+        "isExtraImport": true,
+        "detail": "repository.news_repository",
+        "documentation": {}
+    },
+    {
+        "label": "clean_text",
+        "importPath": "service.cleaner",
+        "description": "service.cleaner",
+        "isExtraImport": true,
+        "detail": "service.cleaner",
+        "documentation": {}
+    },
+    {
+        "label": "pandas",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "pandas",
+        "description": "pandas",
+        "detail": "pandas",
+        "documentation": {}
+    },
+    {
+        "label": "sys",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "sys",
+        "description": "sys",
+        "detail": "sys",
+        "documentation": {}
+    },
+    {
+        "label": "win32com.client",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "win32com.client",
+        "description": "win32com.client",
+        "detail": "win32com.client",
+        "documentation": {}
+    },
+    {
+        "label": "*",
+        "importPath": "PyQt5.QtWidgets",
+        "description": "PyQt5.QtWidgets",
+        "isExtraImport": true,
+        "detail": "PyQt5.QtWidgets",
+        "documentation": {}
+    },
+    {
+        "label": "os",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "os",
+        "description": "os",
+        "detail": "os",
+        "documentation": {}
+    },
+    {
+        "label": "stock",
+        "importPath": "model",
+        "description": "model",
+        "isExtraImport": true,
+        "detail": "model",
+        "documentation": {}
+    },
+    {
+        "label": "uvicorn",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "uvicorn",
+        "description": "uvicorn",
+        "detail": "uvicorn",
+        "documentation": {}
+    },
+    {
+        "label": "CORSMiddleware",
+        "importPath": "fastapi.middleware.cors",
+        "description": "fastapi.middleware.cors",
+        "isExtraImport": true,
+        "detail": "fastapi.middleware.cors",
+        "documentation": {}
+    },
+    {
+        "label": "model_router",
+        "importPath": "api.router.model",
+        "description": "api.router.model",
+        "isExtraImport": true,
+        "detail": "api.router.model",
+        "documentation": {}
+    },
+    {
+        "label": "news_router",
+        "importPath": "api.router.news",
+        "description": "api.router.news",
+        "isExtraImport": true,
+        "detail": "api.router.news",
+        "documentation": {}
+    },
+    {
+        "label": "stock_router",
+        "importPath": "api.router.stock",
+        "description": "api.router.stock",
+        "isExtraImport": true,
+        "detail": "api.router.stock",
+        "documentation": {}
+    },
+    {
+        "label": "find_packages",
+        "importPath": "setuptools",
+        "description": "setuptools",
+        "isExtraImport": true,
+        "detail": "setuptools",
+        "documentation": {}
+    },
+    {
+        "label": "setup",
+        "importPath": "setuptools",
+        "description": "setuptools",
+        "isExtraImport": true,
+        "detail": "setuptools",
+        "documentation": {}
+    },
+    {
+        "label": "get_prediction_by_news_id",
+        "kind": 2,
+        "importPath": "api.router.model",
+        "description": "api.router.model",
+        "peekOfCode": "def get_prediction_by_news_id(news_id: str):\n    return ModelService().get_prediction(news_id=news_id)",
+        "detail": "api.router.model",
+        "documentation": {}
+    },
+    {
+        "label": "model_router",
+        "kind": 5,
+        "importPath": "api.router.model",
+        "description": "api.router.model",
+        "peekOfCode": "model_router = APIRouter()\n@model_router.get(\"/prediction/{news_id}\")\ndef get_prediction_by_news_id(news_id: str):\n    return ModelService().get_prediction(news_id=news_id)",
+        "detail": "api.router.model",
+        "documentation": {}
+    },
+    {
+        "label": "get_news_by_news_id",
+        "kind": 2,
+        "importPath": "api.router.news",
+        "description": "api.router.news",
+        "peekOfCode": "def get_news_by_news_id(news_id: str, session: Session = Depends(get_session)):\n    res = NewsService(session=session).get_news_data(news_id=news_id)\n    return res\n@news_router.get(\"/list/{item_name}/{page}\")\ndef get_news_list_by_name(item_name: str, page: int, session: Session = Depends(get_session)):\n    return NewsService(session=session).get_news_list(item_name=item_name, page=page)",
+        "detail": "api.router.news",
+        "documentation": {}
+    },
+    {
+        "label": "get_news_list_by_name",
+        "kind": 2,
+        "importPath": "api.router.news",
+        "description": "api.router.news",
+        "peekOfCode": "def get_news_list_by_name(item_name: str, page: int, session: Session = Depends(get_session)):\n    return NewsService(session=session).get_news_list(item_name=item_name, page=page)",
+        "detail": "api.router.news",
+        "documentation": {}
+    },
+    {
+        "label": "news_router",
+        "kind": 5,
+        "importPath": "api.router.news",
+        "description": "api.router.news",
+        "peekOfCode": "news_router = APIRouter()\n@news_router.get(\"/{news_id}\")\ndef get_news_by_news_id(news_id: str, session: Session = Depends(get_session)):\n    res = NewsService(session=session).get_news_data(news_id=news_id)\n    return res\n@news_router.get(\"/list/{item_name}/{page}\")\ndef get_news_list_by_name(item_name: str, page: int, session: Session = Depends(get_session)):\n    return NewsService(session=session).get_news_list(item_name=item_name, page=page)",
+        "detail": "api.router.news",
+        "documentation": {}
+    },
+    {
+        "label": "save_stock_data",
+        "kind": 2,
+        "importPath": "api.router.stock",
+        "description": "api.router.stock",
+        "peekOfCode": "def save_stock_data(time: int, price: int, session: Session = Depends(get_session)):\n    res = StockService(session=session).save_stock_data(time=time, price=price)\n    session.commit()\n    return res",
+        "detail": "api.router.stock",
+        "documentation": {}
+    },
+    {
+        "label": "stock_router",
+        "kind": 5,
+        "importPath": "api.router.stock",
+        "description": "api.router.stock",
+        "peekOfCode": "stock_router = APIRouter()\n@stock_router.post(\"/save/{time}/{price}\")\ndef save_stock_data(time: int, price: int, session: Session = Depends(get_session)):\n    res = StockService(session=session).save_stock_data(time=time, price=price)\n    session.commit()\n    return res",
+        "detail": "api.router.stock",
+        "documentation": {}
+    },
+    {
+        "label": "News",
+        "kind": 6,
+        "importPath": "model.news",
+        "description": "model.news",
+        "peekOfCode": "class News(Base):\n    __tablename__ = \"news\"\n    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)\n    news_url: Mapped[int] = mapped_column(String, nullable=True)\n    date: Mapped[int] = mapped_column(Integer, index=True, nullable=True)\n    time: Mapped[int] = mapped_column(Integer, index=True)\n    title: Mapped[str] = mapped_column(String, nullable=True)\n    writer: Mapped[str] = mapped_column(String, nullable=True)\n    content: Mapped[str] = mapped_column(String)",
+        "detail": "model.news",
+        "documentation": {}
+    },
+    {
+        "label": "NewsPrediction",
+        "kind": 6,
+        "importPath": "model.news_prediction",
+        "description": "model.news_prediction",
+        "peekOfCode": "class NewsPrediction(Base):\n    __tablename__ = \"news_prediction\"\n    id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)\n    news_id: Mapped[str] = mapped_column(String)\n    time: Mapped[datetime] = mapped_column(DateTime(timezone=True))\n    min_1: Mapped[int] = mapped_column(Integer)\n    min_5: Mapped[int] = mapped_column(Integer)\n    min_15: Mapped[int] = mapped_column(Integer)\n    min_60: Mapped[int] = mapped_column(Integer)\n    day_1: Mapped[int] = mapped_column(Integer)",
+        "detail": "model.news_prediction",
+        "documentation": {}
+    },
+    {
+        "label": "Stock",
+        "kind": 6,
+        "importPath": "model.stock",
+        "description": "model.stock",
+        "peekOfCode": "class Stock(Base):\n    __tablename__ = \"samsung\"\n    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)\n    date: Mapped[int] = mapped_column(Integer, index=True)\n    time: Mapped[int] = mapped_column(Integer, index=True)\n    price: Mapped[int] = mapped_column(Integer, nullable=False)",
+        "detail": "model.stock",
+        "documentation": {}
+    },
+    {
+        "label": "BaseRepository",
+        "kind": 6,
+        "importPath": "repository.base_repository",
+        "description": "repository.base_repository",
+        "peekOfCode": "class BaseRepository:\n    def __init__(self, session: Session) -> None:\n        self.session: Session = session",
+        "detail": "repository.base_repository",
+        "documentation": {}
+    },
+    {
+        "label": "NewsRepository",
+        "kind": 6,
+        "importPath": "repository.news_repository",
+        "description": "repository.news_repository",
+        "peekOfCode": "class NewsRepository(BaseRepository):\n    def save_news_data(self, news: News):\n        self.session.add(news)\n        return news\n    def get_news_data(self, news_url: str):\n        stmt = select(News).where(News.news_url == news_url)\n        res = self.session.execute(stmt)\n        res = res.scalar()\n        return res",
+        "detail": "repository.news_repository",
+        "documentation": {}
+    },
+    {
+        "label": "PredictionRepository",
+        "kind": 6,
+        "importPath": "repository.prediction_repository",
+        "description": "repository.prediction_repository",
+        "peekOfCode": "class PredictionRepository(BaseRepository):\n    def get_news_prediction(self, news_id: int):\n        stmt = select(NewsPrediction).where(NewsPrediction.news_id == news_id)\n        res = self.session.execute(stmt)\n        res = res.scalar()\n        return res\n    def save_news_prediction(self, news_prediction: NewsPrediction):\n        self.session.add(news_prediction)\n        return news_prediction",
+        "detail": "repository.prediction_repository",
+        "documentation": {}
+    },
+    {
+        "label": "StockRepository",
+        "kind": 6,
+        "importPath": "repository.stock_repository",
+        "description": "repository.stock_repository",
+        "peekOfCode": "class StockRepository(BaseRepository):\n    def get_stock_data_by_date(self, date: int, time: int) -> int:\n        stmt = select(Stock).where(Stock.date == date).where(Stock.time == time)\n        res = self.session.execute(stmt)\n        return res.scalar().price\n    def save_stock_data(self, time: int, price: int):\n        stock_data = Stock()\n        stock_data.date = int(datetime.today().date().strftime(\"%Y%m%d\"))\n        stock_data.time = time\n        stock_data.price = price",
+        "detail": "repository.stock_repository",
+        "documentation": {}
+    },
+    {
+        "label": "CreateNewsPrediction",
+        "kind": 6,
+        "importPath": "schema.news_prediction",
+        "description": "schema.news_prediction",
+        "peekOfCode": "class CreateNewsPrediction(BaseModel):\n    news_id: str\n    time: str\nclass NewsPrediction(CreateNewsPrediction):\n    min_1: int\n    min_5: int\n    min_15: int\n    min_60: int\n    day_1: int\nclass NewsPredictionResponse(NewsPrediction):",
+        "detail": "schema.news_prediction",
+        "documentation": {}
+    },
+    {
+        "label": "NewsPrediction",
+        "kind": 6,
+        "importPath": "schema.news_prediction",
+        "description": "schema.news_prediction",
+        "peekOfCode": "class NewsPrediction(CreateNewsPrediction):\n    min_1: int\n    min_5: int\n    min_15: int\n    min_60: int\n    day_1: int\nclass NewsPredictionResponse(NewsPrediction):\n    pass",
+        "detail": "schema.news_prediction",
+        "documentation": {}
+    },
+    {
+        "label": "NewsPredictionResponse",
+        "kind": 6,
+        "importPath": "schema.news_prediction",
+        "description": "schema.news_prediction",
+        "peekOfCode": "class NewsPredictionResponse(NewsPrediction):\n    pass",
+        "detail": "schema.news_prediction",
+        "documentation": {}
+    },
+    {
+        "label": "BaseService",
+        "kind": 6,
+        "importPath": "service.base_service",
+        "description": "service.base_service",
+        "peekOfCode": "class BaseService:\n    def __init__(self, session: Session) -> None:\n        self.session = session",
+        "detail": "service.base_service",
+        "documentation": {}
+    },
+    {
+        "label": "clean_reporter",
+        "kind": 2,
+        "importPath": "service.cleaner",
+        "description": "service.cleaner",
+        "peekOfCode": "def clean_reporter(text):\n    cleantext = CLEANP.sub(\"\", text)\n    cleantext = CLEANP2.sub(\"\", cleantext)\n    cleantext = CLEANP3.sub(\"\", cleantext)\n    cleantext = CLEANYTN.sub(\"\", cleantext)\n    return cleantext\ndef clean_tag(text):\n    cleantext = CLEANTAG.sub(\"\", text)\n    cleantext = CLEANSB.sub(\"\", cleantext)\n    return cleantext",
+        "detail": "service.cleaner",
+        "documentation": {}
+    },
+    {
+        "label": "clean_tag",
+        "kind": 2,
+        "importPath": "service.cleaner",
+        "description": "service.cleaner",
+        "peekOfCode": "def clean_tag(text):\n    cleantext = CLEANTAG.sub(\"\", text)\n    cleantext = CLEANSB.sub(\"\", cleantext)\n    return cleantext\ndef clean_others(text):\n    cleantext = CLEANTH.sub(\"\", text)\n    cleantext = CLEANDT.sub(\"\", cleantext)\n    cleantext = re.sub(\"\\n\", \" \", cleantext)\n    cleantext = re.sub(\"\\s{2,}\", \" \", cleantext)\n    return cleantext",
+        "detail": "service.cleaner",
+        "documentation": {}
+    },
+    {
+        "label": "clean_others",
+        "kind": 2,
+        "importPath": "service.cleaner",
+        "description": "service.cleaner",
+        "peekOfCode": "def clean_others(text):\n    cleantext = CLEANTH.sub(\"\", text)\n    cleantext = CLEANDT.sub(\"\", cleantext)\n    cleantext = re.sub(\"\\n\", \" \", cleantext)\n    cleantext = re.sub(\"\\s{2,}\", \" \", cleantext)\n    return cleantext\ndef clean_text(text):\n    cleantext = clean_reporter(text)\n    cleantext = clean_tag(cleantext)\n    cleantext = clean_others(cleantext)",
+        "detail": "service.cleaner",
+        "documentation": {}
+    },
+    {
+        "label": "clean_text",
+        "kind": 2,
+        "importPath": "service.cleaner",
+        "description": "service.cleaner",
+        "peekOfCode": "def clean_text(text):\n    cleantext = clean_reporter(text)\n    cleantext = clean_tag(cleantext)\n    cleantext = clean_others(cleantext)\n    return cleantext",
+        "detail": "service.cleaner",
+        "documentation": {}
+    },
+    {
+        "label": "CLEANTAG",
+        "kind": 5,
+        "importPath": "service.cleaner",
+        "description": "service.cleaner",
+        "peekOfCode": "CLEANTAG = re.compile(\"<.*?>\")  # HTML tag\nCLEANSB = re.compile(\"\\[.*?\\]\")  # [xxx]\nCLEANP = re.compile(\"\\(.*?=.*?\\)\")  # (xxx = xxx)\nCLEANP2 = re.compile(\".*?=.*?\")  # xxx = <content>\nCLEANP3 = re.compile(\"(/[가-힣]*.\\w?기자)|(/뉴스.*?)\")\nCLEANYTN = re.compile(\"YTN 검색해 채널 추가\")\nCLEANSP = re.compile(\"[#\\?^@*\\\"※▶■◆▲●Δ▷◇☞~ㆍ!』‘|`'…》\\”\\“\\’]\")\nCLEANDT = re.compile(r\"\\d{2,4}\\.\\d{1,2}\\.\\d{1,2}\")\nCLEANTH = re.compile(\"\\d$\")\ndef clean_reporter(text):",
+        "detail": "service.cleaner",
+        "documentation": {}
+    },
+    {
+        "label": "CLEANSB",
+        "kind": 5,
+        "importPath": "service.cleaner",
+        "description": "service.cleaner",
+        "peekOfCode": "CLEANSB = re.compile(\"\\[.*?\\]\")  # [xxx]\nCLEANP = re.compile(\"\\(.*?=.*?\\)\")  # (xxx = xxx)\nCLEANP2 = re.compile(\".*?=.*?\")  # xxx = <content>\nCLEANP3 = re.compile(\"(/[가-힣]*.\\w?기자)|(/뉴스.*?)\")\nCLEANYTN = re.compile(\"YTN 검색해 채널 추가\")\nCLEANSP = re.compile(\"[#\\?^@*\\\"※▶■◆▲●Δ▷◇☞~ㆍ!』‘|`'…》\\”\\“\\’]\")\nCLEANDT = re.compile(r\"\\d{2,4}\\.\\d{1,2}\\.\\d{1,2}\")\nCLEANTH = re.compile(\"\\d$\")\ndef clean_reporter(text):\n    cleantext = CLEANP.sub(\"\", text)",
+        "detail": "service.cleaner",
+        "documentation": {}
+    },
+    {
+        "label": "CLEANP",
+        "kind": 5,
+        "importPath": "service.cleaner",
+        "description": "service.cleaner",
+        "peekOfCode": "CLEANP = re.compile(\"\\(.*?=.*?\\)\")  # (xxx = xxx)\nCLEANP2 = re.compile(\".*?=.*?\")  # xxx = <content>\nCLEANP3 = re.compile(\"(/[가-힣]*.\\w?기자)|(/뉴스.*?)\")\nCLEANYTN = re.compile(\"YTN 검색해 채널 추가\")\nCLEANSP = re.compile(\"[#\\?^@*\\\"※▶■◆▲●Δ▷◇☞~ㆍ!』‘|`'…》\\”\\“\\’]\")\nCLEANDT = re.compile(r\"\\d{2,4}\\.\\d{1,2}\\.\\d{1,2}\")\nCLEANTH = re.compile(\"\\d$\")\ndef clean_reporter(text):\n    cleantext = CLEANP.sub(\"\", text)\n    cleantext = CLEANP2.sub(\"\", cleantext)",
+        "detail": "service.cleaner",
+        "documentation": {}
+    },
+    {
+        "label": "CLEANP2",
+        "kind": 5,
+        "importPath": "service.cleaner",
+        "description": "service.cleaner",
+        "peekOfCode": "CLEANP2 = re.compile(\".*?=.*?\")  # xxx = <content>\nCLEANP3 = re.compile(\"(/[가-힣]*.\\w?기자)|(/뉴스.*?)\")\nCLEANYTN = re.compile(\"YTN 검색해 채널 추가\")\nCLEANSP = re.compile(\"[#\\?^@*\\\"※▶■◆▲●Δ▷◇☞~ㆍ!』‘|`'…》\\”\\“\\’]\")\nCLEANDT = re.compile(r\"\\d{2,4}\\.\\d{1,2}\\.\\d{1,2}\")\nCLEANTH = re.compile(\"\\d$\")\ndef clean_reporter(text):\n    cleantext = CLEANP.sub(\"\", text)\n    cleantext = CLEANP2.sub(\"\", cleantext)\n    cleantext = CLEANP3.sub(\"\", cleantext)",
+        "detail": "service.cleaner",
+        "documentation": {}
+    },
+    {
+        "label": "CLEANP3",
+        "kind": 5,
+        "importPath": "service.cleaner",
+        "description": "service.cleaner",
+        "peekOfCode": "CLEANP3 = re.compile(\"(/[가-힣]*.\\w?기자)|(/뉴스.*?)\")\nCLEANYTN = re.compile(\"YTN 검색해 채널 추가\")\nCLEANSP = re.compile(\"[#\\?^@*\\\"※▶■◆▲●Δ▷◇☞~ㆍ!』‘|`'…》\\”\\“\\’]\")\nCLEANDT = re.compile(r\"\\d{2,4}\\.\\d{1,2}\\.\\d{1,2}\")\nCLEANTH = re.compile(\"\\d$\")\ndef clean_reporter(text):\n    cleantext = CLEANP.sub(\"\", text)\n    cleantext = CLEANP2.sub(\"\", cleantext)\n    cleantext = CLEANP3.sub(\"\", cleantext)\n    cleantext = CLEANYTN.sub(\"\", cleantext)",
+        "detail": "service.cleaner",
+        "documentation": {}
+    },
+    {
+        "label": "CLEANYTN",
+        "kind": 5,
+        "importPath": "service.cleaner",
+        "description": "service.cleaner",
+        "peekOfCode": "CLEANYTN = re.compile(\"YTN 검색해 채널 추가\")\nCLEANSP = re.compile(\"[#\\?^@*\\\"※▶■◆▲●Δ▷◇☞~ㆍ!』‘|`'…》\\”\\“\\’]\")\nCLEANDT = re.compile(r\"\\d{2,4}\\.\\d{1,2}\\.\\d{1,2}\")\nCLEANTH = re.compile(\"\\d$\")\ndef clean_reporter(text):\n    cleantext = CLEANP.sub(\"\", text)\n    cleantext = CLEANP2.sub(\"\", cleantext)\n    cleantext = CLEANP3.sub(\"\", cleantext)\n    cleantext = CLEANYTN.sub(\"\", cleantext)\n    return cleantext",
+        "detail": "service.cleaner",
+        "documentation": {}
+    },
+    {
+        "label": "CLEANSP",
+        "kind": 5,
+        "importPath": "service.cleaner",
+        "description": "service.cleaner",
+        "peekOfCode": "CLEANSP = re.compile(\"[#\\?^@*\\\"※▶■◆▲●Δ▷◇☞~ㆍ!』‘|`'…》\\”\\“\\’]\")\nCLEANDT = re.compile(r\"\\d{2,4}\\.\\d{1,2}\\.\\d{1,2}\")\nCLEANTH = re.compile(\"\\d$\")\ndef clean_reporter(text):\n    cleantext = CLEANP.sub(\"\", text)\n    cleantext = CLEANP2.sub(\"\", cleantext)\n    cleantext = CLEANP3.sub(\"\", cleantext)\n    cleantext = CLEANYTN.sub(\"\", cleantext)\n    return cleantext\ndef clean_tag(text):",
+        "detail": "service.cleaner",
+        "documentation": {}
+    },
+    {
+        "label": "CLEANDT",
+        "kind": 5,
+        "importPath": "service.cleaner",
+        "description": "service.cleaner",
+        "peekOfCode": "CLEANDT = re.compile(r\"\\d{2,4}\\.\\d{1,2}\\.\\d{1,2}\")\nCLEANTH = re.compile(\"\\d$\")\ndef clean_reporter(text):\n    cleantext = CLEANP.sub(\"\", text)\n    cleantext = CLEANP2.sub(\"\", cleantext)\n    cleantext = CLEANP3.sub(\"\", cleantext)\n    cleantext = CLEANYTN.sub(\"\", cleantext)\n    return cleantext\ndef clean_tag(text):\n    cleantext = CLEANTAG.sub(\"\", text)",
+        "detail": "service.cleaner",
+        "documentation": {}
+    },
+    {
+        "label": "CLEANTH",
+        "kind": 5,
+        "importPath": "service.cleaner",
+        "description": "service.cleaner",
+        "peekOfCode": "CLEANTH = re.compile(\"\\d$\")\ndef clean_reporter(text):\n    cleantext = CLEANP.sub(\"\", text)\n    cleantext = CLEANP2.sub(\"\", cleantext)\n    cleantext = CLEANP3.sub(\"\", cleantext)\n    cleantext = CLEANYTN.sub(\"\", cleantext)\n    return cleantext\ndef clean_tag(text):\n    cleantext = CLEANTAG.sub(\"\", text)\n    cleantext = CLEANSB.sub(\"\", cleantext)",
+        "detail": "service.cleaner",
+        "documentation": {}
+    },
+    {
+        "label": "ModelService",
+        "kind": 6,
+        "importPath": "service.model_service",
+        "description": "service.model_service",
+        "peekOfCode": "class ModelService(BaseService):\n    def get_prediction(self, news_id: str):\n        return PredictionRepository().get_news_prediction(news_id=news_id)\n    def save_prediction(self, url: str, date: int, time: int):\n        news_data = NewsService().get_news_data(url=url)\n        # topic = LDA().get_prediction(news_data)\n        # price_data = 회귀모델().get_prediction(topic)\n        stock_price = StockRepository().get_stock_data_by_date(date=date, time=time)\n        news_id = url - \"https://v.daum.net/v/\"\n        news_prediction = NewsPrediction()",
+        "detail": "service.model_service",
+        "documentation": {}
+    },
+    {
+        "label": "NewsService",
+        "kind": 6,
+        "importPath": "service.news_service",
+        "description": "service.news_service",
+        "peekOfCode": "class NewsService(BaseService):\n    def get_news_data(self, time: int, url: str) -> News:\n        response = requests.get(url, headers=self.get_header())\n        soup = BeautifulSoup(response.text, \"html.parser\")\n        content = soup.find(\"div\", class_=\"news_view fs_type1\") if soup else \"\"\n        title = soup.find(\"h3\", class_=\"tit_view\").text if soup else \"\"\n        writer = soup.find(\"span\", class_=\"txt_info\").text if soup else \"\"\n        content = clean_text(content.text)\n        news_data = News()\n        news_data.news_url = url",
+        "detail": "service.news_service",
+        "documentation": {}
+    },
+    {
+        "label": "CAPTCHA",
+        "kind": 5,
+        "importPath": "service.news_service",
+        "description": "service.news_service",
+        "peekOfCode": "CAPTCHA = \"https://captcha.search.daum.net\"\nclass NewsService(BaseService):\n    def get_news_data(self, time: int, url: str) -> News:\n        response = requests.get(url, headers=self.get_header())\n        soup = BeautifulSoup(response.text, \"html.parser\")\n        content = soup.find(\"div\", class_=\"news_view fs_type1\") if soup else \"\"\n        title = soup.find(\"h3\", class_=\"tit_view\").text if soup else \"\"\n        writer = soup.find(\"span\", class_=\"txt_info\").text if soup else \"\"\n        content = clean_text(content.text)\n        news_data = News()",
+        "detail": "service.news_service",
+        "documentation": {}
+    },
+    {
+        "label": "StockService",
+        "kind": 6,
+        "importPath": "service.stock_service",
+        "description": "service.stock_service",
+        "peekOfCode": "class StockService(BaseService):\n    def get_stock_data_by_date(self, date: int, time: int):\n        return StockRepository(session=self.session).get_stock_data_by_date(date=date, time=time)\n    def save_stock_data(self, time: int, price: int):\n        price = StockRepository(session=self.session).save_stock_data(time=time, price=price)\n        news_service = NewsService(session=self.session)\n        time_now = (int(datetime.today().date().strftime(\"%Y%m%d\")) * 10000 + time) * 100\n        news_min_list = news_service.get_news_list_min(item_name=\"삼성전자\", time_now=time_now)\n        print(news_min_list)\n        for news in news_min_list:",
+        "detail": "service.stock_service",
+        "documentation": {}
+    },
+    {
+        "label": "AddExcel",
+        "kind": 6,
+        "importPath": "test.add_excel_data",
+        "description": "test.add_excel_data",
+        "peekOfCode": "class AddExcel:\n    def add_excel(self):\n        create_db()\n        file_path = \"/home/tako4/capstone/backend/Backend/data/daum_samsung_20220601000000_202206292353.csv\"\n        session = get_session()\n        df = pd.read_csv(file_path)\n        num_rows = len(df)\n        # print(df)\n        for i in range(num_rows):\n            content = df.iloc[i][\"content\"]",
+        "detail": "test.add_excel_data",
+        "documentation": {}
+    },
+    {
+        "label": "excel",
+        "kind": 5,
+        "importPath": "test.add_excel_data",
+        "description": "test.add_excel_data",
+        "peekOfCode": "excel = AddExcel()\nexcel.add_excel()",
+        "detail": "test.add_excel_data",
+        "documentation": {}
+    },
+    {
+        "label": "CpEvent",
+        "kind": 6,
+        "importPath": "test.stock_current_test",
+        "description": "test.stock_current_test",
+        "peekOfCode": "class CpEvent:\n    def set_params(self, client):\n        self.client = client\n    def OnReceived(self):\n        code = self.client.GetHeaderValue(0)  # 초\n        name = self.client.GetHeaderValue(1)  # 초\n        timess = self.client.GetHeaderValue(18)  # 초\n        exFlag = self.client.GetHeaderValue(19)  # 예상체결 플래그\n        cprice = self.client.GetHeaderValue(13)  # 현재가\n        diff = self.client.GetHeaderValue(2)  # 대비",
+        "detail": "test.stock_current_test",
+        "documentation": {}
+    },
+    {
+        "label": "CpStockCur",
+        "kind": 6,
+        "importPath": "test.stock_current_test",
+        "description": "test.stock_current_test",
+        "peekOfCode": "class CpStockCur:\n    def Subscribe(self, code):\n        self.objStockCur = win32com.client.Dispatch(\"DsCbo1.StockCur\")\n        handler = win32com.client.WithEvents(self.objStockCur, CpEvent)\n        self.objStockCur.SetInputValue(0, code)\n        handler.set_params(self.objStockCur)\n        self.objStockCur.Subscribe()\n    def Unsubscribe(self):\n        self.objStockCur.Unsubscribe()\n# Cp6033 : 주식 잔고 조회",
+        "detail": "test.stock_current_test",
+        "documentation": {}
+    },
+    {
+        "label": "Cp6033",
+        "kind": 6,
+        "importPath": "test.stock_current_test",
+        "description": "test.stock_current_test",
+        "peekOfCode": "class Cp6033:\n    def __init__(self):\n        # 통신 OBJECT 기본 세팅\n        self.objTrade = win32com.client.Dispatch(\"CpTrade.CpTdUtil\")\n        initCheck = self.objTrade.TradeInit(0)\n        if initCheck != 0:\n            print(\"주문 초기화 실패\")\n            return\n        #\n        acc = self.objTrade.AccountNumber[0]  # 계좌번호",
+        "detail": "test.stock_current_test",
+        "documentation": {}
+    },
+    {
+        "label": "CpMarketEye",
+        "kind": 6,
+        "importPath": "test.stock_current_test",
+        "description": "test.stock_current_test",
+        "peekOfCode": "class CpMarketEye:\n    def Request(self, codes, rqField):\n        # 연결 여부 체크\n        objCpCybos = win32com.client.Dispatch(\"CpUtil.CpCybos\")\n        bConnect = objCpCybos.IsConnect\n        if bConnect == 0:\n            print(\"PLUS가 정상적으로 연결되지 않음. \")\n            return False\n        # 관심종목 객체 구하기\n        objRq = win32com.client.Dispatch(\"CpSysDib.MarketEye\")",
+        "detail": "test.stock_current_test",
+        "documentation": {}
+    },
+    {
+        "label": "MyWindow",
+        "kind": 6,
+        "importPath": "test.stock_current_test",
+        "description": "test.stock_current_test",
+        "peekOfCode": "class MyWindow(QMainWindow):\n    def __init__(self):\n        super().__init__()\n        self.setWindowTitle(\"PLUS API TEST\")\n        self.setGeometry(300, 300, 300, 180)\n        self.isSB = False\n        self.objCur = []\n        btnStart = QPushButton(\"요청 시작\", self)\n        btnStart.move(20, 20)\n        btnStart.clicked.connect(self.btnStart_clicked)",
+        "detail": "test.stock_current_test",
+        "documentation": {}
+    },
+    {
+        "label": "StockRepository",
+        "kind": 6,
+        "importPath": "test.stock_test",
+        "description": "test.stock_test",
+        "peekOfCode": "class StockRepository:\n    def __init__(self) -> None:\n        self.inst_stock_chart = win32com.client.Dispatch(\"CpSysDib.StockChart\")\n    def get_stock_data_by_date(self, item_code: str, news_datetime: str):\n        today = datetime.datetime.today().strftime(\"%Y%m%d\")\n        today = \"20240212\"\n        self.inst_stock_chart.SetInputValue(0, item_code)  # 종목코드\n        self.inst_stock_chart.SetInputValue(1, ord(\"2\"))  # 개수로 받기\n        # self.inst_stock_chart.SetInputValue(2, today)\n        self.inst_stock_chart.SetInputValue(4, 1)  # 최근 1개",
+        "detail": "test.stock_test",
+        "documentation": {}
+    },
+    {
+        "label": "SAMSUNG_CODE",
+        "kind": 5,
+        "importPath": "test.stock_test",
+        "description": "test.stock_test",
+        "peekOfCode": "SAMSUNG_CODE = \"A005930\"\nclass StockRepository:\n    def __init__(self) -> None:\n        self.inst_stock_chart = win32com.client.Dispatch(\"CpSysDib.StockChart\")\n    def get_stock_data_by_date(self, item_code: str, news_datetime: str):\n        today = datetime.datetime.today().strftime(\"%Y%m%d\")\n        today = \"20240212\"\n        self.inst_stock_chart.SetInputValue(0, item_code)  # 종목코드\n        self.inst_stock_chart.SetInputValue(1, ord(\"2\"))  # 개수로 받기\n        # self.inst_stock_chart.SetInputValue(2, today)",
+        "detail": "test.stock_test",
+        "documentation": {}
+    },
+    {
+        "label": "time_now",
+        "kind": 5,
+        "importPath": "test.test_time",
+        "description": "test.test_time",
+        "peekOfCode": "time_now = datetime.now().time()\ntime_now = time_now.strftime(\"%H%M\")\nprint(time_now)",
+        "detail": "test.test_time",
+        "documentation": {}
+    },
+    {
+        "label": "time_now",
+        "kind": 5,
+        "importPath": "test.test_time",
+        "description": "test.test_time",
+        "peekOfCode": "time_now = time_now.strftime(\"%H%M\")\nprint(time_now)",
+        "detail": "test.test_time",
+        "documentation": {}
+    },
+    {
+        "label": "get_header",
+        "kind": 2,
+        "importPath": "test.testing",
+        "description": "test.testing",
+        "peekOfCode": "def get_header():\n    headers = {\n        \"User-Agent\": \"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.183 Safari/537.36 Vivaldi/1.96.1147.47\",\n        \"Accept\": \"text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8\",\n    }\n    return headers\npage = 1\nstock = \"삼성전자\"\nbase_url = f\"https://search.daum.net/search?w=news&nil_search=btn&DA=NTB&enc=utf8&cluster=y&cluster_page=1&q={stock}&p={page}\"\nis_next_page = True",
+        "detail": "test.testing",
+        "documentation": {}
+    },
+    {
+        "label": "page",
+        "kind": 5,
+        "importPath": "test.testing",
+        "description": "test.testing",
+        "peekOfCode": "page = 1\nstock = \"삼성전자\"\nbase_url = f\"https://search.daum.net/search?w=news&nil_search=btn&DA=NTB&enc=utf8&cluster=y&cluster_page=1&q={stock}&p={page}\"\nis_next_page = True\nresponse = requests.get(base_url, headers=get_header())\nlist_soup = BeautifulSoup(response.text, \"html.parser\")\n# 리스트 전체 가져오기\n# 리스트에서 필요한거 뽑아서 객체 생성해저 집어넣기\n# 리스트 반환하기\nnews_datas = list_soup.find(\"ul\", class_=\"c-list-basic\")",
+        "detail": "test.testing",
+        "documentation": {}
+    },
+    {
+        "label": "stock",
+        "kind": 5,
+        "importPath": "test.testing",
+        "description": "test.testing",
+        "peekOfCode": "stock = \"삼성전자\"\nbase_url = f\"https://search.daum.net/search?w=news&nil_search=btn&DA=NTB&enc=utf8&cluster=y&cluster_page=1&q={stock}&p={page}\"\nis_next_page = True\nresponse = requests.get(base_url, headers=get_header())\nlist_soup = BeautifulSoup(response.text, \"html.parser\")\n# 리스트 전체 가져오기\n# 리스트에서 필요한거 뽑아서 객체 생성해저 집어넣기\n# 리스트 반환하기\nnews_datas = list_soup.find(\"ul\", class_=\"c-list-basic\")\nbs_list = news_datas.find_all(\"li\") if news_datas else []",
+        "detail": "test.testing",
+        "documentation": {}
+    },
+    {
+        "label": "base_url",
+        "kind": 5,
+        "importPath": "test.testing",
+        "description": "test.testing",
+        "peekOfCode": "base_url = f\"https://search.daum.net/search?w=news&nil_search=btn&DA=NTB&enc=utf8&cluster=y&cluster_page=1&q={stock}&p={page}\"\nis_next_page = True\nresponse = requests.get(base_url, headers=get_header())\nlist_soup = BeautifulSoup(response.text, \"html.parser\")\n# 리스트 전체 가져오기\n# 리스트에서 필요한거 뽑아서 객체 생성해저 집어넣기\n# 리스트 반환하기\nnews_datas = list_soup.find(\"ul\", class_=\"c-list-basic\")\nbs_list = news_datas.find_all(\"li\") if news_datas else []\nnews_list = []",
+        "detail": "test.testing",
+        "documentation": {}
+    },
+    {
+        "label": "is_next_page",
+        "kind": 5,
+        "importPath": "test.testing",
+        "description": "test.testing",
+        "peekOfCode": "is_next_page = True\nresponse = requests.get(base_url, headers=get_header())\nlist_soup = BeautifulSoup(response.text, \"html.parser\")\n# 리스트 전체 가져오기\n# 리스트에서 필요한거 뽑아서 객체 생성해저 집어넣기\n# 리스트 반환하기\nnews_datas = list_soup.find(\"ul\", class_=\"c-list-basic\")\nbs_list = news_datas.find_all(\"li\") if news_datas else []\nnews_list = []\nfor item in bs_list:",
+        "detail": "test.testing",
+        "documentation": {}
+    },
+    {
+        "label": "response",
+        "kind": 5,
+        "importPath": "test.testing",
+        "description": "test.testing",
+        "peekOfCode": "response = requests.get(base_url, headers=get_header())\nlist_soup = BeautifulSoup(response.text, \"html.parser\")\n# 리스트 전체 가져오기\n# 리스트에서 필요한거 뽑아서 객체 생성해저 집어넣기\n# 리스트 반환하기\nnews_datas = list_soup.find(\"ul\", class_=\"c-list-basic\")\nbs_list = news_datas.find_all(\"li\") if news_datas else []\nnews_list = []\nfor item in bs_list:\n    print(item)",
+        "detail": "test.testing",
+        "documentation": {}
+    },
+    {
+        "label": "list_soup",
+        "kind": 5,
+        "importPath": "test.testing",
+        "description": "test.testing",
+        "peekOfCode": "list_soup = BeautifulSoup(response.text, \"html.parser\")\n# 리스트 전체 가져오기\n# 리스트에서 필요한거 뽑아서 객체 생성해저 집어넣기\n# 리스트 반환하기\nnews_datas = list_soup.find(\"ul\", class_=\"c-list-basic\")\nbs_list = news_datas.find_all(\"li\") if news_datas else []\nnews_list = []\nfor item in bs_list:\n    print(item)\n    news_list.append(item)",
+        "detail": "test.testing",
+        "documentation": {}
+    },
+    {
+        "label": "news_datas",
+        "kind": 5,
+        "importPath": "test.testing",
+        "description": "test.testing",
+        "peekOfCode": "news_datas = list_soup.find(\"ul\", class_=\"c-list-basic\")\nbs_list = news_datas.find_all(\"li\") if news_datas else []\nnews_list = []\nfor item in bs_list:\n    print(item)\n    news_list.append(item)\n# print(news_list)",
+        "detail": "test.testing",
+        "documentation": {}
+    },
+    {
+        "label": "bs_list",
+        "kind": 5,
+        "importPath": "test.testing",
+        "description": "test.testing",
+        "peekOfCode": "bs_list = news_datas.find_all(\"li\") if news_datas else []\nnews_list = []\nfor item in bs_list:\n    print(item)\n    news_list.append(item)\n# print(news_list)",
+        "detail": "test.testing",
+        "documentation": {}
+    },
+    {
+        "label": "news_list",
+        "kind": 5,
+        "importPath": "test.testing",
+        "description": "test.testing",
+        "peekOfCode": "news_list = []\nfor item in bs_list:\n    print(item)\n    news_list.append(item)\n# print(news_list)",
+        "detail": "test.testing",
+        "documentation": {}
+    },
+    {
+        "label": "Base",
+        "kind": 6,
+        "importPath": "config",
+        "description": "config",
+        "peekOfCode": "class Base(DeclarativeBase):\n    def __repr__(self) -> str:\n        return str({c.key: getattr(self, c.key) for c in inspect(self).mapper.column_attrs})\ndef get_engine():\n    engine = create_engine(DATABASE_URL)\n    return engine\ndef get_session():\n    engine = get_engine()\n    session = sessionmaker(autocommit=False, autoflush=False, bind=engine)\n    return session()",
+        "detail": "config",
+        "documentation": {}
+    },
+    {
+        "label": "get_engine",
+        "kind": 2,
+        "importPath": "config",
+        "description": "config",
+        "peekOfCode": "def get_engine():\n    engine = create_engine(DATABASE_URL)\n    return engine\ndef get_session():\n    engine = get_engine()\n    session = sessionmaker(autocommit=False, autoflush=False, bind=engine)\n    return session()\ndef create_db():\n    engine = get_engine()\n    Base.metadata.create_all(bind=engine)",
+        "detail": "config",
+        "documentation": {}
+    },
+    {
+        "label": "get_session",
+        "kind": 2,
+        "importPath": "config",
+        "description": "config",
+        "peekOfCode": "def get_session():\n    engine = get_engine()\n    session = sessionmaker(autocommit=False, autoflush=False, bind=engine)\n    return session()\ndef create_db():\n    engine = get_engine()\n    Base.metadata.create_all(bind=engine)",
+        "detail": "config",
+        "documentation": {}
+    },
+    {
+        "label": "create_db",
+        "kind": 2,
+        "importPath": "config",
+        "description": "config",
+        "peekOfCode": "def create_db():\n    engine = get_engine()\n    Base.metadata.create_all(bind=engine)",
+        "detail": "config",
+        "documentation": {}
+    },
+    {
+        "label": "user",
+        "kind": 5,
+        "importPath": "config",
+        "description": "config",
+        "peekOfCode": "user = \"cap\"\npassword = \"dusrntlf512\"\nsever = \"localhost:5432\"\ndatabase = \"capstone\"\nDATABASE_URL = f\"postgresql+psycopg2://{user}:{password}@{sever}/{database}\"\nclass Base(DeclarativeBase):\n    def __repr__(self) -> str:\n        return str({c.key: getattr(self, c.key) for c in inspect(self).mapper.column_attrs})\ndef get_engine():\n    engine = create_engine(DATABASE_URL)",
+        "detail": "config",
+        "documentation": {}
+    },
+    {
+        "label": "password",
+        "kind": 5,
+        "importPath": "config",
+        "description": "config",
+        "peekOfCode": "password = \"dusrntlf512\"\nsever = \"localhost:5432\"\ndatabase = \"capstone\"\nDATABASE_URL = f\"postgresql+psycopg2://{user}:{password}@{sever}/{database}\"\nclass Base(DeclarativeBase):\n    def __repr__(self) -> str:\n        return str({c.key: getattr(self, c.key) for c in inspect(self).mapper.column_attrs})\ndef get_engine():\n    engine = create_engine(DATABASE_URL)\n    return engine",
+        "detail": "config",
+        "documentation": {}
+    },
+    {
+        "label": "sever",
+        "kind": 5,
+        "importPath": "config",
+        "description": "config",
+        "peekOfCode": "sever = \"localhost:5432\"\ndatabase = \"capstone\"\nDATABASE_URL = f\"postgresql+psycopg2://{user}:{password}@{sever}/{database}\"\nclass Base(DeclarativeBase):\n    def __repr__(self) -> str:\n        return str({c.key: getattr(self, c.key) for c in inspect(self).mapper.column_attrs})\ndef get_engine():\n    engine = create_engine(DATABASE_URL)\n    return engine\ndef get_session():",
+        "detail": "config",
+        "documentation": {}
+    },
+    {
+        "label": "database",
+        "kind": 5,
+        "importPath": "config",
+        "description": "config",
+        "peekOfCode": "database = \"capstone\"\nDATABASE_URL = f\"postgresql+psycopg2://{user}:{password}@{sever}/{database}\"\nclass Base(DeclarativeBase):\n    def __repr__(self) -> str:\n        return str({c.key: getattr(self, c.key) for c in inspect(self).mapper.column_attrs})\ndef get_engine():\n    engine = create_engine(DATABASE_URL)\n    return engine\ndef get_session():\n    engine = get_engine()",
+        "detail": "config",
+        "documentation": {}
+    },
+    {
+        "label": "DATABASE_URL",
+        "kind": 5,
+        "importPath": "config",
+        "description": "config",
+        "peekOfCode": "DATABASE_URL = f\"postgresql+psycopg2://{user}:{password}@{sever}/{database}\"\nclass Base(DeclarativeBase):\n    def __repr__(self) -> str:\n        return str({c.key: getattr(self, c.key) for c in inspect(self).mapper.column_attrs})\ndef get_engine():\n    engine = create_engine(DATABASE_URL)\n    return engine\ndef get_session():\n    engine = get_engine()\n    session = sessionmaker(autocommit=False, autoflush=False, bind=engine)",
+        "detail": "config",
+        "documentation": {}
+    },
+    {
+        "label": "app",
+        "kind": 5,
+        "importPath": "main",
+        "description": "main",
+        "peekOfCode": "app = FastAPI()\napp.include_router(stock_router, prefix=\"/stock\")\napp.include_router(news_router, prefix=\"/news\")\napp.include_router(model_router, prefix=\"/model\")\napp.add_middleware(\n    CORSMiddleware,\n    allow_origins=[\"*\"],\n    allow_credentials=True,\n    allow_methods=[\"*\"],\n    allow_headers=[\"*\"],",
+        "detail": "main",
+        "documentation": {}
+    }
+]
