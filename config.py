@@ -22,7 +22,7 @@ def get_engine():
 def get_session():
     engine = get_engine()
     session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-    return session
+    return session()
 
 
 def create_db():
