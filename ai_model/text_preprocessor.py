@@ -47,7 +47,6 @@ class TextPreprocessor:
         lemmatizer = Lemmatizer()
 
         def lemmatize_filtered_morph(morphs):
-            print(morphs)
             result = []
             for word, pos in morphs:
                 if pos in ["VV", "VA", "VX"]:

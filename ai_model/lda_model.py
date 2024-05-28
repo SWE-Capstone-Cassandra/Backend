@@ -54,24 +54,26 @@ class LDAModel:
         """
 
         self.df["documents"] = TextPreprocessor(texts=list(dataset)).preprocess()
-        num_category = self._get_num_of_categories()
 
-        self._remake_folder(num_category=num_category)
+        print(
+            "########################################## start hyperparameter tuning - get topics ##########################################"
+        )
+        num_topics = self._get_num_of_topics()
+        self._remake_folder(num_topics=num_topics, remake=True)
+        self._fit_lda_model_and_save(num_topics=num_topics)
+        # self._create_lda_model_by_topic_and_save(num_topics=num_topics)
 
-    # TODO 사전 저장 및 lda 모델 생성, 가중치 저장, git 재연결
-
-    def _get_num_of_categories(self):
-        print("start hyperparameter tuning - get category")
+    def _get_num_of_topics(self):
         dictionary = corpora.Dictionary(self.df["documents"])
         corpus = [dictionary.doc2bow(text) for text in self.df["documents"]]
 
-        num_topics_list = range(1, 51)
+        num_topics_list = range(1, 3)
         best_coherence = 0
         best_model = None
         best_params = {}
 
         for num_topics in num_topics_list:
-            print(f"num_topics: {num_topics} 시작")
+            print(f"########################################## num_topics: {num_topics} 시작")
             start_time = time()
             model = LdaMulticore(
                 corpus=corpus,
@@ -96,19 +98,47 @@ class LDAModel:
         print("Best Coherence Score:", best_coherence)
         print("Best Params:", best_params)
 
-        return best_params.num_topics
+        return best_params["num_topics"]
 
-    def _remake_folder(self, num_category):
+    def _remake_folder(self, num_topics, remake=True):
         if os.path.exists(model_weights_path):
             shutil.rmtree(model_weights_path)
 
             # 폴더 다시 만들기
             os.makedirs(model_weights_path)
 
-        for i in range(num_category):
-            new_folder_name = f"topic_{i+1}"
-            new_folder_path = os.path.join(model_weights_path, new_folder_name)
-            os.makedirs(new_folder_path)
+        if remake:
+            for i in range(num_topics):
+                new_folder_name = f"topic_{i+1}"
+                new_folder_path = os.path.join(model_weights_path, new_folder_name)
+                os.makedirs(new_folder_path)
+
+    def _fit_lda_model_and_save(self, num_topics):
+
+        dictionary = corpora.Dictionary(self.df["documents"])
+        corpus = [dictionary.doc2bow(text) for text in self.df["documents"]]
+
+        params = {
+            "num_topics": num_topics,
+            "corpus": corpus,
+            "id2word": dictionary,
+            "passes": 100,
+            "random_state": 25,
+        }
+
+        lda_model = LdaModel(**params)
+
+        model_name = "category_lda_model.model"
+        model_path = os.path.join(model_weights_path, model_name)
+
+        lda_model.save(model_path)
+
+        dictionary_name = "category_dictionary.pkl"
+        dictionary_path = os.path.join(model_weights_path, dictionary_name)
+        with open(dictionary_path, "wb") as f:
+            pickle.dump(dictionary, f)
+
+    # def _create_lda_model_by_topic_and_save(self, num_topics)
 
     def get_topic_distribution(self):
         """
