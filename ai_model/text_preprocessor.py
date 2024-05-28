@@ -5,7 +5,7 @@ from ai_model.korean_lemmatizer_master.soylemma.lemmatizer import Lemmatizer
 
 
 class TextPreprocessor:
-    def __init__(self, texts: List[str]):
+    def __init__(self, texts: List[str] or str):
         self.texts = texts
 
     def preprocess(self):
@@ -18,7 +18,11 @@ class TextPreprocessor:
 
     def _analyze_morphs(self):
         pecab = PeCab()
-        self.texts = [pecab.pos(text) for text in self.texts]
+
+        if type(self.texts) is str:
+            self.texts = pecab.pos(self.texts)
+        else:
+            self.texts = [pecab.pos(text) for text in self.texts]
 
     def _remove_stopwords(self):
         stopwords_path = "/home/tako4/capstone/backend/Model/Backend/stopwords-ko.txt"
@@ -30,7 +34,10 @@ class TextPreprocessor:
         def filter_morphs(morphs):
             return [morph for morph in morphs if any(pos in morph[1] for pos in used_pos) and morph[0] not in stopwords]
 
-        self.texts = [filter_morphs(text) for text in self.texts]
+        if type(self.texts[0]) is tuple:
+            self.texts = filter_morphs(self.texts)
+        else:
+            self.texts = [filter_morphs(text) for text in self.texts]
 
     def _remove_special_characters(self):
         def clean_morphs(morphs):
@@ -41,7 +48,10 @@ class TextPreprocessor:
                     cleaned_morphs.append((cleaned_word, pos))
             return cleaned_morphs
 
-        self.texts = [clean_morphs(text) for text in self.texts]
+        if type(self.texts[0]) is tuple:
+            self.texts = clean_morphs(self.texts)
+        else:
+            self.texts = [clean_morphs(text) for text in self.texts]
 
     def _lemmatize_filtered_morphs(self):
         lemmatizer = Lemmatizer()
@@ -59,11 +69,17 @@ class TextPreprocessor:
                     result.append(word)
             return result
 
-        self.texts = [lemmatize_filtered_morph(text) for text in self.texts]
+        if type(self.texts[0]) is tuple:
+            self.texts = lemmatize_filtered_morph(self.texts)
+        else:
+            self.texts = [lemmatize_filtered_morph(text) for text in self.texts]
 
     def _join_texts(self):
         def join_and_clean(text):
             joined_text = " ".join(word for word in text)
             return joined_text
 
-        self.texts = [[join_and_clean(text)] for text in self.texts]
+        if type(self.texts[0]) is str:
+            self.texts = [join_and_clean(self.texts)]
+        else:
+            self.texts = [[join_and_clean(text)] for text in self.texts]

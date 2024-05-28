@@ -118,6 +118,14 @@ class LDAModel:
         """
         각 토픽 그룹별 LDA 수행하는 함수
         각 토픽에 해당하는 폴더로 접근하여 저장한다
+        Args:
+            topic_idx: 토픽 번호
+            texts: LDA에 수행될 그룹 documents
+            dictionary: 그룹 dictionary
+            corpus: 그룹 corpus
+
+        Returns:
+            int: 해당 그룹의 최적의 topic 수
         """
 
         best_coherence = 0
@@ -254,18 +262,71 @@ class LDAModel:
 
     # For Predicting
     ###########################################################################################
-    def get_topic_distribution(self):
+    def get_group_id_and_topic_distribution(self, text):
         """
-        전처리된 텍스트의 토픽 분포를 반환.
+        해당 텍스트의 토픽 그룹과 토픽 확률을 반환
+        컨트롤러의 API 역할
 
         Args:
-            text (list of str): 전처리된 텍스트 (형태소 분석된 단어 리스트).
+            text: 뉴스 원문.
 
         Returns:
-            list of (int, float): 각 토픽의 ID와 해당 토픽의 확률.
+            group_id: 토픽 그룹
+            distribution: 해당 그룹의 토픽 분포 확률
         """
-        # 전처리된 텍스트를 Bag-of-Words 형식으로 변환
-        bow = self.dictionary.doc2bow(self.text)
-        # 토픽 분포 계산
-        topic_distribution = self.model.get_document_topics(bow, minimum_probability=0)
+
+        # 텍스트 전처리
+        preprocessed_text = TextPreprocessor(texts=text).preprocess()
+
+        # 1차 가장 높은 확률의 토픽 추출
+        group_id = self.get_group_id(text=preprocessed_text)
+
+        # 해당 그룹에서 LDA 수행, 분포 추출
+        topic_distribution = self.get_topic_distribution_from_group(group_id=group_id, text=preprocessed_text)
+
+        return group_id, topic_distribution
+
+    def get_group_id(self, text):
+        print("group id 추출")
+        model_name = "category_lda_model.model"
+        model_path = os.path.join(model_weights_path, model_name)
+        model = LdaModel.load(model_path)
+
+        print(f"사용된 모델 경로: {model_path}")
+
+        dictionary_name = "category_dictionary.pkl"
+        dictionary_path = os.path.join(model_weights_path, dictionary_name)
+        with open(dictionary_path, "rb") as f:
+            dictionary = pickle.load(f)
+
+        print(f"사용된 사전 경로: {dictionary_path}")
+
+        print(text)
+
+        bow = dictionary.doc2bow(text)
+
+        topic_distribution = model.get_document_topics(bow, minimum_probability=0)
+        group_id = max(topic_distribution, key=lambda item: item[1])[0] + 1
+        print(f"추출된 그룹 번호: {group_id}")
+        return group_id
+
+    def get_topic_distribution_from_group(self, group_id, text):
+        print("2차 토픽 추출")
+        model_name = f"topic_{group_id}/lda_model_{group_id}.model"
+        model_path = os.path.join(model_weights_path, model_name)
+        model = LdaModel.load(model_path)
+
+        print(f"사용된 모델 경로: {model_path}")
+
+        dictionary_name = f"topic_{group_id}/dictionary_{group_id}.pkl"
+        dictionary_path = os.path.join(model_weights_path, dictionary_name)
+        with open(dictionary_path, "rb") as f:
+            dictionary = pickle.load(f)
+
+        print(f"사용된 사전 경로: {dictionary_path}")
+
+        bow = dictionary.doc2bow(text)
+
+        topic_distribution = model.get_document_topics(bow, minimum_probability=0)
+        print(f"추출된 토픽 분포: {topic_distribution}")
         return topic_distribution
