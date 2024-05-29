@@ -1,4 +1,5 @@
 import time
+from datetime import datetime
 from typing import List
 
 import requests
@@ -6,20 +7,40 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
+from model.news import News
+from repository.news_repository import NewsRepository
+from service.base_service import BaseService
 from service.cleaner import clean_text
 
 CAPTCHA = "https://captcha.search.daum.net"
 
 
-class NewsService:
+class NewsService(BaseService):
 
-    def get_news_data(self, url: str):
+    def get_news_data(self, time: int, url: str) -> News:
 
         response = requests.get(url, headers=self.get_header())
         soup = BeautifulSoup(response.text, "html.parser")
         content = soup.find("div", class_="news_view fs_type1") if soup else ""
+        title = soup.find("h3", class_="tit_view").text if soup else ""
+        writer = soup.find("span", class_="txt_info").text if soup else ""
         content = clean_text(content.text)
-        return content
+        news_data = News()
+        news_data.news_url = url
+        news_data.date = int(datetime.today().date().strftime("%Y%m%d"))
+        news_data.time = time
+        news_data.title = title
+        news_data.writer = writer
+        news_data.content = content
+
+        return news_data
+
+    def save_news_data(self, news: News):
+        res = NewsRepository(session=self.session).save_news_data(news=news)
+        # prediction= 모델을 돌려서 나온 결과값.
+        # prediction = PredictionRepository().save_news_prediction(news_prediction=prediction)
+
+        return res
 
     def get_news_list(self, item_name: str, page: int):
 
@@ -45,8 +66,8 @@ class NewsService:
     def get_news_list_min(self, item_name: str, time_now) -> List:
         # 주소 리스트를 반환
         min_1 = 100
-        base_url = f"https://search.daum.net/search?DA=PGD&cluster=y&cluster_page=1&ed={time_now+min_1}&enc=utf8&nil_search=btn&period=u&q={item_name}&sd={time_now}&w=news&p=1"
-
+        base_url = f"https://search.daum.net/search?nil_suggest=btn&w=news&DA=STC&cluster=y&q={item_name}&sd={time_now-min_1}&ed={time_now}&period=u"
+        print(base_url)
         response = requests.get(base_url, headers=self.get_header())
         list_soup = BeautifulSoup(response.text, "html.parser")
 
@@ -55,7 +76,7 @@ class NewsService:
             list_soup = BeautifulSoup(response.text, "html.parser")
 
         news_datas = list_soup.find("ul", class_="c-list-basic")
-        div_tags = news_datas.find_all("p", class_="conts-desc clamp-g2") if tag else []
+        div_tags = news_datas.find_all("p", class_="conts-desc clamp-g2") if news_datas else []
         url_list = []
         for tag in div_tags:
             a_tag = tag.find("a") if tag else None

@@ -1,16 +1,13 @@
 from datetime import datetime
 
-from sqlalchemy import DateTime, Integer, String
-from sqlalchemy.orm import Mapped, mapped_column
-
-from sqlalchemy import Integer
+from sqlalchemy import DateTime, ForeignKey, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column
 
 from config import Base
 
 
 class NewsPrediction(Base):
-    __tablename__ = "NewsPrediction"
+    __tablename__ = "news_prediction"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
     news_id: Mapped[str] = mapped_column(String)

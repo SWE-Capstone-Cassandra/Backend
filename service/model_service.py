@@ -1,11 +1,13 @@
 import datetime
+
+from model.news_prediction import NewsPrediction
 from repository.prediction_repository import PredictionRepository
 from repository.stock_repository import StockRepository
+from service.base_service import BaseService
 from service.news_service import NewsService
-from model.news_prediction import NewsPrediction
 
 
-class ModelService:
+class ModelService(BaseService):
     def get_prediction(self, news_id: str):
         return PredictionRepository().get_news_prediction(news_id=news_id)
 
