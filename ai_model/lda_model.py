@@ -20,6 +20,7 @@ LDA 모델
 - topic 별로 폴더링이 되며 해당 폴더의 구조는 다음과 같음
     - topic_1
         ㄴ dictionary_1.pkl               : 해당 토픽 내의 말뭉치 사전
+        ㄴ corpus_1.pkl               : 해당 토픽 내의 코퍼스
         ㄴ lda_weights_1                  : 해당 토픽의 lda 모델의 가중치
         ㄴ regression_weights_1m.pkl      : 1분 후 회귀 모델
         ㄴ regression_weights_5m.pkl      : 5분 후 회귀 모델
@@ -39,16 +40,19 @@ model_weights_path = "/home/tako4/capstone/backend/Model/Backend/ai_model/model_
 
 num_of_main_category = range(2, 3)
 num_of_topics_by_group = range(1, 3)
+passes = 10
+random_state = 25
 
 
 class LDAModel:
 
     def __init__(self):
         self.df = pd.DataFrame()
+        self.grouped_dfs = list()
 
     # For Training
     ###########################################################################################
-    def train_lda_model(self, dataset: List[str]):
+    def train_lda_model(self, dataset: pd.DataFrame):
         """
         주기적으로 LDA모델들을 학습시키기 위한 함수
         뉴스 데이터 세트를 통해 하이퍼파라미터 튜닝부터 폴더링, topic 별 lda 모델 생성, 가중치 저장까지의 프로세스 자동화
@@ -57,7 +61,8 @@ class LDAModel:
             dataset (list of str): 뉴스 데이터 세트(원문).
         """
 
-        self.df["documents"] = TextPreprocessor(texts=list(dataset)).preprocess()
+        self.df["publish_time"] = dataset["publish_time"]
+        self.df["documents"] = TextPreprocessor(texts=list(dataset["content"])).preprocess()
 
         print(
             "########################################## start hyperparameter tuning - get topics ##########################################"
@@ -76,6 +81,8 @@ class LDAModel:
 
         # 2차 LDA 모델 추출 및 저장
         self._create_lda_model_by_topic_and_save(num_topics=num_topics)
+
+        return num_topics
 
     def _get_num_of_topics(self):
         """
@@ -139,8 +146,8 @@ class LDAModel:
                 corpus=corpus,
                 id2word=dictionary,
                 num_topics=num_topics,
-                random_state=25,
-                passes=100,
+                random_state=random_state,
+                passes=passes,
                 workers=None,
             )
             coherence_model = CoherenceModel(model=model, texts=texts, dictionary=dictionary, coherence="c_v")
@@ -181,8 +188,8 @@ class LDAModel:
             "num_topics": num_topics,
             "corpus": corpus,
             "id2word": dictionary,
-            "passes": 100,
-            "random_state": 25,
+            "passes": passes,
+            "random_state": random_state,
         }
 
         lda_model = LdaModel(**params)
@@ -197,13 +204,18 @@ class LDAModel:
         with open(dictionary_path, "wb") as f:
             pickle.dump(dictionary, f)
 
+        corpus_name = "category_corpus.pkl"
+        corpus_path = os.path.join(model_weights_path, corpus_name)
+        with open(corpus_path, "wb") as f:
+            pickle.dump(corpus, f)
+
     def _create_lda_model_by_topic_and_save(self, num_topics):
 
         print(self.df)
 
-        grouped_dfs = [self.df[self.df["category"] == i] for i in range(1, num_topics + 1)]
+        self.grouped_dfs = [self.df[self.df["category"] == i] for i in range(1, num_topics + 1)]
 
-        for group_idx, group_df in enumerate(grouped_dfs, start=1):
+        for group_idx, group_df in enumerate(self.grouped_dfs, start=1):
             group_texts = group_df["documents"].tolist()
 
             # 그룹별 단어 사전 생성
@@ -218,8 +230,8 @@ class LDAModel:
                 "num_topics": group_idx_num_topics,
                 "corpus": group_corpus,
                 "id2word": group_dictionary,
-                "passes": 100,
-                "random_state": 25,
+                "passes": passes,
+                "random_state": random_state,
             }
 
             model = LdaModel(**params)
@@ -235,19 +247,23 @@ class LDAModel:
             with open(dictionary_path, "wb") as f:
                 pickle.dump(group_dictionary, f)
 
+            corpus_name = f"topic_{group_idx}/corpus_{group_idx}.pkl"
+            corpus_path = os.path.join(model_weights_path, corpus_name)
+            with open(corpus_path, "wb") as f:
+                pickle.dump(group_corpus, f)
+
+            # TODO 그룹별 df 저장을 위해 pubDate 필요
+
     def _get_first_document_topics_and_grouping(self):
 
         model_name = "category_lda_model.model"
         model_path = os.path.join(model_weights_path, model_name)
         model = LdaModel.load(model_path)
 
-        dictionary_name = "category_dictionary.pkl"
-        dictionary_path = os.path.join(model_weights_path, dictionary_name)
-        with open(dictionary_path, "rb") as f:
-            dictionary = pickle.load(f)
-
-        texts = self.df["documents"].tolist()
-        corpus = [dictionary.doc2bow(text) for text in texts]
+        corpus_name = "category_corpus.pkl"
+        corpus_path = os.path.join(model_weights_path, corpus_name)
+        with open(corpus_path, "rb") as f:
+            corpus = pickle.load(f)
 
         doc_topics = [model.get_document_topics(bow, minimum_probability=0) for bow in corpus]
 
@@ -330,3 +346,10 @@ class LDAModel:
         topic_distribution = model.get_document_topics(bow, minimum_probability=0)
         print(f"추출된 토픽 분포: {topic_distribution}")
         return topic_distribution
+
+    ###########################################################################################
+
+    # For Utils
+    ###########################################################################################
+    def get_group_df(self) -> List[pd.DataFrame]:
+        return self.grouped_dfs
