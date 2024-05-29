@@ -1,6 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
 
+from model import stock
+
 
 def get_header():
     headers = {
