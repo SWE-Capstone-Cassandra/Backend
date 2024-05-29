@@ -56,7 +56,7 @@ class LDAModel:
             dataset (list of str): 뉴스 데이터 세트(원문).
         """
 
-        self.df["publish_time"] = dataset["publish_time"]
+        self.df["date_time"] = dataset["date_time"]
         self.df["documents"] = TextPreprocessor(texts=list(dataset["content"])).preprocess()
 
         print(
