@@ -3,7 +3,6 @@ anyio==4.3.0
 attrs==23.2.0
 beautifulsoup4==4.12.3
 bs4==0.0.2
--e git+https://github.com/SWE-Capstone-Cassandra/Backend.git@02328d44ca85a6884281a3c60d461920ddb0fa39#egg=capstone
 certifi==2024.2.2
 charset-normalizer==3.3.2
 click==8.1.7

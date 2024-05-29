@@ -6,7 +6,7 @@ from repository.stock_repository import StockRepository
 from service.base_service import BaseService
 from service.news_service import NewsService
 from repository.news_repository import NewsRepository
-from ai_model.news_data_controller import NewsDataController
+from ai_model.data_controller import DataController
 from types import List
 
 
@@ -21,12 +21,12 @@ class ModelService(BaseService):
         news_dataset = NewsRepository().get_news_dataset()
         stock_dataset = StockRepository().get_stock_dataset()
         try:
-            NewsDataController().train_news_dataset(news_dataset=news_dataset, stock_dataset=stock_dataset)
+            DataController().train_news_dataset(news_dataset=news_dataset, stock_dataset=stock_dataset)
         except Exception as ex:
             print("무슨 에러지?", ex)
 
     def request_stock_volatilities(self, content: str) -> List[float]:
-        return NewsDataController().predict_stock_volatilities(text=content)
+        return DataController().predict_stock_volatilities(text=content)
 
     def get_prediction(self, news_id: str):
         return PredictionRepository().get_news_prediction(news_id=news_id)
