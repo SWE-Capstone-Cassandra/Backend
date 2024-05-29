@@ -44,7 +44,7 @@ news_date = pd.to_datetime(
     * 4
 )
 
-test_news_dataset = pd.DataFrame({"publish_time": news_date, "content": news_texts})
+test_news_dataset = pd.DataFrame({"date_time": news_date, "content": news_texts})
 
 stock_date = pd.to_datetime(
     [

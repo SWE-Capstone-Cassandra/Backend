@@ -45,7 +45,7 @@ news_date = pd.to_datetime(
     * 8
 )
 
-test_news_dataset = pd.DataFrame({"publish_time": news_date, "content": news_texts})
+test_news_dataset = pd.DataFrame({"date_time": news_date, "content": news_texts})
 
 stock_date = pd.to_datetime(
     [
@@ -69,11 +69,11 @@ test_text = "[ 문재인 대통령이 지난해 12월 27일 청와대에서 정�
 
 class TestNewsDataController(unittest.TestCase):
 
-    def test_train_train_news_dataset(self):
-        DataController().train_news_dataset(news_dataset=test_news_dataset, stock_dataset=test_stock_dataset)
+    # def test_train_train_news_dataset(self):
+    #     DataController().train_news_dataset(news_dataset=test_news_dataset, stock_dataset=test_stock_dataset)
 
-    # def test_predict_stock_volatilities(self):
-    #     print(DataController().predict_stock_volatilities(text=test_text))
+    def test_predict_stock_volatilities(self):
+        print(DataController().predict_stock_volatilities(text=test_text))
 
 
 if __name__ == "__main__":

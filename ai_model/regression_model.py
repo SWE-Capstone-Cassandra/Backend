@@ -77,13 +77,13 @@ class RegressionModel:
         model = LdaModel.load(model_path)
 
         temp_group = self.grouped_dfs[topic_idx]
-        self._get_stock_price_changes_by_publish_time(temp_group=temp_group)
+        self._get_stock_price_changes_by_date_time(temp_group=temp_group)
         self._get_topic_features(temp_group=temp_group, topic_distributions=topic_distributions, num_topics=model.num_topics)
         self._get_best_performance_regression_model(temp_group=temp_group, topic_idx=topic_idx)
 
-    def _get_stock_price_changes_by_publish_time(self, temp_group):
-        temp_group["publish_time"] = pd.to_datetime(temp_group["publish_time"])
-        temp_group["adjusted_time"] = temp_group["publish_time"].apply(adjust_time)
+    def _get_stock_price_changes_by_date_time(self, temp_group):
+        temp_group["date_time"] = pd.to_datetime(temp_group["date_time"])
+        temp_group["adjusted_time"] = temp_group["date_time"].apply(adjust_time)
 
         for minutes in VolaConfig.TIME_INTERVALS:
             temp_group[f"vola_{minutes}m"] = temp_group["adjusted_time"].apply(
@@ -110,7 +110,7 @@ class RegressionModel:
             if data_clean.empty:
                 continue
 
-            X = data_clean.drop(columns=VolaConfig.VOLA_COLUMNS + ["category", "publish_time", "documents", "adjusted_time"])
+            X = data_clean.drop(columns=VolaConfig.VOLA_COLUMNS + ["category", "date_time", "documents", "adjusted_time"])
             y = data_clean[vola]
 
             # 훈련/테스트 데이터 분할

@@ -53,7 +53,7 @@ def calculate_price_change(current_time, minutes, stock_dataset: pd.DataFrame):
     주가 변화량 계산 함수
 
     Args:
-        current_time: DataFrame 객체의 publish_time 열 값
+        current_time: DataFrame 객체의 date_time 열 값
         minutes: 특정 분 후의 시간
         stock_dataset: 종목의 1분봉 주가 데이터 세트
 

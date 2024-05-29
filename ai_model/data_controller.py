@@ -13,7 +13,7 @@ class DataController:
         """
         주기적으로 새로운 뉴스 데이터 + 기존 데이터 세트에 대해서 LDA 재추출 및 회귀 분석 실시 API
         Args:
-            news_dataset: 뉴스 데이터 세트 [필요한 컬럼 - publish_time, content(documents)]
+            news_dataset: 뉴스 데이터 세트 [필요한 컬럼 - date_time, content(documents)]
             stock_dataset: 종목 1분봉 데이터 세트 [필요한 컬럼 - date_time, price]
         """
         print("########################## Start Train News Dataset! ##########################")
