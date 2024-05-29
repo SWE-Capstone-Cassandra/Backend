@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import DateTime, ForeignKey, Integer, String
+from sqlalchemy import DateTime, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column
 
 from config import Base
@@ -11,7 +11,7 @@ class NewsPrediction(Base):
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
     news_id: Mapped[str] = mapped_column(String)
-    time: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    time: Mapped[datetime] = mapped_column(DateTime(timezone=True), index=True)
     min_1: Mapped[int] = mapped_column(Integer)
     min_5: Mapped[int] = mapped_column(Integer)
     min_15: Mapped[int] = mapped_column(Integer)

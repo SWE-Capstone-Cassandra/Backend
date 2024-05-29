@@ -1,13 +1,13 @@
 import datetime
+from typing import List
 
+from ai_model.data_controller import DataController
 from model.news_prediction import NewsPrediction
+from repository.news_repository import NewsRepository
 from repository.prediction_repository import PredictionRepository
 from repository.stock_repository import StockRepository
 from service.base_service import BaseService
 from service.news_service import NewsService
-from repository.news_repository import NewsRepository
-from ai_model.data_controller import DataController
-from types import List
 
 
 class ModelService(BaseService):
@@ -18,8 +18,8 @@ class ModelService(BaseService):
     """
 
     def request_training(self):
-        news_dataset = NewsRepository().get_news_dataset()
-        stock_dataset = StockRepository().get_stock_dataset()
+        news_dataset = NewsRepository(session=self.session).get_news_dataset()
+        stock_dataset = StockRepository(session=self.session).get_stock_dataset()
         try:
             DataController().train_news_dataset(news_dataset=news_dataset, stock_dataset=stock_dataset)
         except Exception as ex:
