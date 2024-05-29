@@ -1,4 +1,6 @@
-from sqlalchemy import Integer
+from datetime import datetime
+
+from sqlalchemy import DateTime, Integer
 from sqlalchemy.orm import Mapped, mapped_column
 
 from config import Base
@@ -7,6 +9,5 @@ from config import Base
 class Stock(Base):
     __tablename__ = "samsung"
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
-    date: Mapped[int] = mapped_column(Integer, index=True)
-    time: Mapped[int] = mapped_column(Integer, index=True)
+    date_time: Mapped[datetime] = mapped_column(DateTime(timezone=True), index=True)
     price: Mapped[int] = mapped_column(Integer, nullable=False)

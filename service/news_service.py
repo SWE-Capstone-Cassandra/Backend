@@ -25,10 +25,14 @@ class NewsService(BaseService):
         title = soup.find("h3", class_="tit_view").text if soup else ""
         writer = soup.find("span", class_="txt_info").text if soup else ""
         content = clean_text(content.text)
+        date = datetime.today().date().strftime("%Y%m%d")
+        time = str(time)
+        while len(time) < 4:
+            time = "0" + time
+
         news_data = News()
         news_data.news_url = url
-        news_data.date = int(datetime.today().date().strftime("%Y%m%d"))
-        news_data.time = time
+        news_data.date_time = datetime.strptime(date + time, "%Y%m%d%H%M")
         news_data.title = title
         news_data.writer = writer
         news_data.content = content
