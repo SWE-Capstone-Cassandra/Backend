@@ -16,7 +16,7 @@ class DataController:
             news_dataset: 뉴스 데이터 세트 [필요한 컬럼 - publish_time, content(documents)]
             stock_dataset: 종목 1분봉 데이터 세트 [필요한 컬럼 - date_time, price]
         """
-        print("########################## Start Train News Datasets! ##########################")
+        print("########################## Start Train News Dataset! ##########################")
         print("##################################### LDA #####################################")
         lda_model = LDAModel()
         num_topics = lda_model.train_lda_model(dataset=news_dataset)
@@ -25,7 +25,7 @@ class DataController:
         print("##################################### Reg #####################################")
         RegressionModel(stock_dataset=stock_dataset, lda_model=lda_model).train_regression_model(num_topics=num_topics)
         print("##################################### Reg #####################################")
-        print("########################### End Train News Datasets! ###########################")
+        print("########################### End Train News Dataset! ###########################")
 
     def predict_stock_volatilities(self, text) -> List[float]:
         """

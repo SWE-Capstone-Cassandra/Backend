@@ -48,14 +48,14 @@ def adjust_time(time):
         return time
 
 
-def calculate_price_change(current_time, minutes, stock_datasets: pd.DataFrame):
+def calculate_price_change(current_time, minutes, stock_dataset: pd.DataFrame):
     """
     주가 변화량 계산 함수
 
     Args:
         current_time: DataFrame 객체의 publish_time 열 값
         minutes: 특정 분 후의 시간
-        stock_datasets: 종목의 1분봉 주가 데이터 세트
+        stock_dataset: 종목의 1분봉 주가 데이터 세트
 
     Returns:
         주가 변화량 계산 값
@@ -65,8 +65,8 @@ def calculate_price_change(current_time, minutes, stock_datasets: pd.DataFrame):
     if future_time.time() > datetime.strptime("15:20", "%H:%M").time():
         future_time = (future_time + timedelta(days=1)).replace(hour=9, minute=0)
 
-    current_prices = stock_datasets.loc[stock_datasets["date_time"] == current_time.strftime("%Y-%m-%d %H:%M"), "price"]
-    future_prices = stock_datasets.loc[stock_datasets["date_time"] == future_time.strftime("%Y-%m-%d %H:%M"), "price"]
+    current_prices = stock_dataset.loc[stock_dataset["date_time"] == current_time.strftime("%Y-%m-%d %H:%M"), "price"]
+    future_prices = stock_dataset.loc[stock_dataset["date_time"] == future_time.strftime("%Y-%m-%d %H:%M"), "price"]
 
     print("current_price: ", current_prices)
     print("future_price: ", future_prices)

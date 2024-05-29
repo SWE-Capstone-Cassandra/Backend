@@ -225,7 +225,7 @@ class LDAModel:
                 "num_topics": group_idx_num_topics,
                 "corpus": group_corpus,
                 "id2word": group_dictionary,
-                "passes": LDAModelConfig,
+                "passes": LDAModelConfig.PASSES,
                 "random_state": BaseConfig.RANDOM_STATE,
             }
 

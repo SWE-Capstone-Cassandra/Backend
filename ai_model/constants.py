@@ -2,9 +2,9 @@ model_weights_path = "/home/tako4/capstone/backend/Model/Backend/ai_model/model_
 
 
 class LDAModelConfig:
-    NUM_OF_CATEGORY = range(10, 100)
-    NUM_OF_TOPICS_BY_GROUP = range(1, 30)
-    PASSES = 10
+    NUM_OF_CATEGORY = range(2, 3)
+    NUM_OF_TOPICS_BY_GROUP = range(1, 3)
+    PASSES = 15
 
 
 class RegressionModelConfig:

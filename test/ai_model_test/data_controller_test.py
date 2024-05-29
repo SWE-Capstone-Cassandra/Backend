@@ -45,7 +45,7 @@ news_date = pd.to_datetime(
     * 8
 )
 
-test_news_datasets = pd.DataFrame({"publish_time": news_date, "content": news_texts})
+test_news_dataset = pd.DataFrame({"publish_time": news_date, "content": news_texts})
 
 stock_date = pd.to_datetime(
     [
@@ -62,18 +62,18 @@ stock_date = pd.to_datetime(
 )
 stock_price = [51231, 74520, 53210, 41230, 31251, 31251, 38251, 51251, 95251]
 
-test_stock_datasets = pd.DataFrame({"date_time": stock_date, "price": stock_price})
+test_stock_dataset = pd.DataFrame({"date_time": stock_date, "price": stock_price})
 
 test_text = "[ 문재인 대통령이 지난해 12월 27일 청와대에서 정부의 민관합동 청년 일자리]"
 
 
 class TestNewsDataController(unittest.TestCase):
 
-    # def test_train_train_news_dataset(self):
-    #     NewsDataController().train_news_dataset(news_datasets=test_news_datasets, stock_datasets=test_stock_datasets)
+    def test_train_train_news_dataset(self):
+        DataController().train_news_dataset(news_dataset=test_news_dataset, stock_dataset=test_stock_dataset)
 
-    def test_predict_stock_volatilities(self):
-        print(DataController().predict_stock_volatilities(text=test_text))
+    # def test_predict_stock_volatilities(self):
+    #     print(DataController().predict_stock_volatilities(text=test_text))
 
 
 if __name__ == "__main__":

@@ -35,12 +35,12 @@ from ai_model.constants import BaseConfig, model_weights_path, RegressionModelCo
 
 
 class RegressionModel:
-    def __init__(self, stock_datasets: pd.DataFrame = None, lda_model: LDAModel = None):
+    def __init__(self, stock_dataset: pd.DataFrame = None, lda_model: LDAModel = None):
         """
         Args:
-            stock_datasets: 종목의 1분봉 주가 데이터
+            stock_dataset: 종목의 1분봉 주가 데이터
         """
-        self.stock_datasets = stock_datasets
+        self.stock_dataset = stock_dataset
         self.grouped_dfs = lda_model.get_group_df() if lda_model else None
 
     def train_regression_model(self, num_topics):
@@ -87,7 +87,7 @@ class RegressionModel:
 
         for minutes in VolaConfig.TIME_INTERVALS:
             temp_group[f"vola_{minutes}m"] = temp_group["adjusted_time"].apply(
-                lambda x: calculate_price_change(x, minutes, self.stock_datasets)
+                lambda x: calculate_price_change(x, minutes, self.stock_dataset)
             )
 
     def _get_topic_features(self, temp_group, topic_distributions, num_topics):
