@@ -295,14 +295,14 @@ class LDAModel:
         preprocessed_text = TextPreprocessor(texts=text).preprocess()
 
         # 1차 가장 높은 확률의 토픽 추출
-        group_id = self.get_group_id(text=preprocessed_text)
+        group_id = self._get_group_id(text=preprocessed_text)
 
         # 해당 그룹에서 LDA 수행, 분포 추출
-        topic_distribution = self.get_topic_distribution_from_group(group_id=group_id, text=preprocessed_text)
+        topic_distribution = self._get_topic_distribution_from_group(group_id=group_id, text=preprocessed_text)
 
         return group_id, topic_distribution
 
-    def get_group_id(self, text):
+    def _get_group_id(self, text):
         print("group id 추출")
         model_name = "category_lda_model.model"
         model_path = os.path.join(model_weights_path, model_name)
@@ -322,11 +322,11 @@ class LDAModel:
         bow = dictionary.doc2bow(text)
 
         topic_distribution = model.get_document_topics(bow, minimum_probability=0)
-        group_id = max(topic_distribution, key=lambda item: item[1])[0] + 1
+        group_id = max(topic_distribution, key=lambda item: item[1])[0]
         print(f"추출된 그룹 번호: {group_id}")
         return group_id
 
-    def get_topic_distribution_from_group(self, group_id, text):
+    def _get_topic_distribution_from_group(self, group_id, text):
         print("2차 토픽 추출")
         model_name = f"topic_{group_id}/lda_model_{group_id}.model"
         model_path = os.path.join(model_weights_path, model_name)

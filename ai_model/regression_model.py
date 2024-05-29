@@ -1,4 +1,5 @@
 import pickle
+from joblib import dump, load
 import os
 
 import pandas as pd
@@ -24,17 +25,17 @@ from ai_model.utils import adjust_time, calculate_price_change
     - topic_1
         ㄴ dictionary_1.pkl               : 해당 토픽 내의 말뭉치 사전
         ㄴ lda_weights_1                  : 해당 토픽의 lda 모델의 가중치
-        ㄴ regression_weights_1m.pkl      : 1분 후 회귀 모델
-        ㄴ regression_weights_5m.pkl      : 5분 후 회귀 모델
-        ㄴ regression_weights_15m.pkl     : 15분 후 회귀 모델
-        ㄴ regression_weights_1h.pkl      : 1시간 회귀 모델
-        ㄴ regression_weights_1d.pkl      : 1일 후 회귀 모델
+        ㄴ regression_weights_1m.joblib      : 1분 후 회귀 모델
+        ㄴ regression_weights_5m.joblib      : 5분 후 회귀 모델
+        ㄴ regression_weights_15m.joblib     : 15분 후 회귀 모델
+        ㄴ regression_weights_1h.joblib      : 1시간 회귀 모델
+        ㄴ regression_weights_1d.joblib      : 1일 후 회귀 모델
 """
 
 model_weights_path = "/home/tako4/capstone/backend/Model/Backend/ai_model/model_weights"
 
-ridge_params = {"ridge__alpha": np.arange(1e-4, 1e-1), "ridge__random_state": [25]}
-lasso_params = {"lasso__alpha": np.arange(1e-4, 1e-1), "lasso__random_state": [25]}
+ridge_params = {"ridge__alpha": np.arange(1e-4, 1e-1, 1e-2), "ridge__random_state": [25]}
+lasso_params = {"lasso__alpha": np.arange(1e-4, 1e-1, 1e-2), "lasso__random_state": [25]}
 
 
 class RegressionModel:
@@ -161,17 +162,14 @@ class RegressionModel:
             ridge_mae = mean_absolute_error(y_test, y_pred_ridge)
             lasso_mae = mean_absolute_error(y_test, y_pred_lasso)
 
-            metadata_ridge = {"model_type": "Ridge", "parameters": best_ridge.get_params()}
-            metadata_lasso = {"model_type": "Lasso", "parameters": best_lasso.get_params()}
-
-            model_name = f"topic_{topic_idx+1}/reg_model_{vola}.pkl"
+            model_name = f"topic_{topic_idx+1}/reg_model_{vola}.joblib"
             model_path = os.path.join(model_weights_path, model_name)
             if ridge_mae > lasso_mae:
                 with open(model_path, "wb") as f:
-                    pickle.dump((best_lasso, metadata_lasso), f)
+                    dump(best_lasso, f)
             else:
                 with open(model_path, "wb") as f:
-                    pickle.dump((best_ridge, metadata_ridge), f)
+                    dump(best_ridge, f)
 
             results.append(
                 {
@@ -197,5 +195,19 @@ class RegressionModel:
             print("\nDetailed Results:")
             print(results_df)
 
-    def get_stock_volatilities(self, group_id, topic_distribution):
-        pass
+    def get_stock_volatilities(self, group_id, topic_distributions):
+        vola_columns = ["vola_1m", "vola_5m", "vola_15m", "vola_60m", "vola_1440m"]
+        stock_volatilities = []
+
+        for vola in vola_columns:
+            model_name = f"topic_{group_id+1}/reg_model_{vola}.joblib"
+            model_path = os.path.join(model_weights_path, model_name)
+
+            with open(model_path, "rb") as f:
+                model = load(f)
+
+            print(f"Loaded model: {model}")
+
+            stock_volatilities.append(model.predict(topic_distributions)[0])
+
+        return stock_volatilities

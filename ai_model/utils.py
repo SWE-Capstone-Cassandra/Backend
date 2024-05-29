@@ -61,17 +61,9 @@ def calculate_price_change(current_time, minutes, stock_datasets: pd.DataFrame):
         주가 변화량 계산 값
     """
 
-    print(stock_datasets)
-
-    print("#!@#!@#!")
-    print("현재 시간", current_time)
-    print("몇분 후", minutes)
-
     future_time = current_time + timedelta(minutes=minutes)
     if future_time.time() > datetime.strptime("15:20", "%H:%M").time():
         future_time = (future_time + timedelta(days=1)).replace(hour=9, minute=0)
-
-    print("future 시간", future_time)
 
     current_prices = stock_datasets.loc[stock_datasets["date_time"] == current_time.strftime("%Y-%m-%d %H:%M"), "price"]
     future_prices = stock_datasets.loc[stock_datasets["date_time"] == future_time.strftime("%Y-%m-%d %H:%M"), "price"]
