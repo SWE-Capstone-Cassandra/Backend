@@ -13,6 +13,8 @@ import shutil
 
 from ai_model.text_preprocessor import TextPreprocessor
 
+from ai_model.constants import BaseConfig, LDAModelConfig, model_weights_path
+
 """
 LDA 모델
 - 매 주기 별로 저장되어 있는 데이터로 학습 후, model_weights 폴더에 LDA model 들의 가중치 저장.
@@ -35,13 +37,6 @@ LDA 모델
 4) 각 topic 별로 LDA 하이퍼파라미터 튜닝 실시
 5) 가중치 저장
 """
-
-model_weights_path = "/home/tako4/capstone/backend/Model/Backend/ai_model/model_weights"
-
-num_of_main_category = range(2, 3)
-num_of_topics_by_group = range(1, 3)
-passes = 10
-random_state = 25
 
 
 class LDAModel:
@@ -94,15 +89,15 @@ class LDAModel:
         best_coherence = 0
         best_params = {}
 
-        for num_topics in num_of_main_category:
+        for num_topics in LDAModelConfig.NUM_OF_CATEGORY:
             print(f"########################################## num_topics: {num_topics} 시작")
             start_time = time()
             model = LdaMulticore(
                 corpus=corpus,
                 id2word=dictionary,
                 num_topics=num_topics,
-                random_state=25,
-                passes=100,
+                random_state=BaseConfig.RANDOM_STATE,
+                passes=LDAModelConfig.PASSES,
                 workers=None,
             )
             coherence_model = CoherenceModel(model=model, texts=list(self.df["documents"]), dictionary=dictionary, coherence="c_v")
@@ -138,7 +133,7 @@ class LDAModel:
         best_coherence = 0
         best_params = {}
 
-        for num_topics in num_of_topics_by_group:
+        for num_topics in LDAModelConfig.NUM_OF_TOPICS_BY_GROUP:
             print(f"########################################## Start {topic_idx}번째 LDA Model HyperParameter Tuning")
             print(f"########################################## num_topics: {num_topics} 시작")
             start_time = time()
@@ -146,8 +141,8 @@ class LDAModel:
                 corpus=corpus,
                 id2word=dictionary,
                 num_topics=num_topics,
-                random_state=random_state,
-                passes=passes,
+                random_state=BaseConfig.RANDOM_STATE,
+                passes=LDAModelConfig.PASSES,
                 workers=None,
             )
             coherence_model = CoherenceModel(model=model, texts=texts, dictionary=dictionary, coherence="c_v")
@@ -188,8 +183,8 @@ class LDAModel:
             "num_topics": num_topics,
             "corpus": corpus,
             "id2word": dictionary,
-            "passes": passes,
-            "random_state": random_state,
+            "passes": LDAModelConfig.PASSES,
+            "random_state": BaseConfig.RANDOM_STATE,
         }
 
         lda_model = LdaModel(**params)
@@ -230,8 +225,8 @@ class LDAModel:
                 "num_topics": group_idx_num_topics,
                 "corpus": group_corpus,
                 "id2word": group_dictionary,
-                "passes": passes,
-                "random_state": random_state,
+                "passes": LDAModelConfig,
+                "random_state": BaseConfig.RANDOM_STATE,
             }
 
             model = LdaModel(**params)
@@ -251,8 +246,6 @@ class LDAModel:
             corpus_path = os.path.join(model_weights_path, corpus_name)
             with open(corpus_path, "wb") as f:
                 pickle.dump(group_corpus, f)
-
-            # TODO 그룹별 df 저장을 위해 pubDate 필요
 
     def _get_first_document_topics_and_grouping(self):
 

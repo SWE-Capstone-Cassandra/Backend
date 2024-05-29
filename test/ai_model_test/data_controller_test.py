@@ -4,7 +4,7 @@ import pandas as pd
 from ai_model.lda_model import LDAModel
 
 import warnings
-from ai_model.news_data_controller import NewsDataController
+from ai_model.data_controller import DataController
 
 warnings.filterwarnings("ignore")
 
@@ -73,7 +73,7 @@ class TestNewsDataController(unittest.TestCase):
     #     NewsDataController().train_news_dataset(news_datasets=test_news_datasets, stock_datasets=test_stock_datasets)
 
     def test_predict_stock_volatilities(self):
-        print(NewsDataController().predict_stock_volatilities(text=test_text))
+        print(DataController().predict_stock_volatilities(text=test_text))
 
 
 if __name__ == "__main__":

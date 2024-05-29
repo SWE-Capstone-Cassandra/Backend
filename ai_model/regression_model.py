@@ -3,7 +3,6 @@ from joblib import dump, load
 import os
 
 import pandas as pd
-import numpy as np
 
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import Ridge
@@ -15,6 +14,8 @@ from sklearn.pipeline import Pipeline
 from gensim.models import LdaModel
 from ai_model.lda_model import LDAModel
 from ai_model.utils import adjust_time, calculate_price_change
+
+from ai_model.constants import BaseConfig, model_weights_path, RegressionModelConfig, VolaConfig
 
 """
 회귀 분석 모델
@@ -31,11 +32,6 @@ from ai_model.utils import adjust_time, calculate_price_change
         ㄴ regression_weights_1h.joblib      : 1시간 회귀 모델
         ㄴ regression_weights_1d.joblib      : 1일 후 회귀 모델
 """
-
-model_weights_path = "/home/tako4/capstone/backend/Model/Backend/ai_model/model_weights"
-
-ridge_params = {"ridge__alpha": np.arange(1e-4, 1e-1, 1e-2), "ridge__random_state": [25]}
-lasso_params = {"lasso__alpha": np.arange(1e-4, 1e-1, 1e-2), "lasso__random_state": [25]}
 
 
 class RegressionModel:
@@ -89,8 +85,7 @@ class RegressionModel:
         temp_group["publish_time"] = pd.to_datetime(temp_group["publish_time"])
         temp_group["adjusted_time"] = temp_group["publish_time"].apply(adjust_time)
 
-        time_intervals = [1, 5, 15, 60, 1440]
-        for minutes in time_intervals:
+        for minutes in VolaConfig.TIME_INTERVALS:
             temp_group[f"vola_{minutes}m"] = temp_group["adjusted_time"].apply(
                 lambda x: calculate_price_change(x, minutes, self.stock_datasets)
             )
@@ -106,21 +101,22 @@ class RegressionModel:
         temp_group = pd.concat([temp_group, topic_df], axis=1)
 
     def _get_best_performance_regression_model(self, temp_group, topic_idx):
-        vola_columns = ["vola_1m", "vola_5m", "vola_15m", "vola_60m", "vola_1440m"]
         results = []
 
-        for vola in vola_columns:
+        for vola in VolaConfig.VOLA_COLUMNS:
             # 결측값 제거
             data_clean = temp_group.dropna(subset=[vola])
 
             if data_clean.empty:
                 continue
 
-            X = data_clean.drop(columns=vola_columns + ["category", "publish_time", "documents", "adjusted_time"])
+            X = data_clean.drop(columns=VolaConfig.VOLA_COLUMNS + ["category", "publish_time", "documents", "adjusted_time"])
             y = data_clean[vola]
 
             # 훈련/테스트 데이터 분할
-            X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+            X_train, X_test, y_train, y_test = train_test_split(
+                X, y, test_size=BaseConfig.TEST_SIZE, random_state=BaseConfig.RANDOM_STATE
+            )
 
             # Ridge 회귀 모델 파이프라인
             ridge_pipeline = Pipeline([("scaler", StandardScaler()), ("ridge", Ridge())])
@@ -129,8 +125,12 @@ class RegressionModel:
             lasso_pipeline = Pipeline([("scaler", StandardScaler()), ("lasso", Lasso())])
 
             # GridSearchCV 설정
-            ridge_grid = GridSearchCV(ridge_pipeline, ridge_params, cv=5, scoring="neg_mean_absolute_error", n_jobs=-1)
-            lasso_grid = GridSearchCV(lasso_pipeline, lasso_params, cv=5, scoring="neg_mean_absolute_error", n_jobs=-1)
+            ridge_grid = GridSearchCV(
+                ridge_pipeline, RegressionModelConfig.RIDGE_PARAMETERS, cv=5, scoring="neg_mean_absolute_error", n_jobs=-1
+            )
+            lasso_grid = GridSearchCV(
+                lasso_pipeline, RegressionModelConfig.LASSO_PARAMETERS, cv=5, scoring="neg_mean_absolute_error", n_jobs=-1
+            )
 
             print(f"GridSearchCV 설정 - ridge: {ridge_grid}")
             print(f"GridSearchCV 설정 - lasso: {lasso_grid}")
@@ -196,10 +196,9 @@ class RegressionModel:
             print(results_df)
 
     def get_stock_volatilities(self, group_id, topic_distributions):
-        vola_columns = ["vola_1m", "vola_5m", "vola_15m", "vola_60m", "vola_1440m"]
         stock_volatilities = []
 
-        for vola in vola_columns:
+        for vola in VolaConfig.VOLA_COLUMNS:
             model_name = f"topic_{group_id+1}/reg_model_{vola}.joblib"
             model_path = os.path.join(model_weights_path, model_name)
 

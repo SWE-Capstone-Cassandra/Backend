@@ -5,7 +5,7 @@ import pandas as pd
 from typing import List
 
 
-class NewsDataController:
+class DataController:
     def __init__(self):
         pass
 
