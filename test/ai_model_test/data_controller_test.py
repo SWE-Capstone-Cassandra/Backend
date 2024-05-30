@@ -1,7 +1,5 @@
 import unittest
-from ai_model.regression_model import RegressionModel
 import pandas as pd
-from ai_model.lda_model import LDAModel
 
 import warnings
 from ai_model.data_controller import DataController
@@ -67,7 +65,7 @@ test_stock_dataset = pd.DataFrame({"date_time": stock_date, "price": stock_price
 test_text = "[ 문재인 대통령이 지난해 12월 27일 청와대에서 정부의 민관합동 청년 일자리]"
 
 
-class TestNewsDataController(unittest.TestCase):
+class TestDataController(unittest.TestCase):
 
     # def test_train_train_news_dataset(self):
     #     DataController().train_news_dataset(news_dataset=test_news_dataset, stock_dataset=test_stock_dataset)
