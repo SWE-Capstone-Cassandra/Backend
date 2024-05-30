@@ -17,27 +17,25 @@ CAPTCHA = "https://captcha.search.daum.net"
 
 class NewsService(BaseService):
 
-    def get_news_data(self, time: int, url: str) -> News:
+    def get_news_data(self, date_time: int, url: str) -> News:
+        try:
+            response = requests.get(url, headers=self.get_header())
+            soup = BeautifulSoup(response.text, "html.parser")
+            content = soup.find("div", class_="news_view fs_type1") if soup else ""
+            title = soup.find("h3", class_="tit_view").text if soup else ""
+            writer = soup.find("span", class_="txt_info").text if soup else ""
+            content = clean_text(content.text)
 
-        response = requests.get(url, headers=self.get_header())
-        soup = BeautifulSoup(response.text, "html.parser")
-        content = soup.find("div", class_="news_view fs_type1") if soup else ""
-        title = soup.find("h3", class_="tit_view").text if soup else ""
-        writer = soup.find("span", class_="txt_info").text if soup else ""
-        content = clean_text(content.text)
-        date = datetime.today().date().strftime("%Y%m%d")
-        time = str(time)
-        while len(time) < 4:
-            time = "0" + time
-
-        news_data = News()
-        news_data.news_url = url
-        news_data.date_time = datetime.strptime(date + time, "%Y%m%d%H%M")
-        news_data.title = title
-        news_data.writer = writer
-        news_data.content = content
-
-        return news_data
+            news_data = News()
+            news_data.news_url = url
+            news_data.date_time = datetime.strptime(str(date_time), "%Y%m%d%H%M")
+            news_data.title = title
+            news_data.writer = writer
+            news_data.content = content
+            return news_data
+        except Exception as e:
+            print(e)
+            return None
 
     def save_news_data(self, news: News):
         res = NewsRepository(session=self.session).save_news_data(news=news)
