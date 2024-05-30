@@ -1,6 +1,7 @@
 from ai_model.lda_model import LDAModel
 from ai_model.regression_model import RegressionModel
 
+from time import time
 import pandas as pd
 from typing import List
 
@@ -16,6 +17,7 @@ class DataController:
             news_dataset: 뉴스 데이터 세트 [필요한 컬럼 - date_time, content(documents)]
             stock_dataset: 종목 1분봉 데이터 세트 [필요한 컬럼 - date_time, price]
         """
+        start = time()
         print("########################## Start Train News Dataset! ##########################")
         print("##################################### LDA #####################################")
         lda_model = LDAModel()
@@ -26,6 +28,7 @@ class DataController:
         RegressionModel(stock_dataset=stock_dataset, lda_model=lda_model).train_regression_model(num_topics=num_topics)
         print("##################################### Reg #####################################")
         print("########################### End Train News Dataset! ###########################")
+        print(f"총 훈련 소요 시간: {time() - start:.2f}")
 
     def predict_stock_volatilities(self, text) -> List[float]:
         """
