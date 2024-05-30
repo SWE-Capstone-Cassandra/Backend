@@ -60,6 +60,7 @@ class TextPreprocessor:
         print("Fin remove special characters")
 
     def _lemmatize_filtered_morphs(self):
+
         lemmatizer = Lemmatizer()
 
         lemmatize_pos = {"VV", "VA", "VX"}  # 품사 체크를 집합으로 변환
