@@ -45,6 +45,7 @@ class LDAModel:
     def __init__(self):
         self.df = pd.DataFrame()
         self.grouped_dfs = list()
+        print(__name__, "생성")
 
     # For Training
     ###########################################################################################
@@ -60,23 +61,30 @@ class LDAModel:
         self.df["date_time"] = dataset["date_time"]
         self.df["documents"] = TextPreprocessor(texts=list(dataset["content"])).preprocess()
 
-        print(
-            "########################################## start hyperparameter tuning - get topics ##########################################"
-        )
+        print("토픽 추출 시작")
         # 토픽 추출
         num_topics = self._get_num_of_topics()
+        print("토픽 추출 완료")
 
+        print("재폴더링 시작")
         # 재 폴더링(초기화)
         self._remake_folder(num_topics=num_topics, remake=True)
+        print("재폴더링 완료")
 
+        print("1차 LDA 모델 추출 및 저장")
         # 1차 LDA 모델 추출 및 저장
         self._create_main_lda_model_and_save(num_topics=num_topics)
+        print("1차 LDA 모델 추출 및 저장")
 
+        print("1차 LDA 토픽 분포 추출 및 그룹화")
         # 1차 LDA 토픽 분포 추출 및 그룹화
         self._get_first_document_topics_and_grouping()
+        print("1차 LDA 토픽 분포 추출 및 그룹화")
 
+        print("2차 LDA 모델 추출 및 저장")
         # 2차 LDA 모델 추출 및 저장
         self._create_lda_model_by_topic_and_save(num_topics=num_topics)
+        print("2차 LDA 모델 추출 및 저장")
 
         return num_topics
 

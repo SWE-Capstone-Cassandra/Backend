@@ -42,6 +42,7 @@ class RegressionModel:
         """
         self.stock_dataset = stock_dataset
         self.grouped_dfs = lda_model.get_group_df() if lda_model else None
+        print(__name__, "생성")
 
     def train_regression_model(self, num_topics):
         """
@@ -51,11 +52,13 @@ class RegressionModel:
         4. 해당 토픽 확률 활용, 회귀 분석 실시
         """
 
+        print("회귀 모델 학습 시작")
         for topic_idx in range(num_topics):
             # 사전, 코퍼스, 기존 lda 모델 통해서 토픽 분포 획득
             topic_distributions = self._get_topic_distributions(topic_idx)
             # 토픽 분포를 활용하여 최적의 회귀 모델 저장
             self._get_best_performance_regression_model_and_save(topic_idx=topic_idx, topic_distributions=topic_distributions)
+        print("회귀 모델 학습 종료")
 
     def _get_topic_distributions(self, topic_idx):
 
