@@ -7,6 +7,7 @@ import pickle
 import pandas as pd
 from typing import List
 from time import time
+from tqdm import tqdm
 
 import os
 import shutil
@@ -89,8 +90,7 @@ class LDAModel:
         best_coherence = 0
         best_params = {}
 
-        for num_topics in LDAModelConfig.NUM_OF_CATEGORY:
-            print(f"########################################## num_topics: {num_topics} 시작")
+        for num_topics in tqdm(LDAModelConfig.NUM_OF_CATEGORY, desc=f"## LDA Category HyperParameter Tuning ##"):
             start_time = time()
             model = LdaMulticore(
                 corpus=corpus,
@@ -133,9 +133,7 @@ class LDAModel:
         best_coherence = 0
         best_params = {}
 
-        for num_topics in LDAModelConfig.NUM_OF_TOPICS_BY_GROUP:
-            print(f"########################################## Start {topic_idx}번째 LDA Model HyperParameter Tuning")
-            print(f"########################################## num_topics: {num_topics} 시작")
+        for num_topics in tqdm(LDAModelConfig.NUM_OF_TOPICS_BY_GROUP, desc=f"## LDA Model HyperParameter Tuning ##"):
             start_time = time()
             model = LdaMulticore(
                 corpus=corpus,
@@ -206,11 +204,11 @@ class LDAModel:
 
     def _create_lda_model_by_topic_and_save(self, num_topics):
 
-        print(self.df)
-
         self.grouped_dfs = [self.df[self.df["category"] == i] for i in range(1, num_topics + 1)]
 
-        for group_idx, group_df in enumerate(self.grouped_dfs, start=1):
+        for group_idx, group_df in tqdm(
+            enumerate(self.grouped_dfs, start=1), desc=f"## Create {num_topics}번째 LDA Model by Topic ##"
+        ):
             group_texts = group_df["documents"].tolist()
 
             # 그룹별 단어 사전 생성
