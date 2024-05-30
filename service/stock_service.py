@@ -12,13 +12,5 @@ class StockService(BaseService):
 
     def save_stock_data(self, time: int, price: int):
         price = StockRepository(session=self.session).save_stock_data(time=time, price=price)
-        news_service = NewsService(session=self.session)
-        time_now = (int(datetime.today().date().strftime("%Y%m%d")) * 10000 + time) * 100
-        news_min_list = news_service.get_news_list_min(item_name="삼성전자", time_now=time_now)
-        print(news_min_list)
-        for news in news_min_list:
-            data = news_service.get_news_data(time=time, url=news)
-            print(data)
-            res = news_service.save_news_data(news=data)
-            print(res)
+
         return True

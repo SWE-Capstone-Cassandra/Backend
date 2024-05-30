@@ -7,7 +7,6 @@ from sqlalchemy import select
 from ai_model.data_controller import DataController
 from config import get_session
 from model.news import News
-from model.stock import Stock
 from repository.news_repository import NewsRepository
 from repository.stock_repository import StockRepository
 
