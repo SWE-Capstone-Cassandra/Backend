@@ -1,20 +1,18 @@
+import os
+import pickle
+import shutil
+from time import time
+from typing import List
+
+import pandas as pd
 from gensim import corpora
-from gensim.models.ldamulticore import LdaMulticore
 from gensim.models import LdaModel
 from gensim.models.coherencemodel import CoherenceModel
-
-import pickle
-import pandas as pd
-from typing import List
-from time import time
+from gensim.models.ldamulticore import LdaMulticore
 from tqdm import tqdm
 
-import os
-import shutil
-
-from ai_model.text_preprocessor import TextPreprocessor
-
 from ai_model.constants import BaseConfig, LDAModelConfig, model_weights_path
+from ai_model.text_preprocessor import TextPreprocessor
 
 """
 LDA 모델
@@ -61,20 +59,20 @@ class LDAModel:
         self.df["date_time"] = dataset["date_time"]
         self.df["documents"] = TextPreprocessor(texts=list(dataset["content"])).preprocess()
 
-        print("토픽 추출 시작")
-        # 토픽 추출
-        num_topics = self._get_num_of_topics()
-        print("토픽 추출 완료")
+        # print("토픽 추출 시작")
+        # # 토픽 추출
+        # num_topics = self._get_num_of_topics()
+        # print("토픽 추출 완료")
 
-        print("재폴더링 시작")
-        # 재 폴더링(초기화)
-        self._remake_folder(num_topics=num_topics, remake=True)
-        print("재폴더링 완료")
+        # print("재폴더링 시작")
+        # # 재 폴더링(초기화)
+        # self._remake_folder(num_topics=num_topics, remake=True)
+        # print("재폴더링 완료")
 
-        print("1차 LDA 모델 추출 및 저장 시작")
-        # 1차 LDA 모델 추출 및 저장
-        self._create_main_lda_model_and_save(num_topics=num_topics)
-        print("1차 LDA 모델 추출 및 저장 완료")
+        # print("1차 LDA 모델 추출 및 저장 시작")
+        # # 1차 LDA 모델 추출 및 저장
+        # self._create_main_lda_model_and_save(num_topics=num_topics)
+        # print("1차 LDA 모델 추출 및 저장 완료")
 
         print("1차 LDA 토픽 분포 추출 및 그룹화 시작")
         # 1차 LDA 토픽 분포 추출 및 그룹화
@@ -83,10 +81,10 @@ class LDAModel:
 
         print("2차 LDA 모델 추출 및 저장 시작")
         # 2차 LDA 모델 추출 및 저장
-        self._create_lda_model_by_topic_and_save(num_topics=num_topics)
+        self._create_lda_model_by_topic_and_save(num_topics=20)
         print("2차 LDA 모델 추출 및 저장 완료")
 
-        return num_topics
+        return 20
 
     def _get_num_of_topics(self):
         """
