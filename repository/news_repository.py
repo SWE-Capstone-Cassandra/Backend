@@ -12,7 +12,7 @@ class NewsRepository(BaseRepository):
     def save_news_data(self, news: News):
 
         self.session.add(news)
-
+        self.session.flush()
         return news
 
     def get_news_data(self, news_url: str):
