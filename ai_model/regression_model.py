@@ -51,165 +51,196 @@ class RegressionModel:
         3. 기존 코퍼스의 토픽 분포 획득
         4. 해당 토픽 확률 활용, 회귀 분석 실시
         """
+        try:
+            print("회귀 모델 학습 시작")
+            for topic_idx in range(num_topics):
+                # 사전, 코퍼스, 기존 lda 모델 통해서 토픽 분포 획득
+                topic_distributions = self._get_topic_distributions(topic_idx)
+                # 토픽 분포를 활용하여 최적의 회귀 모델 저장
+                self._get_best_performance_regression_model_and_save(topic_idx=topic_idx, topic_distributions=topic_distributions)
+            print("회귀 모델 학습 종료")
 
-        print("회귀 모델 학습 시작")
-        for topic_idx in range(num_topics):
-            # 사전, 코퍼스, 기존 lda 모델 통해서 토픽 분포 획득
-            topic_distributions = self._get_topic_distributions(topic_idx)
-            # 토픽 분포를 활용하여 최적의 회귀 모델 저장
-            self._get_best_performance_regression_model_and_save(topic_idx=topic_idx, topic_distributions=topic_distributions)
-        print("회귀 모델 학습 종료")
+        except Exception as e:
+            print("Error of _get_num_of_topics_by_group method:", e)
 
     def _get_topic_distributions(self, topic_idx):
 
-        model_name = f"topic_{topic_idx+1}/lda_model_{topic_idx+1}.model"
-        model_path = os.path.join(model_weights_path, model_name)
-        model = LdaModel.load(model_path)
+        try:
+            model_name = f"topic_{topic_idx+1}/lda_model_{topic_idx+1}.model"
+            model_path = os.path.join(model_weights_path, model_name)
+            model = LdaModel.load(model_path)
 
-        corpus_name = f"topic_{topic_idx+1}/corpus_{topic_idx+1}.pkl"
-        corpus_path = os.path.join(model_weights_path, corpus_name)
-        with open(corpus_path, "rb") as f:
-            corpus = pickle.load(f)
+            corpus_name = f"topic_{topic_idx+1}/corpus_{topic_idx+1}.pkl"
+            corpus_path = os.path.join(model_weights_path, corpus_name)
+            with open(corpus_path, "rb") as f:
+                corpus = pickle.load(f)
 
-        return [model.get_document_topics(doc_bow) for doc_bow in corpus]
+            return [model.get_document_topics(doc_bow) for doc_bow in corpus]
+
+        except Exception as e:
+            print("Error of _get_num_of_topics_by_group method:", e)
 
     def _get_best_performance_regression_model_and_save(self, topic_idx, topic_distributions):
 
-        model_name = f"topic_{topic_idx+1}/lda_model_{topic_idx+1}.model"
-        model_path = os.path.join(model_weights_path, model_name)
-        model = LdaModel.load(model_path)
+        try:
+            model_name = f"topic_{topic_idx+1}/lda_model_{topic_idx+1}.model"
+            model_path = os.path.join(model_weights_path, model_name)
+            model = LdaModel.load(model_path)
 
-        temp_group = self.grouped_dfs[topic_idx]
-        self._get_stock_price_changes_by_date_time(temp_group=temp_group)
-        self._get_topic_features(temp_group=temp_group, topic_distributions=topic_distributions, num_topics=model.num_topics)
-        self._get_best_performance_regression_model(temp_group=temp_group, topic_idx=topic_idx)
+            temp_group = self.grouped_dfs[topic_idx]
+            self._get_stock_price_changes_by_date_time(temp_group=temp_group)
+            self._get_topic_features(temp_group=temp_group, topic_distributions=topic_distributions, num_topics=model.num_topics)
+            self._get_best_performance_regression_model(temp_group=temp_group, topic_idx=topic_idx)
+
+        except Exception as e:
+            print("Error of _get_num_of_topics_by_group method:", e)
 
     def _get_stock_price_changes_by_date_time(self, temp_group):
-        temp_group["date_time"] = pd.to_datetime(temp_group["date_time"])
-        temp_group["adjusted_time"] = temp_group["date_time"].apply(adjust_time)
 
-        for minutes in VolaConfig.TIME_INTERVALS:
-            temp_group[f"vola_{minutes}m"] = temp_group["adjusted_time"].apply(
-                lambda x: calculate_price_change(x, minutes, self.stock_dataset)
-            )
+        try:
+            temp_group["date_time"] = pd.to_datetime(temp_group["date_time"])
+            temp_group["adjusted_time"] = temp_group["date_time"].apply(adjust_time)
+
+            for minutes in VolaConfig.TIME_INTERVALS:
+                temp_group[f"vola_{minutes}m"] = temp_group["adjusted_time"].apply(
+                    lambda x: calculate_price_change(x, minutes, self.stock_dataset)
+                )
+
+        except Exception as e:
+            print("Error of _get_num_of_topics_by_group method:", e)
 
     def _get_topic_features(self, temp_group, topic_distributions, num_topics):
-        topic_dist_list = []
-        for dist in topic_distributions:
-            dist_dict = dict(dist)
-            topic_dist_list.append([dist_dict.get(i, 0.0) for i in range(num_topics)])
 
-        topic_df = pd.DataFrame(topic_dist_list, columns=[f"topic_{i}" for i in range(num_topics)])
+        try:
+            topic_dist_list = []
+            for dist in topic_distributions:
+                dist_dict = dict(dist)
+                topic_dist_list.append([dist_dict.get(i, 0.0) for i in range(num_topics)])
 
-        temp_group = pd.concat([temp_group, topic_df], axis=1)
+            topic_df = pd.DataFrame(topic_dist_list, columns=[f"topic_{i}" for i in range(num_topics)])
+
+            temp_group = pd.concat([temp_group, topic_df], axis=1)
+
+        except Exception as e:
+            print("Error of _get_num_of_topics_by_group method:", e)
 
     def _get_best_performance_regression_model(self, temp_group, topic_idx):
-        results = []
 
-        for vola in VolaConfig.VOLA_COLUMNS:
-            # 결측값 제거
-            data_clean = temp_group.dropna(subset=[vola])
+        try:
+            results = []
 
-            if data_clean.empty:
-                continue
+            for vola in VolaConfig.VOLA_COLUMNS:
+                # 결측값 제거
+                data_clean = temp_group.dropna(subset=[vola])
 
-            X = data_clean.drop(columns=VolaConfig.VOLA_COLUMNS + ["category", "date_time", "documents", "adjusted_time"])
-            y = data_clean[vola]
+                if data_clean.empty:
+                    continue
 
-            # 훈련/테스트 데이터 분할
-            X_train, X_test, y_train, y_test = train_test_split(
-                X, y, test_size=BaseConfig.TEST_SIZE, random_state=BaseConfig.RANDOM_STATE
-            )
+                X = data_clean.drop(columns=VolaConfig.VOLA_COLUMNS + ["category", "date_time", "documents", "adjusted_time"])
+                y = data_clean[vola]
 
-            # Ridge 회귀 모델 파이프라인
-            ridge_pipeline = Pipeline([("scaler", StandardScaler()), ("ridge", Ridge())])
+                # 훈련/테스트 데이터 분할
+                X_train, X_test, y_train, y_test = train_test_split(
+                    X, y, test_size=BaseConfig.TEST_SIZE, random_state=BaseConfig.RANDOM_STATE
+                )
 
-            # Lasso 회귀 모델 파이프라인
-            lasso_pipeline = Pipeline([("scaler", StandardScaler()), ("lasso", Lasso())])
+                # Ridge 회귀 모델 파이프라인
+                ridge_pipeline = Pipeline([("scaler", StandardScaler()), ("ridge", Ridge())])
 
-            # GridSearchCV 설정
-            ridge_grid = GridSearchCV(
-                ridge_pipeline, RegressionModelConfig.RIDGE_PARAMETERS, cv=5, scoring="neg_mean_absolute_error", n_jobs=-1
-            )
-            lasso_grid = GridSearchCV(
-                lasso_pipeline, RegressionModelConfig.LASSO_PARAMETERS, cv=5, scoring="neg_mean_absolute_error", n_jobs=-1
-            )
+                # Lasso 회귀 모델 파이프라인
+                lasso_pipeline = Pipeline([("scaler", StandardScaler()), ("lasso", Lasso())])
 
-            print(f"GridSearchCV 설정 - ridge: {ridge_grid}")
-            print(f"GridSearchCV 설정 - lasso: {lasso_grid}")
+                # GridSearchCV 설정
+                ridge_grid = GridSearchCV(
+                    ridge_pipeline, RegressionModelConfig.RIDGE_PARAMETERS, cv=5, scoring="neg_mean_absolute_error", n_jobs=-1
+                )
+                lasso_grid = GridSearchCV(
+                    lasso_pipeline, RegressionModelConfig.LASSO_PARAMETERS, cv=5, scoring="neg_mean_absolute_error", n_jobs=-1
+                )
 
-            # 모델 훈련
-            ridge_grid.fit(X_train, y_train)
-            lasso_grid.fit(X_train, y_train)
+                print(f"GridSearchCV 설정 - ridge: {ridge_grid}")
+                print(f"GridSearchCV 설정 - lasso: {lasso_grid}")
 
-            # 최적 모델 선택
-            best_ridge = ridge_grid.best_estimator_
-            best_lasso = lasso_grid.best_estimator_
+                # 모델 훈련
+                ridge_grid.fit(X_train, y_train)
+                lasso_grid.fit(X_train, y_train)
 
-            print(f"GridSearchCV 최적 모델 - ridge: {best_ridge}")
-            print(f"GridSearchCV 최적 모델 - lasso: {best_lasso}")
+                # 최적 모델 선택
+                best_ridge = ridge_grid.best_estimator_
+                best_lasso = lasso_grid.best_estimator_
 
-            # 예측
-            y_pred_ridge = best_ridge.predict(X_test)
-            y_pred_lasso = best_lasso.predict(X_test)
+                print(f"GridSearchCV 최적 모델 - ridge: {best_ridge}")
+                print(f"GridSearchCV 최적 모델 - lasso: {best_lasso}")
 
-            # 부호 일치 여부 확인
-            ridge_correct_sign = (y_pred_ridge > 0) == (y_test > 0)
-            lasso_correct_sign = (y_pred_lasso > 0) == (y_test > 0)
+                # 예측
+                y_pred_ridge = best_ridge.predict(X_test)
+                y_pred_lasso = best_lasso.predict(X_test)
 
-            # 부호 일치 정확도 계산
-            ridge_sign_accuracy = accuracy_score(ridge_correct_sign, [True] * len(y_test))
-            lasso_sign_accuracy = accuracy_score(lasso_correct_sign, [True] * len(y_test))
+                # 부호 일치 여부 확인
+                ridge_correct_sign = (y_pred_ridge > 0) == (y_test > 0)
+                lasso_correct_sign = (y_pred_lasso > 0) == (y_test > 0)
 
-            # MAE 계산
-            ridge_mae = mean_absolute_error(y_test, y_pred_ridge)
-            lasso_mae = mean_absolute_error(y_test, y_pred_lasso)
+                # 부호 일치 정확도 계산
+                ridge_sign_accuracy = accuracy_score(ridge_correct_sign, [True] * len(y_test))
+                lasso_sign_accuracy = accuracy_score(lasso_correct_sign, [True] * len(y_test))
 
-            model_name = f"topic_{topic_idx+1}/reg_model_{vola}.joblib"
-            model_path = os.path.join(model_weights_path, model_name)
-            if ridge_mae > lasso_mae:
-                with open(model_path, "wb") as f:
-                    dump(best_lasso, f)
-            else:
-                with open(model_path, "wb") as f:
-                    dump(best_ridge, f)
+                # MAE 계산
+                ridge_mae = mean_absolute_error(y_test, y_pred_ridge)
+                lasso_mae = mean_absolute_error(y_test, y_pred_lasso)
 
-            results.append(
-                {
-                    "volatility": vola,
-                    "ridge_sign_accuracy": ridge_sign_accuracy,
-                    "lasso_sign_accuracy": lasso_sign_accuracy,
-                    "ridge_mae": ridge_mae,
-                    "lasso_mae": lasso_mae,
-                }
-            )
+                model_name = f"topic_{topic_idx+1}/reg_model_{vola}.joblib"
+                model_path = os.path.join(model_weights_path, model_name)
+                if ridge_mae > lasso_mae:
+                    with open(model_path, "wb") as f:
+                        dump(best_lasso, f)
+                else:
+                    with open(model_path, "wb") as f:
+                        dump(best_ridge, f)
 
-            # 결과를 데이터프레임으로 변환
-            results_df = pd.DataFrame(results)
+                results.append(
+                    {
+                        "volatility": vola,
+                        "ridge_sign_accuracy": ridge_sign_accuracy,
+                        "lasso_sign_accuracy": lasso_sign_accuracy,
+                        "ridge_mae": ridge_mae,
+                        "lasso_mae": lasso_mae,
+                    }
+                )
 
-            # 평균 결과 계산
-            average_results = results_df.groupby("volatility").mean().reset_index()
+                # 결과를 데이터프레임으로 변환
+                results_df = pd.DataFrame(results)
 
-            # 출력
-            print("Average Results by Volatility:")
-            print(average_results)
+                # 평균 결과 계산
+                average_results = results_df.groupby("volatility").mean().reset_index()
 
-            # 전체 결과 출력
-            print("\nDetailed Results:")
-            print(results_df)
+                # 출력
+                print("Average Results by Volatility:")
+                print(average_results)
+
+                # 전체 결과 출력
+                print("\nDetailed Results:")
+                print(results_df)
+
+        except Exception as e:
+            print("Error of _get_num_of_topics_by_group method:", e)
 
     def get_stock_volatilities(self, group_id, topic_distributions):
-        stock_volatilities = []
 
-        for vola in VolaConfig.VOLA_COLUMNS:
-            model_name = f"topic_{group_id+1}/reg_model_{vola}.joblib"
-            model_path = os.path.join(model_weights_path, model_name)
+        try:
+            stock_volatilities = []
 
-            with open(model_path, "rb") as f:
-                model = load(f)
+            for vola in VolaConfig.VOLA_COLUMNS:
+                model_name = f"topic_{group_id+1}/reg_model_{vola}.joblib"
+                model_path = os.path.join(model_weights_path, model_name)
 
-            print(f"Loaded model: {model}")
+                with open(model_path, "rb") as f:
+                    model = load(f)
 
-            stock_volatilities.append(model.predict(topic_distributions)[0])
+                print(f"Loaded model: {model}")
 
-        return stock_volatilities
+                stock_volatilities.append(model.predict(topic_distributions)[0])
+
+            return stock_volatilities
+
+        except Exception as e:
+            print("Error of _get_num_of_topics_by_group method:", e)
