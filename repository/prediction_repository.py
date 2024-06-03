@@ -6,7 +6,7 @@ from repository.base_repository import BaseRepository
 
 class PredictionRepository(BaseRepository):
 
-    def get_news_prediction(self, news_id: int):
+    def get_news_prediction_by_news_id(self, news_id: int):
 
         stmt = select(NewsPrediction).where(NewsPrediction.news_id == news_id)
         res = self.session.execute(stmt)

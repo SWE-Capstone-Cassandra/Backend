@@ -28,11 +28,10 @@ class ModelService(BaseService):
     def request_stock_volatilities(self, content: str) -> List[float]:
         return DataController().predict_stock_volatilities(text=content)
 
-    def get_prediction(self, news_id: str):
-        return PredictionRepository().get_news_prediction(news_id=news_id)
+    def get_prediction_by_news_id(self, news_id: int):
+        return PredictionRepository().get_news_prediction_by_news_id(news_id=news_id)
 
-    def save_prediction(self, url: str, prediction: List[float]):
-        news_id = url - "https://v.daum.net/v/"
+    def save_prediction(self, news_id: int, prediction: List[float]):
         news_prediction = NewsPrediction()
         news_prediction.news_id = news_id
         news_prediction.min_1 = prediction[0] if len(prediction) > 0 else 0

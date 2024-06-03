@@ -1,8 +1,5 @@
-from datetime import datetime
-
 from repository.stock_repository import StockRepository
 from service.base_service import BaseService
-from service.news_service import NewsService
 
 
 class StockService(BaseService):

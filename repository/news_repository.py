@@ -1,4 +1,5 @@
 import datetime
+from typing import List
 
 import pandas as pd
 from sqlalchemy import select
@@ -17,9 +18,15 @@ class NewsRepository(BaseRepository):
 
     def get_news_data(self, news_url: str):
 
-        stmt = select(News).where(News.news_url == news_url)
+        stmt = select(News).where(News.news_id == news_url)
         res = self.session.execute(stmt)
         res = res.scalar()
+        return res
+    
+    def get_news_data_by_id(self, news_id:int)->News:
+        stmt=select(News).where(News.news_id==news_id)
+        res=self.session.execute(stmt)
+        res=res.scalar()
         return res
 
     def get_news_dataset(self) -> pd.DataFrame:
@@ -34,3 +41,9 @@ class NewsRepository(BaseRepository):
             df = df.drop(columns=["id"])
         df.sort_values(by=["date_time"])
         return df
+
+    def get_news_list(self)->List[News]:
+        stmt= select(News).order_by(News.date_time.desc()).limit(10)
+        res= self.session.execute(stmt)
+        res=res.scalars().all()
+        return res
