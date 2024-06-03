@@ -28,23 +28,17 @@ class ModelService(BaseService):
     def request_stock_volatilities(self, content: str) -> List[float]:
         return DataController().predict_stock_volatilities(text=content)
 
-    def get_prediction(self, news_id: str):
-        return PredictionRepository().get_news_prediction(news_id=news_id)
+    def get_prediction_by_news_id(self, news_id: int):
+        return PredictionRepository().get_news_prediction_by_news_id(news_id=news_id)
 
-    def save_prediction(self, url: str, date: int, time: int):
-        news_data = NewsService().get_news_data(url=url)
-        # topic = LDA().get_prediction(news_data)
-
-        # price_data = 회귀모델().get_prediction(topic)
-        stock_price = StockRepository().get_stock_data_by_date(date=date, time=time)
-        news_id = url - "https://v.daum.net/v/"
+    def save_prediction(self, news_id: int, prediction: List[float]):
         news_prediction = NewsPrediction()
         news_prediction.news_id = news_id
-        news_prediction.min_1 = 1
-        news_prediction.min_5 = 5
-        news_prediction.min_15 = 15
-        news_prediction.min_60 = 60
-        news_prediction.day_1 = stock_price
+        news_prediction.min_1 = prediction[0] if len(prediction) > 0 else 0
+        news_prediction.min_5 = prediction[1] if len(prediction) > 1 else 0
+        news_prediction.min_15 = prediction[2] if len(prediction) > 2 else 0
+        news_prediction.min_60 = prediction[3] if len(prediction) > 3 else 0
+        news_prediction.day_1 = prediction[4] if len(prediction) > 4 else 0
 
         res = PredictionRepository().save_news_prediction(news_prediction=news_prediction)
         return res

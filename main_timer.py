@@ -9,6 +9,7 @@ from repository.news_repository import NewsRepository
 from repository.stock_repository import StockRepository
 from service.model_service import ModelService
 from service.news_service import NewsService
+from model.news import News
 
 FRIDAY = 0
 HOUR = 60 * 60
@@ -37,7 +38,7 @@ class TimerMain:
                             data = news_service.get_news_data(date_time=int(time_now / 100), url=news)
                             res = news_service.save_news_data(news=data)
                             prediction: List = model_service.request_stock_volatilities(content=res.content)
-                            saved_prediction = model_service.save_prediction(url=res.news_url, prediction=prediction)
+                            saved_prediction = model_service.save_prediction(news_id=res.news_id, prediction=prediction)
                             print(saved_prediction)
                         last_min = current_min
                         session.commit()

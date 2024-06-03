@@ -24,7 +24,7 @@ class AddExcel:
             date_time = datetime.strptime(date, "%Y. %m. %d. %H:%M")
 
             news_data = News()
-            news_data.news_url = None
+            news_data.news_id = None
             news_data.date_time = date_time
             news_data.title = None
             news_data.writer = None
