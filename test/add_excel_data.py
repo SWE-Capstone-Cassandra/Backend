@@ -11,26 +11,30 @@ from model.stock import Stock
 class AddExcel:
     def add_excel(self):
         create_db()
-        file_path = "/home/tako4/capstone/backend/Backend/data/daum_samsung_20220601000000_202206292353.csv"
+        file_path = "/home/tako4/capstone/backend/Backend/data/ybdata.csv"
         session = get_session()
 
         df = pd.read_csv(file_path)
         num_rows = len(df)
         # print(df)
-        for i in range(num_rows):
+        for i in range(1, num_rows):
             content = df.iloc[i]["content"]
             date = df.iloc[i]["date"]
+            if date != "date":
+                try:
+                    date_time = datetime.strptime(date, "%Y. %m. %d. %H:%M")
 
-            date_time = datetime.strptime(date, "%Y. %m. %d. %H:%M")
+                    news_data = News()
+                    news_data.news_id = None
+                    news_data.date_time = date_time
+                    news_data.title = None
+                    news_data.writer = None
+                    news_data.content = content
 
-            news_data = News()
-            news_data.news_id = None
-            news_data.date_time = date_time
-            news_data.title = None
-            news_data.writer = None
-            news_data.content = content
+                    session.add(news_data)
+                except Exception as e:
+                    print(e)
 
-            session.add(news_data)
         session.commit()
 
     def to_csv(self):

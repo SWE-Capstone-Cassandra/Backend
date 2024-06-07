@@ -6,7 +6,7 @@ from pydantic import BaseModel
 
 class NewsListAtt(BaseModel):
     title: Optional[str] = None
-    url: Optional[str] = None
+    news_id: Optional[str] = None
 
 
 class NewsSchema(BaseModel):
