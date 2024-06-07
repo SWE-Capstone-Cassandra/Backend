@@ -68,7 +68,7 @@ class NewsService(BaseService):
         for news in data:
             att = NewsListAtt()
             att.title = news.title
-            att.url = news.news_id
+            att.news_id = news.news_id
             news_list.append(att)
         return news_list
 

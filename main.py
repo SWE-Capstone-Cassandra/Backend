@@ -9,9 +9,9 @@ from config import create_db
 
 app = FastAPI()
 
-app.include_router(stock_router, prefix="/stock")
-app.include_router(news_router, prefix="/news")
-app.include_router(model_router, prefix="/model")
+app.include_router(stock_router, prefix="/stock", tags=["stock"])
+app.include_router(news_router, prefix="/news", tags=["news"])
+app.include_router(model_router, prefix="/model", tags=["model"])
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],

@@ -5,18 +5,18 @@ from typing import List
 
 from ai_model.data_controller import DataController
 from config import get_session
+from model.news import News
 from repository.news_repository import NewsRepository
 from repository.stock_repository import StockRepository
 from service.model_service import ModelService
 from service.news_service import NewsService
-from model.news import News
 
 FRIDAY = 0
 HOUR = 60 * 60
 SIX_HOUR = 60 * 60 * 6
 
 
-class TimerMain:
+class ScheduleController:
 
     def min_data_collector(self):
         print("news collector start")
@@ -72,6 +72,6 @@ if __name__ == "__main__":
 
     with ThreadPoolExecutor(max_workers=2) as executor:
         print("start")
-        timer = TimerMain()
+        timer = ScheduleController()
         executor.submit(timer.min_data_collector)
         executor.submit(timer.train_controll)

@@ -3,6 +3,7 @@ from typing import List
 
 import pandas as pd
 from sqlalchemy import select
+from sqlalchemy.orm import contains_eager, load_only
 
 from model.news import News
 from repository.base_repository import BaseRepository
@@ -22,11 +23,11 @@ class NewsRepository(BaseRepository):
         res = self.session.execute(stmt)
         res = res.scalar()
         return res
-    
-    def get_news_data_by_id(self, news_id:int)->News:
-        stmt=select(News).where(News.news_id==news_id)
-        res=self.session.execute(stmt)
-        res=res.scalar()
+
+    def get_news_data_by_id(self, news_id: int) -> News:
+        stmt = select(News).where(News.news_id == news_id)
+        res = self.session.execute(stmt)
+        res = res.scalar()
         return res
 
     def get_news_dataset(self) -> pd.DataFrame:
@@ -42,8 +43,10 @@ class NewsRepository(BaseRepository):
         df.sort_values(by=["date_time"])
         return df
 
-    def get_news_list(self)->List[News]:
-        stmt= select(News).order_by(News.date_time.desc()).limit(10)
-        res= self.session.execute(stmt)
-        res=res.scalars().all()
+    def get_news_list(self) -> List[News]:
+        # stmt = select(News).order_by(News.date_time.desc()).limit(10)
+        stmt = select(News).order_by(News.date_time.desc()).limit(10).options(load_only(News.news_id, News.title))
+        res = self.session.execute(stmt)
+        res = res.scalars().all()
+
         return res
