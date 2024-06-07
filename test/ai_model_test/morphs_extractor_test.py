@@ -1,5 +1,5 @@
 import unittest
-from ai_model.text_preprocessor import TextPreprocessor
+from ai_model.preprocessor.text_preprocessor import TextPreprocessor
 
 news_texts = [
     "[ 문재인 대통령이 지난해 12월 27일 청와대에서 정부의 민관합동 청년 일자리]" * 60,

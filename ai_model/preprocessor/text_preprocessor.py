@@ -34,10 +34,16 @@ class TextPreprocessor:
         with open(stopwords_path, "r", encoding="utf-8") as file:
             stopwords = set(line.strip() for line in file.readlines())
 
+        custom_stopwords_path = "/home/tako4/capstone/backend/Model/custom-stopwords.txt"
+        with open(custom_stopwords_path, "r", encoding="utf-8") as file:
+            custom_stopwords = set(line.strip() for line in file.readlines())
+
+        stopwords_list = stopwords.union(custom_stopwords)
+
         used_pos = ["NNG", "NNP", "NR", "NP", "VV", "VA", "VX"]
 
         def filter_morphs(morphs):
-            return list(filter(lambda morph: any(pos in morph[1] for pos in used_pos) and morph[0] not in stopwords, morphs))
+            return list(filter(lambda morph: any(pos in morph[1] for pos in used_pos) and morph[0] not in stopwords_list, morphs))
 
         if type(self.texts[0]) is tuple:
             self.texts = filter_morphs(self.texts)

@@ -68,8 +68,8 @@ def calculate_price_change(current_time, minutes, stock_dataset: pd.DataFrame):
     current_prices = stock_dataset.loc[stock_dataset["date_time"] == current_time.strftime("%Y-%m-%d %H:%M"), "price"]
     future_prices = stock_dataset.loc[stock_dataset["date_time"] == future_time.strftime("%Y-%m-%d %H:%M"), "price"]
 
-    print("current_price: ", current_prices)
-    print("future_price: ", future_prices)
+    # print("current_price: ", current_prices)
+    # print("future_price: ", future_prices)
 
     if not current_prices.empty and not future_prices.empty:
         current_price = current_prices.values[0]

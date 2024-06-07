@@ -52,13 +52,23 @@ class RegressionModel:
         4. 해당 토픽 확률 활용, 회귀 분석 실시
         """
         try:
+            avg_score = []
             print("회귀 모델 학습 시작")
             for topic_idx in range(num_topics):
                 # 사전, 코퍼스, 기존 lda 모델 통해서 토픽 분포 획득
                 topic_distributions = self._get_topic_distributions(topic_idx)
                 # 토픽 분포를 활용하여 최적의 회귀 모델 저장
-                self._get_best_performance_regression_model_and_save(topic_idx=topic_idx, topic_distributions=topic_distributions)
+                avg_score.append(
+                    self._get_best_performance_regression_model_and_save(topic_idx=topic_idx, topic_distributions=topic_distributions)
+                )
             print("회귀 모델 학습 종료")
+            # 모든 토픽의 결과를 하나의 데이터프레임으로 결합
+            final_results_df = pd.concat(avg_score, ignore_index=True)
+
+            # 결과 정렬 및 출력
+            final_results_df = final_results_df.sort_values(by=["topic", "volatility"]).reset_index(drop=True)
+
+            return final_results_df
 
         except Exception as e:
             print("Error of _get_num_of_topics_by_group method:", e)
@@ -90,7 +100,8 @@ class RegressionModel:
             temp_group = self.grouped_dfs[topic_idx]
             self._get_stock_price_changes_by_date_time(temp_group=temp_group)
             self._get_topic_features(temp_group=temp_group, topic_distributions=topic_distributions, num_topics=model.num_topics)
-            self._get_best_performance_regression_model(temp_group=temp_group, topic_idx=topic_idx)
+            avg_score = self._get_best_performance_regression_model(temp_group=temp_group, topic_idx=topic_idx)
+            return avg_score
 
         except Exception as e:
             print("Error of _get_num_of_topics_by_group method:", e)
@@ -158,8 +169,8 @@ class RegressionModel:
                     lasso_pipeline, RegressionModelConfig.LASSO_PARAMETERS, cv=5, scoring="neg_mean_absolute_error", n_jobs=-1
                 )
 
-                print(f"GridSearchCV 설정 - ridge: {ridge_grid}")
-                print(f"GridSearchCV 설정 - lasso: {lasso_grid}")
+                # print(f"GridSearchCV 설정 - ridge: {ridge_grid}")
+                # print(f"GridSearchCV 설정 - lasso: {lasso_grid}")
 
                 # 모델 훈련
                 ridge_grid.fit(X_train, y_train)
@@ -169,8 +180,8 @@ class RegressionModel:
                 best_ridge = ridge_grid.best_estimator_
                 best_lasso = lasso_grid.best_estimator_
 
-                print(f"GridSearchCV 최적 모델 - ridge: {best_ridge}")
-                print(f"GridSearchCV 최적 모델 - lasso: {best_lasso}")
+                # print(f"GridSearchCV 최적 모델 - ridge: {best_ridge}")
+                # print(f"GridSearchCV 최적 모델 - lasso: {best_lasso}")
 
                 # 예측
                 y_pred_ridge = best_ridge.predict(X_test)
@@ -199,6 +210,7 @@ class RegressionModel:
 
                 results.append(
                     {
+                        "topic": topic_idx + 1,
                         "volatility": vola,
                         "ridge_sign_accuracy": ridge_sign_accuracy,
                         "lasso_sign_accuracy": lasso_sign_accuracy,
@@ -207,19 +219,9 @@ class RegressionModel:
                     }
                 )
 
-                # 결과를 데이터프레임으로 변환
-                results_df = pd.DataFrame(results)
-
-                # 평균 결과 계산
-                average_results = results_df.groupby("volatility").mean().reset_index()
-
-                # 출력
-                print("Average Results by Volatility:")
-                print(average_results)
-
-                # 전체 결과 출력
-                print("\nDetailed Results:")
-                print(results_df)
+            # 결과를 데이터프레임으로 변환
+            results_df = pd.DataFrame(results)
+            return results_df
 
         except Exception as e:
             print("Error of _get_num_of_topics_by_group method:", e)
