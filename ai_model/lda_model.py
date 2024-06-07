@@ -1,3 +1,4 @@
+import gensim.models.ldamulticore
 import os
 import pickle
 import shutil
@@ -7,13 +8,13 @@ from typing import List
 import numpy as np
 import pandas as pd
 from gensim import corpora
+from gensim.models import LdaModel
 from gensim.models import LdaMulticore
 from gensim.models.coherencemodel import CoherenceModel
-from gensim.models.ldamulticore import LdaMulticore
 from tqdm import tqdm
 
 from ai_model.constants import BaseConfig, LDAModelConfig, model_weights_path
-from ai_model.text_preprocessor import TextPreprocessor
+from ai_model.preprocessor.text_preprocessor import TextPreprocessor
 
 """
 LDA 모델
@@ -60,30 +61,30 @@ class LDAModel:
         self.df["date_time"] = dataset["date_time"]
         self.df["documents"] = TextPreprocessor(texts=list(dataset["content"])).preprocess()
 
-        # print("토픽 추출 시작")
+        print("토픽 추출 시작")
         # 토픽 추출
-        num_topics = self._get_num_of_topics()
+        num_topics, best_model = self._get_num_of_topics()
         # print("토픽 추출 완료")
 
-        # print("재폴더링 시작")
-        # # 재 폴더링(초기화)
+        print("재폴더링 시작")
+        # 재 폴더링(초기화)
         self._remake_folder(num_topics=num_topics, remake=True)
-        # print("재폴더링 완료")
+        print("재폴더링 완료")
 
-        # print("1차 LDA 모델 추출 및 저장 시작")
+        print("1차 LDA 모델 추출 및 저장 시작")
         # # 1차 LDA 모델 추출 및 저장
-        self._create_main_lda_model_and_save(num_topics=num_topics)
-        # print("1차 LDA 모델 추출 및 저장 완료")
+        self._save_main_lda_model(best_model=best_model)
+        print("1차 LDA 모델 추출 및 저장 완료")
 
-        # print("1차 LDA 토픽 분포 추출 및 그룹화 시작")
+        print("1차 LDA 토픽 분포 추출 및 그룹화 시작")
         # # 1차 LDA 토픽 분포 추출 및 그룹화
         self._get_first_document_topics_and_grouping()
-        # print("1차 LDA 토픽 분포 추출 및 그룹화 완료")
+        print("1차 LDA 토픽 분포 추출 및 그룹화 완료")
 
-        # print("2차 LDA 모델 추출 및 저장 시작")
+        print("2차 LDA 모델 추출 및 저장 시작")
         # # 2차 LDA 모델 추출 및 저장
         self._create_lda_model_by_topic_and_save(num_topics=num_topics)
-        # print("2차 LDA 모델 추출 및 저장 완료")
+        print("2차 LDA 모델 추출 및 저장 완료")
 
         return num_topics
 
@@ -96,52 +97,47 @@ class LDAModel:
             corpus = [dictionary.doc2bow(text) for text in self.df["documents"]]
 
             best_coherence = -np.inf
-            # best_perplexity = np.inf
-            best_model = None
 
             for num_topics in tqdm(LDAModelConfig.NUM_OF_CATEGORY, desc=f"## LDA Category HyperParameter Tuning ##"):
-                # start_time = time()
-                model = LdaMulticore(
-                    corpus=corpus,
-                    id2word=dictionary,
-                    num_topics=num_topics,
-                    random_state=BaseConfig.RANDOM_STATE,
-                    passes=LDAModelConfig.PASSES,
-                    iterations=LDAModelConfig.ITERATIONS,
-                    workers=LDAModelConfig.WORKERS,
-                )
-                coherence_model = CoherenceModel(model=model, texts=list(self.df["documents"]), dictionary=dictionary, coherence="c_v")
-                coherence_score = coherence_model.get_coherence()
+                for alpha in LDAModelConfig.ALPHA:
+                    for eta in LDAModelConfig.ETA:
+                        # start_time = time()
+                        model = LdaMulticore(
+                            corpus=corpus,
+                            id2word=dictionary,
+                            num_topics=num_topics,
+                            random_state=BaseConfig.RANDOM_STATE,
+                            passes=LDAModelConfig.PASSES,
+                            alpha=alpha,
+                            eta=eta,
+                            workers=LDAModelConfig.WORKERS,
+                        )
+                        coherence_model = CoherenceModel(
+                            model=model, texts=list(self.df["documents"]), dictionary=dictionary, coherence="c_v"
+                        )
+                        coherence_score = coherence_model.get_coherence()
 
-                # perplexity_score = model.log_perplexity(corpus)
+                        if coherence_score > best_coherence:
+                            best_coherence = coherence_score
+                            best_num_topics = num_topics
+                            best_alpha = alpha
+                            best_eta = eta
+                            best_model = model
 
-                # end_time = time()
-                # elapsed_time = end_time - start_time
+            print(f"Best Coherence Score: {best_coherence}")
+            print(f"Best Num Topics: {best_num_topics}")
+            print(f"Best Alpha: {best_alpha}")
+            print(f"Best Eta: {best_eta}")
 
-                # if coherence_score > best_coherence and perplexity_score < best_perplexity:
-                #     best_coherence = coherence_score
-                #     best_perplexity = perplexity_score
-                #     best_num_topics = num_topics
-                # print(
-                #     f"num_topics: {num_topics}, coherence_score: {best_coherence}, perplexity: {best_perplexity} time: {elapsed_time:.2f} seconds"
-                # )
-                if coherence_score > best_coherence:
-                    best_coherence = coherence_score
-                    best_num_topics = num_topics
-                    best_model = model
-
-            # # 최적의 하이퍼파라미터 출력
-            # print("Best Coherence Score - category:", best_coherence)
-            # print("Best Params - category:", best_num_topics)
-            for idx, topic in best_model.print_topics(-1):
+            for idx, topic in best_model.print_topics(num_words=5):
                 print(f"Topic: {idx} \nWords: {topic}\n")
 
-            return best_num_topics
+            return best_num_topics, best_model
 
         except Exception as e:
             print("Error of _get_num_of_topics method:", e)
 
-    def _get_num_of_topics_by_group(self, topic_idx, texts, dictionary, corpus):
+    def _get_best_model_by_group(self, topic_idx, texts, dictionary, corpus):
         """
         각 토픽 그룹별 LDA 수행하는 함수
         각 토픽에 해당하는 폴더로 접근하여 저장한다
@@ -152,38 +148,44 @@ class LDAModel:
             corpus: 그룹 corpus
 
         Returns:
-            int: 해당 그룹의 최적의 topic 수
+            best_model: 해당 그룹의 최적의 LDA model
         """
         try:
-            # print(f"현재 {topic_idx}번째 그룹의 텍스트 세트:\n", texts)
+            print(f"현재 {topic_idx}번째 그룹의 텍스트 세트 개수:\n", len(texts))
             best_coherence = 0
-            best_params = {}
 
             for num_topics in tqdm(LDAModelConfig.NUM_OF_TOPICS_BY_GROUP, desc=f"## LDA Model HyperParameter Tuning ##"):
-                start_time = time()
-                model = LdaMulticore(
-                    corpus=corpus,
-                    id2word=dictionary,
-                    num_topics=num_topics,
-                    random_state=BaseConfig.RANDOM_STATE,
-                    passes=LDAModelConfig.PASSES,
-                    workers=None,
-                )
-                coherence_model = CoherenceModel(model=model, texts=texts, dictionary=dictionary, coherence="c_v")
-                coherence_score = coherence_model.get_coherence()
-                end_time = time()
-                elapsed_time = end_time - start_time
+                for alpha in LDAModelConfig.ALPHA:
+                    for eta in LDAModelConfig.ETA:
+                        model = LdaMulticore(
+                            corpus=corpus,
+                            id2word=dictionary,
+                            num_topics=num_topics,
+                            random_state=BaseConfig.RANDOM_STATE,
+                            passes=LDAModelConfig.PASSES,
+                            alpha=alpha,
+                            eta=eta,
+                            workers=LDAModelConfig.WORKERS,
+                        )
+                        coherence_model = CoherenceModel(model=model, texts=texts, dictionary=dictionary, coherence="c_v")
+                        coherence_score = coherence_model.get_coherence()
 
-                if coherence_score > best_coherence:
-                    print(f"num_topics: {num_topics}, coherence_score: {coherence_score}, time: {elapsed_time:.2f} seconds")
-                    best_coherence = coherence_score
-                    best_params = {"num_topics": num_topics}
+                        if coherence_score > best_coherence:
+                            best_coherence = coherence_score
+                            best_num_topics = num_topics
+                            best_alpha = alpha
+                            best_eta = eta
+                            best_model = model
 
-            # # 최적의 하이퍼파라미터 출력
-            # print("Best Coherence Score:", best_coherence)
-            # print("Best Params:", best_params)
+            print(f"Best Coherence Score: {best_coherence}")
+            print(f"Best Num Topics: {best_num_topics}")
+            print(f"Best Alpha: {best_alpha}")
+            print(f"Best Eta: {best_eta}")
 
-            return best_params["num_topics"]
+            for idx, topic in best_model.print_topics(1):
+                print(f"Topic: {idx} \nWords: {topic}\n")
+
+            return best_model
 
         except Exception as e:
             print("Error of _get_num_of_topics_by_group method:", e)
@@ -205,32 +207,21 @@ class LDAModel:
         except Exception as e:
             print("Error of _remake_folder method:", e)
 
-    def _create_main_lda_model_and_save(self, num_topics):
+    def _save_main_lda_model(self, best_model):
 
         try:
-            dictionary = corpora.Dictionary(self.df["documents"])
-            corpus = [dictionary.doc2bow(text) for text in self.df["documents"]]
-
-            params = {
-                "num_topics": num_topics,
-                "corpus": corpus,
-                "id2word": dictionary,
-                "passes": LDAModelConfig.PASSES,
-                "random_state": BaseConfig.RANDOM_STATE,
-            }
-
-            lda_model = LdaMulticore(**params)
-
             model_name = "category_lda_model.model"
             model_path = os.path.join(model_weights_path, model_name)
 
-            lda_model.save(model_path)
+            best_model.save(model_path)
 
+            dictionary = corpora.Dictionary(self.df["documents"])
             dictionary_name = "category_dictionary.pkl"
             dictionary_path = os.path.join(model_weights_path, dictionary_name)
             with open(dictionary_path, "wb") as f:
                 pickle.dump(dictionary, f)
 
+            corpus = [dictionary.doc2bow(text) for text in self.df["documents"]]
             corpus_name = "category_corpus.pkl"
             corpus_path = os.path.join(model_weights_path, corpus_name)
             with open(corpus_path, "wb") as f:
@@ -246,31 +237,20 @@ class LDAModel:
 
             for group_idx, group_df in tqdm(enumerate(self.grouped_dfs, start=1), desc=f"## Create LDA Model by Topic ##"):
                 group_texts = group_df["documents"].tolist()
+                print(f"{group_idx}번째 그룹의 데이터 수: ", len(group_texts))
 
                 # 그룹별 단어 사전 생성
                 group_dictionary = corpora.Dictionary(group_texts)
                 group_corpus = [group_dictionary.doc2bow(text) for text in group_texts]
 
-                group_idx_num_topics = self._get_num_of_topics_by_group(
+                group_best_model = self._get_best_model_by_group(
                     topic_idx=group_idx, texts=group_texts, dictionary=group_dictionary, corpus=group_corpus
                 )
-
-                params = {
-                    "num_topics": group_idx_num_topics,
-                    "corpus": group_corpus,
-                    "id2word": group_dictionary,
-                    "passes": LDAModelConfig.PASSES,
-                    "random_state": BaseConfig.RANDOM_STATE,
-                    "workers": LDAModelConfig.WORKERS,
-                    "iterations": LDAModelConfig.ITERATIONS,
-                }
-
-                model = LdaMulticore(**params)
 
                 model_name = f"topic_{group_idx}/lda_model_{group_idx}.model"
                 model_path = os.path.join(model_weights_path, model_name)
 
-                model.save(model_path)
+                group_best_model.save(model_path)
 
                 dicitonary_name = f"topic_{group_idx}/dictionary_{group_idx}.pkl"
                 dictionary_path = os.path.join(model_weights_path, dicitonary_name)
@@ -291,7 +271,7 @@ class LDAModel:
         try:
             model_name = "category_lda_model.model"
             model_path = os.path.join(model_weights_path, model_name)
-            model = LdaMulticore.load(model_path)
+            model = LdaModel.load(model_path)
 
             corpus_name = "category_corpus.pkl"
             corpus_path = os.path.join(model_weights_path, corpus_name)
@@ -347,7 +327,7 @@ class LDAModel:
             print("group id 추출")
             model_name = "category_lda_model.model"
             model_path = os.path.join(model_weights_path, model_name)
-            model = LdaMulticore.load(model_path)
+            model = LdaModel.load(model_path)
 
             print(f"사용된 모델 경로: {model_path}")
 
@@ -376,7 +356,7 @@ class LDAModel:
             print("2차 토픽 추출")
             model_name = f"topic_{group_id}/lda_model_{group_id}.model"
             model_path = os.path.join(model_weights_path, model_name)
-            model = LdaMulticore.load(model_path)
+            model = LdaModel.load(model_path)
 
             print(f"사용된 모델 경로: {model_path}")
 
