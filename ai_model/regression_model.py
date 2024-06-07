@@ -13,7 +13,7 @@ from sklearn.pipeline import Pipeline
 
 from gensim.models import LdaModel
 from ai_model.lda_model import LDAModel
-from ai_model.utils import adjust_time, calculate_price_change
+from ai_model.utils import adjust_time, calculate_price_change, count_subdirectories
 
 from ai_model.constants import BaseConfig, model_weights_path, RegressionModelConfig, VolaConfig
 
@@ -35,6 +35,7 @@ from ai_model.constants import BaseConfig, model_weights_path, RegressionModelCo
 
 
 class RegressionModel:
+
     def __init__(self, stock_dataset: pd.DataFrame = None, lda_model: LDAModel = None):
         """
         Args:
@@ -42,9 +43,14 @@ class RegressionModel:
         """
         self.stock_dataset = stock_dataset
         self.grouped_dfs = lda_model.get_group_df() if lda_model else None
+        self.folder_count = count_subdirectories(model_weights_path)
+        self.folder_prefix = "model_weights_"
+        self.folder_index = self.folder_count
+        self.folder_name = self.folder_prefix + str(self.folder_index)
+        self.folder_path = os.path.join(model_weights_path, self.folder_name)
         print(__name__, "생성")
 
-    def train_regression_model(self, num_topics):
+    def train_regression_model(self, num_topics, folder_path):
         """
         1. 사전, 코퍼스 불러오기
         2. 모델 불러오기
@@ -56,10 +62,12 @@ class RegressionModel:
             print("회귀 모델 학습 시작")
             for topic_idx in range(num_topics):
                 # 사전, 코퍼스, 기존 lda 모델 통해서 토픽 분포 획득
-                topic_distributions = self._get_topic_distributions(topic_idx)
+                topic_distributions = self._get_topic_distributions(topic_idx=topic_idx, folder_path=folder_path)
                 # 토픽 분포를 활용하여 최적의 회귀 모델 저장
                 avg_score.append(
-                    self._get_best_performance_regression_model_and_save(topic_idx=topic_idx, topic_distributions=topic_distributions)
+                    self._get_best_performance_regression_model_and_save(
+                        topic_idx=topic_idx, topic_distributions=topic_distributions, folder_path=folder_path
+                    )
                 )
             print("회귀 모델 학습 종료")
             # 모든 토픽의 결과를 하나의 데이터프레임으로 결합
@@ -73,15 +81,15 @@ class RegressionModel:
         except Exception as e:
             print("Error of _get_num_of_topics_by_group method:", e)
 
-    def _get_topic_distributions(self, topic_idx):
+    def _get_topic_distributions(self, topic_idx, folder_path):
 
         try:
             model_name = f"topic_{topic_idx+1}/lda_model_{topic_idx+1}.model"
-            model_path = os.path.join(model_weights_path, model_name)
+            model_path = os.path.join(folder_path, model_name)
             model = LdaModel.load(model_path)
 
             corpus_name = f"topic_{topic_idx+1}/corpus_{topic_idx+1}.pkl"
-            corpus_path = os.path.join(model_weights_path, corpus_name)
+            corpus_path = os.path.join(folder_path, corpus_name)
             with open(corpus_path, "rb") as f:
                 corpus = pickle.load(f)
 
@@ -90,17 +98,19 @@ class RegressionModel:
         except Exception as e:
             print("Error of _get_num_of_topics_by_group method:", e)
 
-    def _get_best_performance_regression_model_and_save(self, topic_idx, topic_distributions):
+    def _get_best_performance_regression_model_and_save(self, topic_idx, topic_distributions, folder_path):
 
         try:
             model_name = f"topic_{topic_idx+1}/lda_model_{topic_idx+1}.model"
-            model_path = os.path.join(model_weights_path, model_name)
+            model_path = os.path.join(folder_path, model_name)
             model = LdaModel.load(model_path)
 
             temp_group = self.grouped_dfs[topic_idx]
             self._get_stock_price_changes_by_date_time(temp_group=temp_group)
             self._get_topic_features(temp_group=temp_group, topic_distributions=topic_distributions, num_topics=model.num_topics)
-            avg_score = self._get_best_performance_regression_model(temp_group=temp_group, topic_idx=topic_idx)
+            avg_score = self._get_best_performance_regression_model(
+                temp_group=temp_group, topic_idx=topic_idx, folder_path=folder_path
+            )
             return avg_score
 
         except Exception as e:
@@ -135,7 +145,7 @@ class RegressionModel:
         except Exception as e:
             print("Error of _get_num_of_topics_by_group method:", e)
 
-    def _get_best_performance_regression_model(self, temp_group, topic_idx):
+    def _get_best_performance_regression_model(self, temp_group, topic_idx, folder_path):
 
         try:
             results = []
@@ -200,7 +210,7 @@ class RegressionModel:
                 lasso_mae = mean_absolute_error(y_test, y_pred_lasso)
 
                 model_name = f"topic_{topic_idx+1}/reg_model_{vola}.joblib"
-                model_path = os.path.join(model_weights_path, model_name)
+                model_path = os.path.join(folder_path, model_name)
                 if ridge_mae > lasso_mae:
                     with open(model_path, "wb") as f:
                         dump(best_lasso, f)
@@ -226,14 +236,14 @@ class RegressionModel:
         except Exception as e:
             print("Error of _get_num_of_topics_by_group method:", e)
 
-    def get_stock_volatilities(self, group_id, topic_distributions):
+    def get_stock_volatilities(self, group_id, topic_distributions, folder_path):
 
         try:
             stock_volatilities = []
 
             for vola in VolaConfig.VOLA_COLUMNS:
                 model_name = f"topic_{group_id+1}/reg_model_{vola}.joblib"
-                model_path = os.path.join(model_weights_path, model_name)
+                model_path = os.path.join(folder_path, model_name)
 
                 with open(model_path, "rb") as f:
                     model = load(f)

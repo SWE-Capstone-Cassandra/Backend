@@ -1,3 +1,4 @@
+import os
 from ai_model.lda_model import LDAModel
 from ai_model.regression_model import RegressionModel
 
@@ -5,6 +6,8 @@ from time import time
 import pandas as pd
 from typing import List
 from ai_model.preprocessor.similar_texts_preprocessor import SimilarTextsPreprocessor
+from ai_model.utils import count_subdirectories
+from ai_model.constants import model_weights_path
 
 
 class DataController:
@@ -18,6 +21,13 @@ class DataController:
             news_dataset: 뉴스 데이터 세트 [필요한 컬럼 - date_time, content(documents)]
             stock_dataset: 종목 1분봉 데이터 세트 [필요한 컬럼 - date_time, price]
         """
+
+        folder_count = count_subdirectories(model_weights_path)
+        folder_prefix = "model_weights_"
+        folder_index = folder_count + 1
+        folder_name = folder_prefix + str(folder_index)
+        folder_path = os.path.join(model_weights_path, folder_name)
+
         start = time()
         # print("########################## Start Train News Dataset! ##########################")
         # print("########################### Remove Duplicate Texts ############################")
@@ -26,13 +36,15 @@ class DataController:
         # print()
         # print("##################################### LDA #####################################")
         lda_model = LDAModel()
-        num_topics = lda_model.train_lda_model(dataset=preprocessed_dataset)
+        num_topics = lda_model.train_lda_model(dataset=preprocessed_dataset, folder_path=folder_path)
         # print()
         # print("##################################### Reg #####################################")
-        avg_score = RegressionModel(stock_dataset=stock_dataset, lda_model=lda_model).train_regression_model(num_topics=num_topics)
+        avg_score = RegressionModel(stock_dataset=stock_dataset, lda_model=lda_model).train_regression_model(
+            num_topics=num_topics, folder_path=folder_path
+        )
         # print("########################### End Train News Dataset! ###########################")
         print(f"총 훈련 소요 시간: {time() - start:.2f}")
-        return avg_score
+        return avg_score, folder_path
 
     def predict_stock_volatilities(self, text) -> List[float]:
         """
