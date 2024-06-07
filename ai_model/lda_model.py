@@ -15,6 +15,7 @@ from tqdm import tqdm
 
 from ai_model.constants import BaseConfig, LDAModelConfig, model_weights_path
 from ai_model.preprocessor.text_preprocessor import TextPreprocessor
+from ai_model.utils import count_subdirectories
 
 """
 LDA 모델
@@ -49,7 +50,7 @@ class LDAModel:
 
     # For Training
     ###########################################################################################
-    def train_lda_model(self, dataset: pd.DataFrame):
+    def train_lda_model(self, dataset: pd.DataFrame, folder_path):
         """
         주기적으로 LDA모델들을 학습시키기 위한 함수
         뉴스 데이터 세트를 통해 하이퍼파라미터 튜닝부터 폴더링, topic 별 lda 모델 생성, 가중치 저장까지의 프로세스 자동화
@@ -61,32 +62,48 @@ class LDAModel:
         self.df["date_time"] = dataset["date_time"]
         self.df["documents"] = TextPreprocessor(texts=list(dataset["content"])).preprocess()
 
+        print("폴더 생성")
+        self._make_new_folder_for_model_save(folder_path=folder_path, is_topic=False)
+        print("폴더 생성 완료")
+
         print("토픽 추출 시작")
         # 토픽 추출
         num_topics, best_model = self._get_num_of_topics()
         # print("토픽 추출 완료")
 
-        print("재폴더링 시작")
+        print("토픽별 폴더 생성")
         # 재 폴더링(초기화)
-        self._remake_folder(num_topics=num_topics, remake=True)
-        print("재폴더링 완료")
+        self._make_new_folder_for_model_save(folder_path=folder_path, is_topic=True, num_topics=num_topics)
+        print("토픽별 폴더 생성 완료")
 
         print("1차 LDA 모델 추출 및 저장 시작")
         # # 1차 LDA 모델 추출 및 저장
-        self._save_main_lda_model(best_model=best_model)
+        self._save_main_lda_model(best_model=best_model, folder_path=folder_path)
         print("1차 LDA 모델 추출 및 저장 완료")
 
         print("1차 LDA 토픽 분포 추출 및 그룹화 시작")
         # # 1차 LDA 토픽 분포 추출 및 그룹화
-        self._get_first_document_topics_and_grouping()
+        self._get_first_document_topics_and_grouping(folder_path=folder_path)
         print("1차 LDA 토픽 분포 추출 및 그룹화 완료")
 
         print("2차 LDA 모델 추출 및 저장 시작")
         # # 2차 LDA 모델 추출 및 저장
-        self._create_lda_model_by_topic_and_save(num_topics=num_topics)
+        self._create_lda_model_by_topic_and_save(num_topics=num_topics, folder_path=folder_path)
         print("2차 LDA 모델 추출 및 저장 완료")
 
         return num_topics
+
+    def _make_new_folder_for_model_save(self, folder_path, is_topic, num_topics=None):
+        try:
+            if not is_topic:
+                os.makedirs(folder_path)
+            else:
+                for i in range(num_topics):
+                    folder_name = f"topic_{i+1}"
+                    new_folder_path = os.path.join(folder_path, folder_name)
+                    os.makedirs(new_folder_path)
+        except Exception as e:
+            print("Error of _make_new_folder_for_model_save method:", e)
 
     def _get_num_of_topics(self):
         """
@@ -190,47 +207,30 @@ class LDAModel:
         except Exception as e:
             print("Error of _get_num_of_topics_by_group method:", e)
 
-    def _remake_folder(self, num_topics, remake=True):
-        try:
-            if os.path.exists(model_weights_path):
-                shutil.rmtree(model_weights_path)
-
-                # 폴더 다시 만들기
-                os.makedirs(model_weights_path)
-
-            if remake:
-                for i in range(num_topics):
-                    new_folder_name = f"topic_{i+1}"
-                    new_folder_path = os.path.join(model_weights_path, new_folder_name)
-                    os.makedirs(new_folder_path)
-
-        except Exception as e:
-            print("Error of _remake_folder method:", e)
-
-    def _save_main_lda_model(self, best_model):
+    def _save_main_lda_model(self, best_model, folder_path):
 
         try:
             model_name = "category_lda_model.model"
-            model_path = os.path.join(model_weights_path, model_name)
+            model_path = os.path.join(folder_path, model_name)
 
             best_model.save(model_path)
 
             dictionary = corpora.Dictionary(self.df["documents"])
             dictionary_name = "category_dictionary.pkl"
-            dictionary_path = os.path.join(model_weights_path, dictionary_name)
+            dictionary_path = os.path.join(folder_path, dictionary_name)
             with open(dictionary_path, "wb") as f:
                 pickle.dump(dictionary, f)
 
             corpus = [dictionary.doc2bow(text) for text in self.df["documents"]]
             corpus_name = "category_corpus.pkl"
-            corpus_path = os.path.join(model_weights_path, corpus_name)
+            corpus_path = os.path.join(folder_path, corpus_name)
             with open(corpus_path, "wb") as f:
                 pickle.dump(corpus, f)
 
         except Exception as e:
             print("Error of _create_main_lda_model_and_save method:", e)
 
-    def _create_lda_model_by_topic_and_save(self, num_topics):
+    def _create_lda_model_by_topic_and_save(self, num_topics, folder_path):
 
         try:
             self.grouped_dfs = [self.df[self.df["category"] == i] for i in range(1, num_topics + 1)]
@@ -248,33 +248,33 @@ class LDAModel:
                 )
 
                 model_name = f"topic_{group_idx}/lda_model_{group_idx}.model"
-                model_path = os.path.join(model_weights_path, model_name)
+                model_path = os.path.join(folder_path, model_name)
 
                 group_best_model.save(model_path)
 
                 dicitonary_name = f"topic_{group_idx}/dictionary_{group_idx}.pkl"
-                dictionary_path = os.path.join(model_weights_path, dicitonary_name)
+                dictionary_path = os.path.join(folder_path, dicitonary_name)
 
                 with open(dictionary_path, "wb") as f:
                     pickle.dump(group_dictionary, f)
 
                 corpus_name = f"topic_{group_idx}/corpus_{group_idx}.pkl"
-                corpus_path = os.path.join(model_weights_path, corpus_name)
+                corpus_path = os.path.join(folder_path, corpus_name)
                 with open(corpus_path, "wb") as f:
                     pickle.dump(group_corpus, f)
 
         except Exception as e:
             print("Error of _create_lda_model_by_topic_and_save method:", e)
 
-    def _get_first_document_topics_and_grouping(self):
+    def _get_first_document_topics_and_grouping(self, folder_path):
 
         try:
             model_name = "category_lda_model.model"
-            model_path = os.path.join(model_weights_path, model_name)
+            model_path = os.path.join(folder_path, model_name)
             model = LdaModel.load(model_path)
 
             corpus_name = "category_corpus.pkl"
-            corpus_path = os.path.join(model_weights_path, corpus_name)
+            corpus_path = os.path.join(folder_path, corpus_name)
             with open(corpus_path, "rb") as f:
                 corpus = pickle.load(f)
 
@@ -294,7 +294,7 @@ class LDAModel:
 
     # For Predicting
     ###########################################################################################
-    def get_group_id_and_topic_distribution(self, text):
+    def get_group_id_and_topic_distribution(self, text, folder_path):
         """
         해당 텍스트의 토픽 그룹과 토픽 확률을 반환
         컨트롤러의 API 역할
@@ -312,7 +312,7 @@ class LDAModel:
             preprocessed_text = TextPreprocessor(texts=text).preprocess()
 
             # 1차 가장 높은 확률의 토픽 추출
-            group_id = self._get_group_id(text=preprocessed_text)
+            group_id = self._get_group_id(text=preprocessed_text, folder_path=folder_path)
 
             # 해당 그룹에서 LDA 수행, 분포 추출
             topic_distribution = self._get_topic_distribution_from_group(group_id=group_id, text=preprocessed_text)
@@ -322,17 +322,17 @@ class LDAModel:
         except Exception as e:
             print("Error of get_group_id_and_topic_distribution method:", e)
 
-    def _get_group_id(self, text):
+    def _get_group_id(self, text, folder_path):
         try:
             print("group id 추출")
             model_name = "category_lda_model.model"
-            model_path = os.path.join(model_weights_path, model_name)
+            model_path = os.path.join(folder_path, model_name)
             model = LdaModel.load(model_path)
 
             print(f"사용된 모델 경로: {model_path}")
 
             dictionary_name = "category_dictionary.pkl"
-            dictionary_path = os.path.join(model_weights_path, dictionary_name)
+            dictionary_path = os.path.join(folder_path, dictionary_name)
             with open(dictionary_path, "rb") as f:
                 dictionary = pickle.load(f)
 
@@ -350,18 +350,18 @@ class LDAModel:
         except Exception as e:
             print("Error of _get_group_id method:", e)
 
-    def _get_topic_distribution_from_group(self, group_id, text):
+    def _get_topic_distribution_from_group(self, group_id, text, folder_path):
 
         try:
             print("2차 토픽 추출")
             model_name = f"topic_{group_id}/lda_model_{group_id}.model"
-            model_path = os.path.join(model_weights_path, model_name)
+            model_path = os.path.join(folder_path, model_name)
             model = LdaModel.load(model_path)
 
             print(f"사용된 모델 경로: {model_path}")
 
             dictionary_name = f"topic_{group_id}/dictionary_{group_id}.pkl"
-            dictionary_path = os.path.join(model_weights_path, dictionary_name)
+            dictionary_path = os.path.join(folder_path, dictionary_name)
             with open(dictionary_path, "rb") as f:
                 dictionary = pickle.load(f)
 

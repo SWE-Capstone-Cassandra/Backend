@@ -1,3 +1,4 @@
+import os
 from pytimekr import pytimekr
 from datetime import datetime, timedelta
 import pandas as pd
@@ -77,3 +78,7 @@ def calculate_price_change(current_time, minutes, stock_dataset: pd.DataFrame):
         return (future_price - current_price) / current_price * 100
     else:
         return None  # 데이터가 없는 경우 None 반환
+
+
+def count_subdirectories(path):
+    return sum(os.path.isdir(os.path.join(path, entry)) for entry in os.listdir(path))
