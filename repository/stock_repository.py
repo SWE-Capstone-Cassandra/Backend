@@ -13,13 +13,23 @@ class StockRepository(BaseRepository):
 
         stmt = select(Stock).where(Stock.date_time == date_time)
         res = self.session.execute(stmt)
-        return res.scalar().price
+        res = res.scalar()
+        if res:
+            return res.price
+        else:
+            return 0
 
-    def save_stock_data(self, time: int, price: int):
+    def get_stock_data_now(self) -> int:
+
+        stmt = select(Stock).order_by(Stock.date_time.desc()).limit(1)
+        res = self.session.execute(stmt)
+        res = res.scalars().all()
+        return res[0].price
+
+    def save_stock_data(self, price: int):
         stock_data = Stock()
-        date = datetime.datetime.today().date().strftime("%Y%m%d")
-        time = str(time)
-        stock_data.date_time = datetime.datetime.strptime(date + time, "%Y%m%d%H%M")
+
+        stock_data.date_time = datetime.datetime.now().replace(second=0, microsecond=0)
         stock_data.price = price
 
         self.session.add(stock_data)
