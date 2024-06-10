@@ -1,10 +1,15 @@
+import numpy as np
+
 model_weights_path = "/home/tako4/capstone/backend/Backend/ai_model/model_weights"
 
 
 class LDAModelConfig:
-    NUM_OF_CATEGORY = range(3, 21)
-    NUM_OF_TOPICS_BY_GROUP = range(5, 11)
-    PASSES = 100
+    NUM_OF_CATEGORY = range(1, 5, 3)
+    NUM_OF_TOPICS_BY_GROUP = range(1, 5, 3)
+    PASSES = 10
+    ALPHA = np.arange(0.1, 0.4, 0.2)
+    ETA = np.arange(1, 0.8, -0.1)
+    WORKERS = None
 
 
 class RegressionModelConfig:
