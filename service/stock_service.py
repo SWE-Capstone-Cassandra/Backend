@@ -4,10 +4,10 @@ from service.base_service import BaseService
 
 class StockService(BaseService):
 
-    def get_stock_data_by_date(self, date: int, time: int):
-        return StockRepository(session=self.session).get_stock_data_by_date(date=date, time=time)
+    def get_stock_data_now(self):
+        return StockRepository(session=self.session).get_stock_data_now()
 
-    def save_stock_data(self, time: int, price: int):
-        price = StockRepository(session=self.session).save_stock_data(time=time, price=price)
+    def save_stock_data(self, price: int):
+        price = StockRepository(session=self.session).save_stock_data(price=price)
 
         return True

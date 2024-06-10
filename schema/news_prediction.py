@@ -6,13 +6,14 @@ class CreateNewsPrediction(BaseModel):
     time: str
 
 
-class NewsPrediction(CreateNewsPrediction):
-    min_1: int
-    min_5: int
-    min_15: int
-    min_60: int
-    day_1: int
+class NewsPredictionSchema(BaseModel):
+    min_1: float
+    min_5: float
+    min_15: float
+    hour_1: float
+    day_1: float
+    stock_price: float
 
 
-class NewsPredictionResponse(NewsPrediction):
+class NewsPredictionResponse(NewsPredictionSchema):
     pass

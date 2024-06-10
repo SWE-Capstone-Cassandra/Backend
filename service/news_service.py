@@ -43,7 +43,11 @@ class NewsService(BaseService):
 
         res = NewsRepository(session=self.session).get_news_data_by_id(news_id=news_id)
         res = NewsSchema(
-            id=res.id, news_id=res.news_id, date_time=res.date_time, title=res.title, writer=res.writer, content=res.content
+            news_id=res.news_id,
+            date_time=datetime.strftime(res.date_time, "%Y-%m-%d %H:%M"),
+            title=res.title,
+            writer=res.writer,
+            content=res.content,
         )
         return res
 
@@ -68,7 +72,7 @@ class NewsService(BaseService):
         for news in data:
             att = NewsListAtt()
             att.title = news.title
-            att.news_id = news.news_id
+            att.news_id = int(news.news_id)
             news_list.append(att)
         return news_list
 

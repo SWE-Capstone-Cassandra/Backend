@@ -54,7 +54,7 @@ if __name__ == "__main__":
     session = get_session()
     news_dataset = NewsRepository(session=session).get_news_dataset()
     stock_dataset = StockRepository(session=session).get_stock_dataset()
-    news_dataset = news_dataset[:10000]
+
     try:
         DataController().train_news_dataset(news_dataset=news_dataset, stock_dataset=stock_dataset)
         print("done")
