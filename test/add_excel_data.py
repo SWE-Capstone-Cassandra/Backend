@@ -5,7 +5,7 @@ from sqlalchemy import select
 
 from config import create_db, get_session
 from model.news import News
-from model.stock import Stock
+from model.stock import SamsungStock
 
 
 class AddExcel:
@@ -39,7 +39,7 @@ class AddExcel:
 
     def to_csv(self):
         session = get_session()
-        stmt = select(Stock)
+        stmt = select(SamsungStock)
         date_list = session.execute(stmt)
         date_list = date_list.scalars().all()
 

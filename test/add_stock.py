@@ -3,7 +3,7 @@ from datetime import datetime
 import pandas as pd
 
 from config import create_db, get_session
-from model.stock import Stock
+from model.stock import SamsungStock
 
 
 class AddStock:
@@ -26,7 +26,7 @@ class AddStock:
 
             date_time = str(date)
             time = str(time)
-            stock = Stock()
+            stock = SamsungStock()
             stock.date_time = datetime.strptime(date_time + time, "%Y%m%d%H%M")
             stock.price = int(price)
 
