@@ -14,16 +14,20 @@ class DataController:
     def __init__(self):
         pass
 
-    def train_news_dataset(self, news_dataset: pd.DataFrame, stock_dataset: pd.DataFrame):
+    def train_news_dataset(self, stock_name: str, news_dataset: pd.DataFrame, stock_dataset: pd.DataFrame):
         """
         주기적으로 새로운 뉴스 데이터 + 기존 데이터 세트에 대해서 LDA 재추출 및 회귀 분석 실시 API
         Args:
+            stock_name: 종목명
             news_dataset: 뉴스 데이터 세트 [필요한 컬럼 - date_time, content(documents)]
             stock_dataset: 종목 1분봉 데이터 세트 [필요한 컬럼 - date_time, price]
         """
 
+        cpu_cores = os.cpu_count()
+        print(f"사용 가능한 CPU 코어 수: {cpu_cores}")
+
         folder_count = count_subdirectories(model_weights_path)
-        folder_prefix = "model_weights_"
+        folder_prefix = f"{stock_name}_model_weights_"
         folder_index = folder_count + 1
         folder_name = folder_prefix + str(folder_index)
         folder_path = os.path.join(model_weights_path, folder_name)
