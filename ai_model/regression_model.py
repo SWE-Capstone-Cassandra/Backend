@@ -17,6 +17,8 @@ from ai_model.utils import adjust_time, calculate_price_change, count_subdirecto
 
 from ai_model.constants import BaseConfig, model_weights_path, RegressionModelConfig, VolaConfig
 
+pd.options.mode.chained_assignment = None
+
 """
 회귀 분석 모델
 - 훈련 함수가 호출될 시 저장되어 있는 토픽별 가중치들을 활용하여 가장 성능이 좋은 모델 저장
@@ -64,17 +66,21 @@ class RegressionModel:
                 # 사전, 코퍼스, 기존 lda 모델 통해서 토픽 분포 획득
                 topic_distributions = self._get_topic_distributions(topic_idx=topic_idx, folder_path=folder_path)
                 # 토픽 분포를 활용하여 최적의 회귀 모델 저장
-                avg_score.append(
-                    self._get_best_performance_regression_model_and_save(
-                        topic_idx=topic_idx, topic_distributions=topic_distributions, folder_path=folder_path
-                    )
+                best_score_by_topic = self._get_best_performance_regression_model_and_save(
+                    topic_idx=topic_idx, topic_distributions=topic_distributions, folder_path=folder_path
                 )
+                avg_score.append(best_score_by_topic)
             print("회귀 모델 학습 종료")
             # 모든 토픽의 결과를 하나의 데이터프레임으로 결합
             final_results_df = pd.concat(avg_score, ignore_index=True)
 
             # 결과 정렬 및 출력
             final_results_df = final_results_df.sort_values(by=["topic", "volatility"]).reset_index(drop=True)
+
+            # 결과 저장
+            final_results_file_name = "model_performance.csv"
+            final_results_file_path = os.path.join(folder_path, final_results_file_name)
+            final_results_df.to_csv(final_results_file_path, index=False)
 
             return final_results_df
 
@@ -108,10 +114,10 @@ class RegressionModel:
             temp_group = self.grouped_dfs[topic_idx]
             self._get_stock_price_changes_by_date_time(temp_group=temp_group)
             self._get_topic_features(temp_group=temp_group, topic_distributions=topic_distributions, num_topics=model.num_topics)
-            avg_score = self._get_best_performance_regression_model(
+            best_score_by_topic = self._get_best_performance_regression_model(
                 temp_group=temp_group, topic_idx=topic_idx, folder_path=folder_path
             )
-            return avg_score
+            return best_score_by_topic
 
         except Exception as e:
             print("Error of _get_num_of_topics_by_group method:", e)
@@ -119,11 +125,11 @@ class RegressionModel:
     def _get_stock_price_changes_by_date_time(self, temp_group):
 
         try:
-            temp_group["date_time"] = pd.to_datetime(temp_group["date_time"])
-            temp_group["adjusted_time"] = temp_group["date_time"].apply(adjust_time)
+            temp_group.loc[:, "date_time"] = pd.to_datetime(temp_group.loc[:, "date_time"])
+            temp_group.loc[:, "adjusted_time"] = temp_group.loc[:, "date_time"].apply(adjust_time)
 
             for minutes in VolaConfig.TIME_INTERVALS:
-                temp_group[f"vola_{minutes}m"] = temp_group["adjusted_time"].apply(
+                temp_group.loc[:, f"vola_{minutes}m"] = temp_group.loc[:, "adjusted_time"].apply(
                     lambda x: calculate_price_change(x, minutes, self.stock_dataset)
                 )
 
@@ -211,26 +217,40 @@ class RegressionModel:
 
                 model_name = f"topic_{topic_idx+1}/reg_model_{vola}.joblib"
                 model_path = os.path.join(folder_path, model_name)
-                if ridge_mae > lasso_mae:
+                if ridge_sign_accuracy < lasso_sign_accuracy:
                     with open(model_path, "wb") as f:
                         dump(best_lasso, f)
                 else:
                     with open(model_path, "wb") as f:
                         dump(best_ridge, f)
 
+                if ridge_sign_accuracy < lasso_sign_accuracy:
+                    best_sign_accuracy = lasso_sign_accuracy
+                else:
+                    best_sign_accuracy = ridge_sign_accuracy
+
+                if ridge_mae < lasso_mae:
+                    best_mae = ridge_mae
+                else:
+                    best_mae = lasso_mae
+
                 results.append(
                     {
                         "topic": topic_idx + 1,
                         "volatility": vola,
-                        "ridge_sign_accuracy": ridge_sign_accuracy,
-                        "lasso_sign_accuracy": lasso_sign_accuracy,
-                        "ridge_mae": ridge_mae,
-                        "lasso_mae": lasso_mae,
+                        "best_sign_accuracy": best_sign_accuracy,
+                        "best_mae": best_mae,
                     }
                 )
 
             # 결과를 데이터프레임으로 변환
             results_df = pd.DataFrame(results)
+
+            # 결과 해당 폴더에 저장ㄴ
+            results_file_name = f"topic_{topic_idx+1}/model_performance.csv"
+            results_file_path = os.path.join(folder_path, results_file_name)
+            results_df.to_csv(results_file_path, index=False)
+
             return results_df
 
         except Exception as e:
