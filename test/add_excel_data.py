@@ -5,13 +5,13 @@ from sqlalchemy import select
 
 from config import create_db, get_session
 from model.news import News
-from model.stock import SamsungStock
+from model.stock import Stock
 
 
 class AddExcel:
     def add_excel(self):
         create_db()
-        file_path = "/home/tako4/capstone/backend/Backend/data/ybdata.csv"
+        file_path = "/home/tako4/capstone/backend/Backend/data/news.csv"
         session = get_session()
 
         df = pd.read_csv(file_path)
@@ -19,13 +19,14 @@ class AddExcel:
         # print(df)
         for i in range(1, num_rows):
             content = df.iloc[i]["content"]
-            date = df.iloc[i]["date"]
-            if date != "date":
+            date_time = df.iloc[i]["date_time"]
+            if date_time != "date_time":
                 try:
-                    date_time = datetime.strptime(date, "%Y. %m. %d. %H:%M")
+                    # date_time = datetime.strptime(date, "%Y. %m. %d. %H:%M")
 
                     news_data = News()
                     news_data.news_id = None
+                    news_data.stock_code = "005930"
                     news_data.date_time = date_time
                     news_data.title = None
                     news_data.writer = None
@@ -39,7 +40,7 @@ class AddExcel:
 
     def to_csv(self):
         session = get_session()
-        stmt = select(SamsungStock)
+        stmt = select(Stock)
         date_list = session.execute(stmt)
         date_list = date_list.scalars().all()
 

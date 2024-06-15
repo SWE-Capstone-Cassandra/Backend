@@ -10,6 +10,7 @@ from repository.stock_repository import StockRepository
 from schema.news_prediction import NewsPredictionSchema
 from service.base_service import BaseService
 from service.news_service import NewsService
+from utils.enum.stock_code import StockCode
 
 
 class ModelService(BaseService):
@@ -19,11 +20,12 @@ class ModelService(BaseService):
     2. 주가 변화량 예측 요청 서비스
     """
 
-    def request_training(self):
-        news_dataset = NewsRepository(session=self.session).get_news_dataset()
-        stock_dataset = StockRepository(session=self.session).get_stock_dataset()
+    def request_training(self, stock_code: StockCode):
+        news_dataset = NewsRepository(session=self.session).get_news_dataset_by_stock_code(stock_code=stock_code)
+        stock_dataset = StockRepository(session=self.session).get_stock_dataset_by_stock_code(stock_code=stock_code)
         try:
-            DataController().train_news_dataset(news_dataset=news_dataset, stock_dataset=stock_dataset)
+            DataController().train_news_dataset(stock_name=stock_code, news_dataset=news_dataset, stock_dataset=stock_dataset)
+            print("done")
         except Exception as ex:
             print("무슨 에러지?", ex)
 

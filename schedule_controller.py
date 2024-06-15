@@ -56,14 +56,7 @@ class ScheduleController:
             if current_time.weekday() == FRIDAY:
                 while True:
                     if current_time.time() == datetime.time(hour=17):
-                        news_dataset = NewsRepository(session=session).get_news_dataset()
-                        stock_dataset = StockRepository(session=session).get_stock_dataset()
-                        try:
-                            DataController().train_news_dataset(news_dataset=news_dataset, stock_dataset=stock_dataset)
-                            print("done")
-                            break
-                        except Exception as ex:
-                            print("무슨 에러지?", ex)
+                        ModelService(session=session).request_training(stock_code="")
                     time.sleep(HOUR)
             time.sleep(SIX_HOUR)
 

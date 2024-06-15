@@ -3,10 +3,11 @@ from typing import List
 
 import pandas as pd
 from sqlalchemy import select
-from sqlalchemy.orm import contains_eager, load_only
+from sqlalchemy.orm import load_only
 
 from model.news import News
 from repository.base_repository import BaseRepository
+from utils.enum.stock_code import StockCode
 
 
 class NewsRepository(BaseRepository):
@@ -30,9 +31,9 @@ class NewsRepository(BaseRepository):
         res = res.scalar()
         return res
 
-    def get_news_dataset(self) -> pd.DataFrame:
+    def get_news_dataset_by_stock_code(self, stock_code: StockCode) -> pd.DataFrame:
         yesterday = datetime.datetime.now() - datetime.timedelta(days=1)
-        stmt = select(News).where(News.date_time < yesterday)
+        stmt = select(News).where(News.stock_code == stock_code).where(News.stock_code == stock_code).where(News.date_time < yesterday)
         all_news = self.session.execute(stmt)
         all_news = all_news.scalars().all()
         df = pd.DataFrame([item.__dict__ for item in all_news])
@@ -43,9 +44,15 @@ class NewsRepository(BaseRepository):
         df.sort_values(by=["date_time"])
         return df
 
-    def get_news_list(self) -> List[News]:
+    def get_news_list_by_stock_code(self, stock_code: StockCode) -> List[News]:
         # stmt = select(News).order_by(News.date_time.desc()).limit(10)
-        stmt = select(News).order_by(News.date_time.desc()).limit(10).options(load_only(News.news_id, News.title))
+        stmt = (
+            select(News)
+            .where(News.stock_code == stock_code)
+            .order_by(News.date_time.desc())
+            .limit(10)
+            .options(load_only(News.news_id, News.title))
+        )
         res = self.session.execute(stmt)
         res = res.scalars().all()
 
