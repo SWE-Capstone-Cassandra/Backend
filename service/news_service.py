@@ -13,6 +13,7 @@ from repository.news_repository import NewsRepository
 from schema.news_schema import NewsListAtt, NewsSchema
 from service.base_service import BaseService
 from service.cleaner import clean_text
+from utils.enum.stock_code import StockCode
 
 CAPTCHA = "https://captcha.search.daum.net"
 
@@ -65,10 +66,10 @@ class NewsService(BaseService):
 
         return res
 
-    def get_news_list(self) -> List[NewsListAtt]:
+    def get_news_list_by_stock_code(self, stock_code: StockCode) -> List[NewsListAtt]:
 
         news_list = []
-        data = NewsRepository(session=self.session).get_news_list()
+        data = NewsRepository(session=self.session).get_news_list_by_stock_code(stock_code=stock_code)
         for news in data:
             att = NewsListAtt()
             att.title = news.title
