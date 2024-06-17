@@ -29,8 +29,8 @@ class ModelService(BaseService):
         except Exception as ex:
             print("무슨 에러지?", ex)
 
-    def request_stock_volatilities(self, content: str) -> List[float]:
-        return DataController().predict_stock_volatilities(text=content)
+    def request_stock_volatilities(self, content: str, stock_name: str) -> List[float]:
+        return DataController().predict_stock_volatilities(text=content, stock_name=stock_name)
 
     def get_prediction_by_news_id(self, news_id: int) -> NewsPredictionSchema:
         res = PredictionRepository(session=self.session).get_news_prediction_by_news_id(news_id=news_id)

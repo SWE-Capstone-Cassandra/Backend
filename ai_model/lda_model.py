@@ -315,7 +315,9 @@ class LDAModel:
             group_id = self._get_group_id(text=preprocessed_text, folder_path=folder_path)
 
             # 해당 그룹에서 LDA 수행, 분포 추출
-            topic_distribution = self._get_topic_distribution_from_group(group_id=group_id, text=preprocessed_text)
+            topic_distribution = self._get_topic_distribution_from_group(
+                group_id=group_id, text=preprocessed_text, folder_path=folder_path
+            )
 
             return group_id, topic_distribution
 
