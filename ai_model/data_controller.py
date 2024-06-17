@@ -50,7 +50,7 @@ class DataController:
         print(f"총 훈련 소요 시간: {time() - start:.2f}")
         return avg_score, folder_path
 
-    def predict_stock_volatilities(self, text) -> List[float]:
+    def predict_stock_volatilities(self, text, stock_name) -> List[float]:
         """
         Args:
             text: 뉴스 원문.
@@ -58,6 +58,11 @@ class DataController:
         Returns:
             stock_volatitlities: List[float] - 주가 변화량 리스트
         """
-        group_id, topic_distributions = LDAModel().get_group_id_and_topic_distribution(text=text)
-        stock_volatilities = RegressionModel().get_stock_volatilities(group_id=group_id, topic_distributions=topic_distributions)
+
+        folder_path = f"/home/tako4/capstone/backend/Model/ai_model/trained_models_weights/{stock_name}"
+
+        group_id, topic_distributions = LDAModel().get_group_id_and_topic_distribution(text=text, folder_path=folder_path)
+        stock_volatilities = RegressionModel().get_stock_volatilities(
+            group_id=group_id, topic_distributions=topic_distributions, folder_path=folder_path
+        )
         return stock_volatilities
