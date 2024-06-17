@@ -9,10 +9,10 @@ from model.stock import Stock
 class AddStock:
     def add_excel(self):
         create_db()
-        file_path = "/home/tako4/capstone/backend/Backend/data/samsung_minute_chart_data_20220419_20240429.csv"
+        file_path = "/home/tako4/capstone/backend/Backend/data/A097950_min_chart_20240611_20220527.xlsx"
         session = get_session()
 
-        df = pd.read_csv(file_path)
+        df = pd.read_excel(file_path)
         num_rows = len(df)
         # print(df)
         for i in range(num_rows):
@@ -29,7 +29,7 @@ class AddStock:
             stock = Stock()
             stock.date_time = datetime.strptime(date_time + time, "%Y%m%d%H%M")
             stock.price = int(price)
-
+            stock.stock_code = "097950"
             session.add(stock)
         session.commit()
 
@@ -53,4 +53,4 @@ class AddStock:
 
 
 excel = AddStock()
-excel.add_csv()
+excel.add_excel()
