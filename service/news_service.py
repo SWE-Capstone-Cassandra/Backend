@@ -28,9 +28,10 @@ class NewsService(BaseService):
             title = soup.find("h3", class_="tit_view").text if soup else ""
             writer = soup.find("span", class_="txt_info").text if soup else ""
             content = clean_text(content.text)
+            news_id_str = url.replace("http://v.daum.net/v/", "")
 
             news_data = News()
-            news_data.news_id = int(url.replace("https://v.daum.net/v/", ""))
+            news_data.news_id = int(news_id_str)
             news_data.date_time = datetime.strptime(str(date_time), "%Y%m%d%H%M")
             news_data.title = title
             news_data.writer = writer

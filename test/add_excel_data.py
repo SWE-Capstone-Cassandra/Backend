@@ -9,7 +9,7 @@ from model.stock import Stock
 
 
 class AddExcel:
-    def add_excel(self):
+    def add_excel_samsung(self):
         create_db()
         file_path = "/home/tako4/capstone/backend/Backend/data/news.csv"
         session = get_session()
@@ -38,7 +38,7 @@ class AddExcel:
 
         session.commit()
 
-    def add_crwaling(self):
+    def add_crwaling_cj(self):
         create_db()
         file_path = "/home/tako4/capstone/backend/Backend/data/cj_230701-240630.csv"
         session = get_session()
@@ -49,10 +49,13 @@ class AddExcel:
         for i in range(1, num_rows):
             content = df.iloc[i]["content"]
             date = df.iloc[i]["date"]
+
+            # print(date)
             if date != "date" or date.lower() != "nan":
                 try:
                     # date_time = datetime.strptime(str(date), "%Y. %m. %d. %H:%M")
-
+                    date = datetime.strptime(str(date), "%Y. %m. %d. %H:%M")
+                    date = date.strftime("%Y-%m-%d %H:%M:%S")
                     news_data = News()
                     news_data.news_id = None
                     news_data.stock_code = "097950"
@@ -84,4 +87,5 @@ class AddExcel:
 
 
 excel = AddExcel()
-excel.add_crwaling()
+excel.add_crwaling_cj()
+# excel.add_excel_samsung()

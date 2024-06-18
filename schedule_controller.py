@@ -8,18 +8,19 @@ from config import get_session
 from service.model_service import ModelService
 from service.news_service import NewsService
 from utils.enum.stock_code import StockCode
+from utils.enum.stock_list import StockList
 
 FRIDAY = 0
 HOUR = 60 * 60
 SIX_HOUR = 60 * 60 * 6
 
 
-STOCK_List = StockCode.get_list()
+STOCK_List = StockList.get_list()
 
 
 class ScheduleController:
 
-    def min_data_collector(self, stock: StockCode):
+    def min_data_collector(self, stock: StockList):
         print("news collector start")
         last_min = datetime.now().minute
         while True:
@@ -71,4 +72,4 @@ if __name__ == "__main__":
         executor.submit(timer.min_data_collector, STOCK_List[0])
         executor.submit(timer.min_data_collector, STOCK_List[1])
 
-        # executor.submit(timer.train_controll)
+    # executor.submit(timer.train_controll)
