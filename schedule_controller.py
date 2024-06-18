@@ -1,26 +1,26 @@
 import time
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
+from test.testing import stock
 from typing import List
 
-from ai_model.data_controller import DataController
 from config import get_session
-from model.news import News
-from repository.news_repository import NewsRepository
-from repository.stock_repository import StockRepository
 from service.model_service import ModelService
 from service.news_service import NewsService
+from utils.enum.stock_code import StockCode
+from utils.enum.stock_list import StockList
 
 FRIDAY = 0
 HOUR = 60 * 60
 SIX_HOUR = 60 * 60 * 6
 
-STOCK_NAME = ["삼성전자", "제일제당"]
+
+STOCK_List = StockList.get_list()
 
 
 class ScheduleController:
 
-    def min_data_collector(self, stock_name: str):
+    def min_data_collector(self, stock: StockList):
         print("news collector start")
         last_min = datetime.now().minute
         while True:
@@ -34,12 +34,13 @@ class ScheduleController:
                         news_service = NewsService(session=session)
                         model_service = ModelService(session=session)
                         time_now = (int(datetime.today().strftime("%Y%m%d%H%M"))) * 100
-                        news_min_list = news_service.get_news_list_min(item_name=stock_name, time_now=time_now)
+                        news_min_list = news_service.get_news_list_min(item_name=stock.name, time_now=time_now)
                         print(news_min_list)
                         for news in news_min_list:
                             data = news_service.get_news_data(date_time=int(time_now / 100), url=news)
+                            data.stock_code = stock.code
                             res = news_service.save_news_data(news=data)
-                            prediction: List = model_service.request_stock_volatilities(content=res.content, stock_name=stock_name)
+                            prediction: List = model_service.request_stock_volatilities(content=res.content, stock_name=stock.name)
                             saved_prediction = model_service.save_prediction(news_id=res.news_id, prediction=prediction)
                             print(saved_prediction)
                         last_min = current_min
@@ -58,14 +59,7 @@ class ScheduleController:
     #         if current_time.weekday() == FRIDAY:
     #             while True:
     #                 if current_time.time() == datetime.time(hour=17):
-    #                     news_dataset = NewsRepository(session=session).get_news_dataset()
-    #                     stock_dataset = StockRepository(session=session).get_stock_dataset()
-    #                     try:
-    #                         DataController().train_news_dataset(news_dataset=news_dataset, stock_dataset=stock_dataset)
-    #                         print("done")
-    #                         break
-    #                     except Exception as ex:
-    #                         print("무슨 에러지?", ex)
+    #                      ModelService(session=session).request_training(stock_code=stock_code)
     #                 time.sleep(HOUR)
     #         time.sleep(SIX_HOUR)
 
@@ -75,7 +69,7 @@ if __name__ == "__main__":
     with ThreadPoolExecutor(max_workers=4) as executor:
         print("start")
         timer = ScheduleController()
-        executor.submit(timer.min_data_collector, STOCK_NAME[0])
-        executor.submit(timer.min_data_collector, STOCK_NAME[1])
+        executor.submit(timer.min_data_collector, STOCK_List[0])
+        executor.submit(timer.min_data_collector, STOCK_List[1])
 
-        # executor.submit(timer.train_controll)
+    # executor.submit(timer.train_controll)

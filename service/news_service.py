@@ -28,9 +28,10 @@ class NewsService(BaseService):
             title = soup.find("h3", class_="tit_view").text if soup else ""
             writer = soup.find("span", class_="txt_info").text if soup else ""
             content = clean_text(content.text)
+            news_id_str = url.replace("http://v.daum.net/v/", "")
 
             news_data = News()
-            news_data.news_id = int(url - "https://v.daum.net/v/")
+            news_data.news_id = int(news_id_str)
             news_data.date_time = datetime.strptime(str(date_time), "%Y%m%d%H%M")
             news_data.title = title
             news_data.writer = writer
@@ -59,6 +60,7 @@ class NewsService(BaseService):
         data.title = news.title
         data.writer = news.writer
         data.content = news.content
+        data.stock_code = news.stock_code
 
         res = NewsRepository(session=self.session).save_news_data(news=news)
         # prediction= 모델을 돌려서 나온 결과값.

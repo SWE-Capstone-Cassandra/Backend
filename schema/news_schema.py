@@ -11,6 +11,7 @@ class NewsListAtt(BaseModel):
 class NewsSchema(BaseModel):
     # id: int
     news_id: Optional[int] = None
+    stock_code: str
     date_time: str
     title: Optional[str] = None
     writer: Optional[str] = None
