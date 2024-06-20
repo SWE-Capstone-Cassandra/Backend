@@ -1,8 +1,5 @@
-import gensim.models.ldamulticore
 import os
 import pickle
-import shutil
-from time import time
 from typing import List
 
 import numpy as np
@@ -13,9 +10,8 @@ from gensim.models import LdaMulticore
 from gensim.models.coherencemodel import CoherenceModel
 from tqdm import tqdm
 
-from ai_model.constants import BaseConfig, LDAModelConfig, model_weights_path
+from ai_model.constants import BaseConfig, LDAModelConfig
 from ai_model.preprocessor.text_preprocessor import TextPreprocessor
-from ai_model.utils import count_subdirectories
 
 """
 LDA 모델
@@ -110,8 +106,9 @@ class LDAModel:
         1차 토픽을 추출하는 함수
         """
         try:
-            dictionary = corpora.Dictionary(self.df["documents"])
-            corpus = [dictionary.doc2bow(text) for text in self.df["documents"]]
+            tokenized_documents = [doc[0].split() for doc in self.df["documents"]]
+            dictionary = corpora.Dictionary(tokenized_documents)
+            corpus = [dictionary.doc2bow(text) for text in tokenized_documents]
 
             best_coherence = -np.inf
 
@@ -130,7 +127,7 @@ class LDAModel:
                             workers=LDAModelConfig.WORKERS,
                         )
                         coherence_model = CoherenceModel(
-                            model=model, texts=list(self.df["documents"]), dictionary=dictionary, coherence="c_v"
+                            model=model, texts=tokenized_documents, dictionary=dictionary, coherence="c_v"
                         )
                         coherence_score = coherence_model.get_coherence()
 
@@ -146,7 +143,7 @@ class LDAModel:
             print(f"Best Alpha: {best_alpha}")
             print(f"Best Eta: {best_eta}")
 
-            for idx, topic in best_model.print_topics(num_words=5):
+            for idx, topic in best_model.print_topics(num_words=10):
                 print(f"Topic: {idx} \nWords: {topic}\n")
 
             return best_num_topics, best_model
@@ -199,36 +196,38 @@ class LDAModel:
             print(f"Best Alpha: {best_alpha}")
             print(f"Best Eta: {best_eta}")
 
-            for idx, topic in best_model.print_topics(1):
+            for idx, topic in best_model.print_topics(num_words=10):
                 print(f"Topic: {idx} \nWords: {topic}\n")
 
             return best_model
 
         except Exception as e:
-            print("Error of _get_num_of_topics_by_group method:", e)
+            print("Error of _get_best_model_by_group method:", e)
 
     def _save_main_lda_model(self, best_model, folder_path):
 
         try:
+            tokenized_documents = [doc[0].split() for doc in self.df["documents"]]
+
             model_name = "category_lda_model.model"
             model_path = os.path.join(folder_path, model_name)
 
             best_model.save(model_path)
 
-            dictionary = corpora.Dictionary(self.df["documents"])
+            dictionary = corpora.Dictionary(tokenized_documents)
             dictionary_name = "category_dictionary.pkl"
             dictionary_path = os.path.join(folder_path, dictionary_name)
             with open(dictionary_path, "wb") as f:
                 pickle.dump(dictionary, f)
 
-            corpus = [dictionary.doc2bow(text) for text in self.df["documents"]]
+            corpus = [dictionary.doc2bow(text) for text in tokenized_documents]
             corpus_name = "category_corpus.pkl"
             corpus_path = os.path.join(folder_path, corpus_name)
             with open(corpus_path, "wb") as f:
                 pickle.dump(corpus, f)
 
         except Exception as e:
-            print("Error of _create_main_lda_model_and_save method:", e)
+            print("Error of _save_main_lda_model method:", e)
 
     def _create_lda_model_by_topic_and_save(self, num_topics, folder_path):
 
@@ -236,7 +235,7 @@ class LDAModel:
             self.grouped_dfs = [self.df[self.df["category"] == i] for i in range(1, num_topics + 1)]
 
             for group_idx, group_df in tqdm(enumerate(self.grouped_dfs, start=1), desc=f"## Create LDA Model by Topic ##"):
-                group_texts = group_df["documents"].tolist()
+                group_texts = [doc[0].split() for doc in group_df["documents"]]
                 print(f"{group_idx}번째 그룹의 데이터 수: ", len(group_texts))
 
                 # 그룹별 단어 사전 생성
@@ -338,14 +337,15 @@ class LDAModel:
             with open(dictionary_path, "rb") as f:
                 dictionary = pickle.load(f)
 
-            print(f"사용된 사전 경로: {dictionary_path}")
+            bow = dictionary.doc2bow(text[0].split())
 
-            print(text)
-
-            bow = dictionary.doc2bow(text)
+            print(bow)
 
             topic_distribution = model.get_document_topics(bow, minimum_probability=0)
-            group_id = max(topic_distribution, key=lambda item: item[1])[0]
+
+            print("1차 토픽 분포: ", topic_distribution)
+
+            group_id = max(topic_distribution, key=lambda item: item[1])[0] + 1
             print(f"추출된 그룹 번호: {group_id}")
             return group_id
 
