@@ -2,6 +2,7 @@ import pickle
 from joblib import dump, load
 import os
 
+import numpy as np
 import pandas as pd
 
 from sklearn.preprocessing import StandardScaler
@@ -16,6 +17,10 @@ from ai_model.lda_model import LDAModel
 from ai_model.utils import adjust_time, calculate_price_change, count_subdirectories
 
 from ai_model.constants import BaseConfig, model_weights_path, RegressionModelConfig, VolaConfig
+
+import warnings
+
+warnings.filterwarnings("ignore", message="X does not have valid feature names, but StandardScaler was fitted with feature names")
 
 pd.options.mode.chained_assignment = None
 
@@ -65,6 +70,7 @@ class RegressionModel:
             for topic_idx in range(num_topics):
                 # 사전, 코퍼스, 기존 lda 모델 통해서 토픽 분포 획득
                 topic_distributions = self._get_topic_distributions(topic_idx=topic_idx, folder_path=folder_path)
+                print("토픽 분포:, ", topic_distributions)
                 # 토픽 분포를 활용하여 최적의 회귀 모델 저장
                 best_score_by_topic = self._get_best_performance_regression_model_and_save(
                     topic_idx=topic_idx, topic_distributions=topic_distributions, folder_path=folder_path
@@ -85,7 +91,7 @@ class RegressionModel:
             return final_results_df
 
         except Exception as e:
-            print("Error of _get_num_of_topics_by_group method:", e)
+            print("Error of train_regression_model method:", e)
 
     def _get_topic_distributions(self, topic_idx, folder_path):
 
@@ -94,15 +100,29 @@ class RegressionModel:
             model_path = os.path.join(folder_path, model_name)
             model = LdaModel.load(model_path)
 
+            print(f"{topic_idx}번째 토픽 수:, ", model.num_topics)
+
             corpus_name = f"topic_{topic_idx+1}/corpus_{topic_idx+1}.pkl"
             corpus_path = os.path.join(folder_path, corpus_name)
             with open(corpus_path, "rb") as f:
                 corpus = pickle.load(f)
 
-            return [model.get_document_topics(doc_bow) for doc_bow in corpus]
+            # 각 문서의 토픽 분포 계산
+            document_topics = [model.get_document_topics(doc_bow, minimum_probability=0) for doc_bow in corpus]
+
+            # 각 문서에 대한 토픽 확률 분포값의 리스트
+            topic_distributions = []
+            for doc_topics in document_topics:
+                # 모든 토픽에 대해 확률 값을 0으로 초기화
+                doc_distribution = [0.0] * model.num_topics
+                for topic_id, prob in doc_topics:
+                    doc_distribution[topic_id] = prob
+                topic_distributions.append(doc_distribution)
+
+            return topic_distributions
 
         except Exception as e:
-            print("Error of _get_num_of_topics_by_group method:", e)
+            print("Error of _get_topic_distributions method:", e)
 
     def _get_best_performance_regression_model_and_save(self, topic_idx, topic_distributions, folder_path):
 
@@ -112,15 +132,19 @@ class RegressionModel:
             model = LdaModel.load(model_path)
 
             temp_group = self.grouped_dfs[topic_idx]
+            temp_group = temp_group[["date_time", "documents"]]
+            temp_group.reset_index(drop=True, inplace=True)
+            temp_group = self._get_topic_features(
+                temp_group=temp_group, topic_distributions=topic_distributions, num_topics=model.num_topics
+            )
             self._get_stock_price_changes_by_date_time(temp_group=temp_group)
-            self._get_topic_features(temp_group=temp_group, topic_distributions=topic_distributions, num_topics=model.num_topics)
             best_score_by_topic = self._get_best_performance_regression_model(
                 temp_group=temp_group, topic_idx=topic_idx, folder_path=folder_path
             )
             return best_score_by_topic
 
         except Exception as e:
-            print("Error of _get_num_of_topics_by_group method:", e)
+            print("Error of _get_best_performance_regression_model_and_save method:", e)
 
     def _get_stock_price_changes_by_date_time(self, temp_group):
 
@@ -134,22 +158,18 @@ class RegressionModel:
                 )
 
         except Exception as e:
-            print("Error of _get_num_of_topics_by_group method:", e)
+            print("Error of _get_stock_price_changes_by_date_time method:", e)
 
     def _get_topic_features(self, temp_group, topic_distributions, num_topics):
 
         try:
-            topic_dist_list = []
-            for dist in topic_distributions:
-                dist_dict = dict(dist)
-                topic_dist_list.append([dist_dict.get(i, 0.0) for i in range(num_topics)])
+            topic_df = pd.DataFrame(topic_distributions, columns=[f"topic_{i+1}" for i in range(num_topics)])
 
-            topic_df = pd.DataFrame(topic_dist_list, columns=[f"topic_{i}" for i in range(num_topics)])
-
-            temp_group = pd.concat([temp_group, topic_df], axis=1)
+            # 기존 DataFrame과 병합
+            return pd.concat([temp_group, topic_df], axis=1)
 
         except Exception as e:
-            print("Error of _get_num_of_topics_by_group method:", e)
+            print("Error of _get_topic_features method:", e)
 
     def _get_best_performance_regression_model(self, temp_group, topic_idx, folder_path):
 
@@ -163,7 +183,7 @@ class RegressionModel:
                 if data_clean.empty:
                     continue
 
-                X = data_clean.drop(columns=VolaConfig.VOLA_COLUMNS + ["category", "date_time", "documents", "adjusted_time"])
+                X = data_clean.drop(columns=VolaConfig.VOLA_COLUMNS + ["date_time", "documents", "adjusted_time"])
                 y = data_clean[vola]
 
                 # 훈련/테스트 데이터 분할
@@ -217,6 +237,7 @@ class RegressionModel:
 
                 model_name = f"topic_{topic_idx+1}/reg_model_{vola}.joblib"
                 model_path = os.path.join(folder_path, model_name)
+                print(model_path)
                 if ridge_sign_accuracy < lasso_sign_accuracy:
                     with open(model_path, "wb") as f:
                         dump(best_lasso, f)
@@ -261,18 +282,22 @@ class RegressionModel:
         try:
             stock_volatilities = []
 
+            X = np.array([item[1] for item in topic_distributions]).reshape(1, -1)
+
             for vola in VolaConfig.VOLA_COLUMNS:
-                model_name = f"topic_{group_id+1}/reg_model_{vola}.joblib"
+                model_name = f"topic_{group_id}/reg_model_{vola}.joblib"
                 model_path = os.path.join(folder_path, model_name)
+
+                print("model_path: ", model_path)
 
                 with open(model_path, "rb") as f:
                     model = load(f)
 
                 print(f"Loaded model: {model}")
 
-                stock_volatilities.append(model.predict(topic_distributions)[0])
+                stock_volatilities.append(model.predict(X)[0])
 
             return stock_volatilities
 
         except Exception as e:
-            print("Error of _get_num_of_topics_by_group method:", e)
+            print("Error of get_stock_volatilities method:", e)

@@ -42,14 +42,16 @@ test_stock_dataset = pd.DataFrame({"date_time": stock_date, "price": stock_price
 
 test_text = "[ 문재인 대통령이 지난해 12월 27일 청와대에서 정부의 민관합동 청년 일자리]"
 
+test_s = " 2026년까지 기술수출 3건 목표…AI 기술 집약된 ‘이지엠 플랫폼’으로 신약 개발 박차 CJ바이오사이언스가 ‘AI 기반 마이크로바이옴 글로벌 혁신기업’으로의 비전 발표와 함께, 디지털에서 인공지능으로 전환해 성장 속도 내겠다는 포부도 밝혔다. 이를 통해 향후 3년 내 기술수출 3건을 달성하겠다는 목표다. CJ바이오사이언스는 최근 전 임직원이 참석한 가운데 ‘2024 뉴 비전(New Vision) 선포식’을 열고 이 같은 목표를 내걸었다고 밝혔다. 새 비전 ‘AI 기반 마이크로바이옴 글로벌 혁신기업(A global innovator in healthcare through AI-powered microbiome science)’은 AI 기반 마이크로바이옴 과학기술을 통해 신약개발, 웰니스 사업 분야에서 혁신을 선도하겠다는 의미를 담았다고 한다. 또 ‘온리원(ONLYONE) 치료제와 솔루션을 통해 인류의 건강에 기여한다’는 새로운 미션도 발표하며, 치료부터 예방에 이르기까지 생애 전 주기에 걸친 인류의 건강에 기여하겠다는 포부도 밝혔다. 천종식 CJ바이오사이언스 대표는 “CJ바이오사이언스는 지속적인 임상 데이터 확보 및 분석을 통해 마이크로바이옴 데이터와 AI 관련 역량을 오랜 기간 축적해 왔다”며 “새로운 AI 시대를 맞아 디지털에서 인공지능으로의 전환(AX)을 통해 마이크로바이옴 기반 글로벌 혁신 기업으로의 성장에 더욱 속도를 낼 것”이라고 밝혔다. 천종식 CJ바이오사이언스 대표가 신규 비전과 미션을 발표하고 있다 CJ바이오사이언스는 비전 선포와 함께 AI기술이 집약된 ‘이지엠(Ez-Mx) 플랫폼’을 고도화해 신약 개발을 가속화하고 신사업을 발굴할 계획이다. 마이크로바이옴 빅데이터를 기반으로 하는 이지엠 플랫폼은 신약후보 및 바이오마커(생체 지표) 발굴에 활용되며, 임상의 모든 단계에서 예측 정확도를 높일 수 있어 연구개발 비용을 절감하고 임상 성공률을 제고할 수 있을 것으로 회사 측은 기대하고 있다. 핵심 파이프라인인 CJRB-101은 키트루다와의 병용요법으로 폐암‧두경부암 등을 적응증으로 하며, 국내에서 1‧2상을 동시에 진행 중이다. 미국에서는 올해 3분기부터 임상을 시작해 다국가 임상을 개시할 예정이다. 회사는 CJRB-101로 약 56조원에 달할 것으로 예상되는 폐암 시장을 우선 공략할 계획이며, 퇴행성 뇌질환(CJRB-302), 염증성 질환(CJRB-201) 등 관련 후속 파이프라인까지 개발해 2026년까지 기술수출 3건을 달성한다는 목표를 제시했다. 또 설립 이래 지속적으로 AI 기술에 대한 역량을 키우면서 핵심 요소인 양질의 데이터를 축적하는 데도 노력한 결과 업계 최고 수준의 마이크로바이옴 빅데이터와 의료기관과의 공동연구 및 코호트(Cohort, 비교대조군 방식 질병연구) 연구를 통해 쌓아온 임상 데이터, 인체 유래 시료 분석 데이터를 보유하고 있다며, 향후 AI 전문가를 추가 영입하고 글로벌 AI 전문가 네트워크를 확대하는 등 AI 역량을 더욱 강화할 방침이라고 전했다. CJ바이오사이언스 관계자는 “보유하고 있는 미생물 기반 과학 기술과 AI 기반 플랫폼 역량은 미래 CJ그룹 웰니스 사업의 한 축이 될 것으로 기대한다”며 “올해 안에 식품 및 건강기능식품과 연계된 사업 구체화도 논의하는 등 CJ제일제당과의 시너지도 강화할 것”이라고 말했다. 조민규 기자(kioo@zdnet.co.kr) Copyright © 지디넷코리아. 무단전재 및 재배포 금지. "
+
 
 class TestDataController(unittest.TestCase):
 
-    def test_train_train_news_dataset(self):
-        DataController().train_news_dataset(news_dataset=test_news_dataset, stock_dataset=test_stock_dataset)
+    # def test_train_train_news_dataset(self):
+    #     DataController().train_news_dataset(news_dataset=test_news_dataset, stock_dataset=test_stock_dataset)
 
-    # def test_predict_stock_volatilities(self):
-    #     print(DataController().predict_stock_volatilities(text=test_text))
+    def test_predict_stock_volatilities(self):
+        print(DataController().predict_stock_volatilities(text=test_s, stock_name="제일제당"))
 
 
 if __name__ == "__main__":
