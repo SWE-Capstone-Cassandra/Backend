@@ -1,6 +1,5 @@
 import time
 from datetime import datetime
-from test.testing import news_list
 from typing import List
 
 import requests
@@ -46,6 +45,7 @@ class NewsService(BaseService):
         res = NewsRepository(session=self.session).get_news_data_by_id(news_id=news_id)
         res = NewsSchema(
             news_id=res.news_id,
+            stock_code=res.stock_code,
             date_time=datetime.strftime(res.date_time, "%Y-%m-%d %H:%M"),
             title=res.title,
             writer=res.writer,
@@ -75,7 +75,7 @@ class NewsService(BaseService):
         for news in data:
             att = NewsListAtt()
             att.title = news.title
-            att.news_id = int(news.news_id)
+            att.news_id = str(news.news_id)
             news_list.append(att)
         return news_list
 
@@ -99,6 +99,14 @@ class NewsService(BaseService):
             url_list.append(a_tag["href"] if a_tag else "No link found")
 
         return url_list
+
+    def get_news_id_by_period(self, start_day, end_day, stock_code: StockCode) -> List:
+
+        return NewsRepository(session=self.session).get_news_id_by_period(start_day=start_day, end_day=end_day, stock_code=stock_code)
+
+    def get_news_by_period(self, start_day, end_day, stock_code: StockCode) -> List[News]:
+
+        return NewsRepository(session=self.session).get_news_by_period(start_day=start_day, end_day=end_day, stock_code=stock_code)
 
     def is_page(self, url, page):
         options = Options()
@@ -127,6 +135,9 @@ class NewsService(BaseService):
         # WebDriver 종료
         else:
             return False
+
+    def get_news_total_page_by_stock_code(self, stock_code: StockCode) -> int:
+        return NewsRepository(session=self.session).get_news_total_page_by_stock_code(stock_code=stock_code)
 
     def get_stock_by_item_code(self, item_code: str):
         pass

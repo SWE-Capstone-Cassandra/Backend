@@ -1,13 +1,11 @@
 import time
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
-from test.testing import stock
 from typing import List
 
 from config import get_session
 from service.model_service import ModelService
 from service.news_service import NewsService
-from utils.enum.stock_code import StockCode
 from utils.enum.stock_list import StockList
 
 FRIDAY = 0
@@ -27,9 +25,16 @@ class ScheduleController:
 
             current_min = datetime.now().minute
             if not last_min == current_min:
-                time.sleep(5)
+                # time.sleep(5)
                 try:
                     with get_session() as session:
+
+                        # ticker = yf.Ticker(stock.code + ".KS")
+                        # df = ticker.history(interval="1m", period="1m", auto_adjust=False)
+                        # price = int(df["Close"].iloc[0])
+                        # print(price)
+                        # StockService(session=session).save_stock_data(stock_code=stock.code, price=price)
+                        # session.flush()
 
                         news_service = NewsService(session=session)
                         model_service = ModelService(session=session)
@@ -49,6 +54,7 @@ class ScheduleController:
 
                 except Exception as e:
                     print(e)
+                    last_min = current_min
             time.sleep(1)
 
     # def train_controll(self):
@@ -69,7 +75,7 @@ if __name__ == "__main__":
     with ThreadPoolExecutor(max_workers=4) as executor:
         print("start")
         timer = ScheduleController()
-        executor.submit(timer.min_data_collector, STOCK_List[0])
+        # executor.submit(timer.min_data_collector, STOCK_List[0])
         executor.submit(timer.min_data_collector, STOCK_List[1])
 
     # executor.submit(timer.train_controll)

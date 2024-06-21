@@ -1,14 +1,14 @@
 from enum import Enum
 
 
-class StrEnum(str, Enum):
+class TupleEnum(str, Enum):
     def __new__(cls, *values):
         obj = str.__new__(cls, values[1])
         obj._value_ = values
         return obj
 
 
-class StockList(StrEnum):
+class StockList(TupleEnum):
 
     SAMSUNG_ELECTRONIC = ("삼성전자", "005930")
     CJ_JAIL_JAEDANG = ("제일제당", "097950")
