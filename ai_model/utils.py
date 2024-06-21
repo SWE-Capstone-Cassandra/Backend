@@ -1,7 +1,8 @@
 import os
-from pytimekr import pytimekr
 from datetime import datetime, timedelta
+
 import pandas as pd
+from pytimekr import pytimekr
 
 
 def adjust_time(time):
@@ -82,3 +83,12 @@ def calculate_price_change(current_time, minutes, stock_dataset: pd.DataFrame):
 
 def count_subdirectories(path):
     return sum(os.path.isdir(os.path.join(path, entry)) for entry in os.listdir(path))
+
+
+def calculate_mape(true_values, predicted_values):
+    if len(true_values) == 0:
+        return None
+    true_values = pd.Series(true_values)
+    predicted_values = pd.Series(predicted_values)
+    mape = (abs((true_values - predicted_values) / true_values)).mean() * 100
+    return mape

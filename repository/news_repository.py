@@ -2,7 +2,7 @@ import datetime
 from typing import List
 
 import pandas as pd
-from sqlalchemy import select
+from sqlalchemy import func, select
 from sqlalchemy.orm import load_only
 
 from model.news import News
@@ -55,5 +55,31 @@ class NewsRepository(BaseRepository):
         )
         res = self.session.execute(stmt)
         res = res.scalars().all()
+
+        return res
+
+    def get_news_id_by_period(self, start_day, end_day, stock_code: StockCode) -> List:
+        stmt = (
+            select(News)
+            .where(News.stock_code == stock_code)
+            .where(News.date_time < end_day)
+            .where(News.date_time > start_day)
+            .options(load_only(News.news_id))
+        )
+        res = self.session.execute(stmt)
+        res = res.scalars().all()
+        return res
+
+    def get_news_by_period(self, start_day, end_day, stock_code: StockCode) -> List:
+        stmt = select(News).where(News.stock_code == stock_code).where(News.date_time < end_day).where(News.date_time > start_day)
+        res = self.session.execute(stmt)
+        res = res.scalars().all()
+        return res
+
+    def get_news_total_page_by_stock_code(self, stock_code: StockCode) -> int:
+        stmt = select(func.count()).select_from(News).where(News.stock_code == stock_code)
+        res = self.session.execute(stmt)
+
+        res = res.scalar()
 
         return res

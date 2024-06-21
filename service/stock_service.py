@@ -12,3 +12,8 @@ class StockService(BaseService):
         price = StockRepository(session=self.session).save_stock_data(stock_code=stock_code, price=price)
 
         return True
+
+    def get_stock_data_by_period(self, start_day, end_day, stock_code: StockCode):
+        return StockRepository(session=self.session).get_stock_data_by_period(
+            start_day=start_day, end_day=end_day, stock_code=stock_code
+        )

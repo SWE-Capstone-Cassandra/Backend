@@ -1,3 +1,5 @@
+from typing import List
+
 from sqlalchemy import select
 
 from model.news_prediction import NewsPrediction
@@ -18,3 +20,10 @@ class PredictionRepository(BaseRepository):
         self.session.add(news_prediction)
 
         return news_prediction
+
+    def get_prediction_by_list(self, news_list: List):
+        stmt = select(NewsPrediction)
+
+        res = self.session.execute(stmt)
+        res = res.scalars().all()
+        return res

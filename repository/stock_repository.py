@@ -2,6 +2,7 @@ import datetime
 
 import pandas as pd
 from sqlalchemy import select
+from sqlalchemy.orm import load_only
 
 from model.stock import Stock
 from repository.base_repository import BaseRepository
@@ -49,3 +50,15 @@ class StockRepository(BaseRepository):
             df = df.drop(columns=["id"])
         df.sort_values(by=["date_time"])
         return df
+
+    def get_stock_data_by_period(self, start_day, end_day, stock_code: StockCode):
+        stmt = (
+            select(Stock)
+            .where(Stock.stock_code == stock_code)
+            .where(Stock.date_time > start_day)
+            .where(Stock.date_time < end_day)
+            .options(load_only(Stock.date_time, Stock.price))
+        )
+        res = self.session.execute(stmt)
+        res = res.scalars().all()
+        return res
