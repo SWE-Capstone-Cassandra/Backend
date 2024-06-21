@@ -10,7 +10,7 @@ class NewsPrediction(Base):
     __tablename__ = "news_prediction"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
-    news_id: Mapped[int] = mapped_column(BigInteger)
+    news_id: Mapped[int] = mapped_column(BigInteger, unique=True)
     time: Mapped[datetime] = mapped_column(DateTime(timezone=True), index=True)
     min_1: Mapped[float] = mapped_column(Float)
     min_5: Mapped[float] = mapped_column(Float)

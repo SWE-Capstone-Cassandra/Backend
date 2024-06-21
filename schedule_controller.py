@@ -46,7 +46,9 @@ class ScheduleController:
                             data.stock_code = stock.code
                             res = news_service.save_news_data(news=data)
                             prediction: List = model_service.request_stock_volatilities(content=res.content, stock_name=stock.name)
-                            saved_prediction = model_service.save_prediction(news_id=res.news_id, prediction=prediction)
+                            saved_prediction = model_service.save_prediction(
+                                news_id=res.news_id, time=res.date_time, prediction=prediction
+                            )
                             print(saved_prediction)
                         last_min = current_min
                         session.commit()

@@ -46,9 +46,10 @@ class ModelService(BaseService):
 
         return prediction
 
-    def save_prediction(self, news_id: int, prediction: List[float]):
+    def save_prediction(self, news_id: int, time: datetime.datetime, prediction: List[float]):
         news_prediction = NewsPrediction()
         news_prediction.news_id = news_id
+        news_prediction.time = time
         news_prediction.min_1 = float(prediction[0]) if len(prediction) > 0 else 0
         news_prediction.min_5 = float(prediction[1]) if len(prediction) > 1 else 0
         news_prediction.min_15 = float(prediction[2]) if len(prediction) > 2 else 0
@@ -68,14 +69,14 @@ class ModelService(BaseService):
     def get_prediction_by_list(self, news_list: List):
         return PredictionRepository(session=self.session).get_prediction_by_list(news_list=news_list)
 
-    def request_prediction(self, start_day, end_day, stock_code: StockCode, stock: StockList):
+    def request_prediction(self, start_day, end_day, stock: StockList):
         """
         특정기간기준으로 저장되어있는 뉴스데이터를 불러온 뒤, 그 뉴스들에 대해 예측값을 저장.
         """
-        news_list = NewsService(session=self.session).get_news_by_period(start_day=start_day, end_day=end_day, stock_code=stock_code)
-        for new in news_list:
-            prediction: List = self.request_stock_volatilities(content=new.content, stock_name=stock.name)
-            saved_prediction = self.save_prediction(news_id=new.news_id, prediction=prediction)
+        news_list = NewsService(session=self.session).get_news_by_period(start_day=start_day, end_day=end_day, stock_code=stock.code)
+        for news in news_list:
+            prediction: List = self.request_stock_volatilities(content=news.content, stock_name=stock.name)
+            saved_prediction = self.save_prediction(news_id=news.news_id, time=news.date_time, prediction=prediction)
             print(saved_prediction)
 
     def get_model_accuracy(self, start_day, end_day, stock_code: StockCode):
