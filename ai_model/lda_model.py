@@ -11,7 +11,7 @@ from gensim.models.coherencemodel import CoherenceModel
 from tqdm import tqdm
 
 from ai_model.constants import BaseConfig, LDAModelConfig
-from ai_model.preprocessor.text_preprocessor import TextPreprocessor
+from ai_model.preprocessor.text_preprocessor_v2 import TextPreprocessorV2
 
 """
 LDA 모델
@@ -56,7 +56,7 @@ class LDAModel:
         """
 
         self.df["date_time"] = dataset["date_time"]
-        self.df["documents"] = TextPreprocessor(texts=list(dataset["content"])).preprocess()
+        self.df["documents"] = TextPreprocessorV2(texts=list(dataset["content"])).preprocess()
 
         print("폴더 생성")
         self._make_new_folder_for_model_save(folder_path=folder_path, is_topic=False)
@@ -106,9 +106,8 @@ class LDAModel:
         1차 토픽을 추출하는 함수
         """
         try:
-            tokenized_documents = [doc[0].split() for doc in self.df["documents"]]
-            dictionary = corpora.Dictionary(tokenized_documents)
-            corpus = [dictionary.doc2bow(text) for text in tokenized_documents]
+            dictionary = corpora.Dictionary(list(self.df["documents"]))
+            corpus = [dictionary.doc2bow(text) for text in list(self.df["documents"])]
 
             best_coherence = -np.inf
 
@@ -127,7 +126,7 @@ class LDAModel:
                             workers=LDAModelConfig.WORKERS,
                         )
                         coherence_model = CoherenceModel(
-                            model=model, texts=tokenized_documents, dictionary=dictionary, coherence="c_v"
+                            model=model, texts=list(self.df["documents"]), dictionary=dictionary, coherence="c_v"
                         )
                         coherence_score = coherence_model.get_coherence()
 
@@ -207,20 +206,18 @@ class LDAModel:
     def _save_main_lda_model(self, best_model, folder_path):
 
         try:
-            tokenized_documents = [doc[0].split() for doc in self.df["documents"]]
-
             model_name = "category_lda_model.model"
             model_path = os.path.join(folder_path, model_name)
 
             best_model.save(model_path)
 
-            dictionary = corpora.Dictionary(tokenized_documents)
+            dictionary = corpora.Dictionary(list(self.df["documents"]))
             dictionary_name = "category_dictionary.pkl"
             dictionary_path = os.path.join(folder_path, dictionary_name)
             with open(dictionary_path, "wb") as f:
                 pickle.dump(dictionary, f)
 
-            corpus = [dictionary.doc2bow(text) for text in tokenized_documents]
+            corpus = [dictionary.doc2bow(text) for text in list(self.df["documents"])]
             corpus_name = "category_corpus.pkl"
             corpus_path = os.path.join(folder_path, corpus_name)
             with open(corpus_path, "wb") as f:
@@ -235,7 +232,7 @@ class LDAModel:
             self.grouped_dfs = [self.df[self.df["category"] == i] for i in range(1, num_topics + 1)]
 
             for group_idx, group_df in tqdm(enumerate(self.grouped_dfs, start=1), desc=f"## Create LDA Model by Topic ##"):
-                group_texts = [doc[0].split() for doc in group_df["documents"]]
+                group_texts = list(group_df["documents"])
                 print(f"{group_idx}번째 그룹의 데이터 수: ", len(group_texts))
 
                 # 그룹별 단어 사전 생성
@@ -308,7 +305,7 @@ class LDAModel:
 
         try:
             # 텍스트 전처리
-            preprocessed_text = TextPreprocessor(texts=text).preprocess()
+            preprocessed_text = TextPreprocessorV2(texts=text).preprocess()
 
             # 1차 가장 높은 확률의 토픽 추출
             group_id = self._get_group_id(text=preprocessed_text, folder_path=folder_path)
